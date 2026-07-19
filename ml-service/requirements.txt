@@ -1,0 +1,19 @@
+
+Este archivo no utiliza formato Markdown. Su contenido inicial sugerido es:
+
+~~~text
+pandas
+numpy
+scikit-learn
+matplotlib
+jupyter
+joblib
+xgboost
+prophet
+transformers
+torch
+~~~
+
+Las versiones exactas deberán fijarse después de comprobar cuáles funcionan correctamente en el entorno del proyecto.
+
+---
