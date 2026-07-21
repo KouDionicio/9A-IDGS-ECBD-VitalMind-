@@ -16,4 +16,5 @@ export const env = {
   MYSQL_PASSWORD: required(process.env.MYSQL_PASSWORD, "1234"),
   MYSQL_DATABASE: required(process.env.MYSQL_DATABASE, "vitalmind"),
   MYSQL_CONNECT_TIMEOUT_MS: Number(required(process.env.MYSQL_CONNECT_TIMEOUT_MS, "5000")),
+  ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? String(process.env.ANTHROPIC_API_KEY).trim() : "",
 };
