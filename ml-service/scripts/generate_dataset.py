@@ -731,7 +731,8 @@ def generate_daily_record(
         pain=pain,
     )
 
-    water_liters = water_glasses * 0.25
+    water_glasses = round_value(water_glasses * 1)
+    water_liters = round_value(water_glasses * 0.25, 2)
 
     bmi = calculate_bmi(
         weight_kg=weight_kg,
@@ -790,8 +791,8 @@ def generate_daily_record(
         "weight_profile_kg": round_value(user["weight_profile_kg"], 1),
         "weight_kg": round_value(weight_kg, 1),
         "bmi": round_value(bmi, 2),
-        "water_glasses": round_value(water_glasses, 1),
-        "water_liters": round_value(water_liters, 2),
+        "water_glasses": water_glasses,
+        "water_liters":water_liters,
         "exercise_minutes": round_value(exercise_minutes, 1),
         "sleep_hours": round_value(sleep_hours, 1),
         "healthy_meals_count": int(healthy_meals_count),
