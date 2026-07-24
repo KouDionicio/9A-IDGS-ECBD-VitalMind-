@@ -12,21 +12,13 @@
 </p>
 </div>
 
-<table align="center">
-  <tr>
-    <th align="center">Logo de la aplicación</th>
-    <th align="center">Logo de la empresa</th>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="./Logos/LogoVitalMind.jpeg" alt="Logo de VitalMind AI" width="260">
-    </td>
-    <td align="center">
-      <img src="./Logos/empresa.png" alt="Logo de la empresa" width="260">
-    </td>
-  </tr>
-</table>
+<h3 align="center">Logos del proyecto</h3>
 
+<p align="center">
+  <img src="./Logos/Aplicacion_logo.jpeg" alt="Logo de VitalMind AI" width="320">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="./Logos/Empresa_logo.png" alt="Logo de la empresa" width="320">
+</p>
 ---
 
 ## 📚 Tabla de contenido
