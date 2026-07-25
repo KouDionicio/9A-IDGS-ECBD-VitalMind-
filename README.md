@@ -7,7 +7,7 @@
    <td>Logo de empresa</td>
   <tr>
     <td>  <img src="/Logos/LogoVitalMind.jpeg" width="80%" style="padding: 10px;" />  </td>
-    <td>   <img src="/Documentation/GUI/Assets/UTXJ_empresa.png" width="80%" style="padding: 10px;" /> </td> 
+    <td>   <img src="/Logos/empresa.png" width="80%" style="padding: 10px;" /> </td> 
   </tr>
 </table>
 
@@ -77,11 +77,11 @@ VitalMind AI está dirigido a:
 - **Recomendación e Interfaz:** Precision@K, Tasa de Aceptación (CTR), System Usability Scale (SUS > 68).
 
 ## Colaboradores
-| Nombre                        | Matrícula |
-|-------------------------------|-----------|
-| Citlalli Pérez Dionicio       | 230237    |
-| Yazmin Gutierrez Hernández    | 230447    |
-| Jennifer Bautista Barrios     | 230317    |
-| Obed Guzmán Flores            | 230142    |
-| Michelle Castro Otero         | 230881    |
-| Carlos Daniel Garcia Pluma    | 230187    |
+| Nombre                        | Matrícula | Rol |
+|-------------------------------|-----------|-----|
+| Yazmin Gutierrez Hernández    | 230447    | Frontend & Experiencia de Usuario |
+| Carlos Daniel Garcia Pluma    | 230187    | Backend |
+| Jennifer Bautista Barrios     | 230317    | Backend |
+| Michelle Castro Otero         | 230881    | IA y Machine Learning |
+| Obed Guzmán Flores            | 230142    | Documentación |
+| Citlalli Pérez Dionicio       | 230237    | Control de Calidad (QA) e Integración |
