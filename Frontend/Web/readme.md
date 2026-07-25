@@ -6,6 +6,8 @@ Frontend web de **VitalMind**, una plataforma inteligente de salud integral dise
 
 Este proyecto corresponde a la versión web de VitalMind, desarrollada con **React** y **Vite**. Su objetivo es ofrecer una plataforma clara, profesional y escalable para gestionar información de salud desde un navegador web.
 
+
+// Commit que hare solo para ren
 ## Objetivo
 
 Construir una interfaz web moderna que permita:
