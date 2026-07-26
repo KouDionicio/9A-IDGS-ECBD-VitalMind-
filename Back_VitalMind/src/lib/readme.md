@@ -44,6 +44,7 @@ Las librerías instaladas se registran en el archivo `package.json`, permitiendo
 * JavaScript
 * npm
 
+
 ## 📌 Objetivo
 
 Las librerías permiten construir una API REST funcional, conectar el backend con MySQL, manejar solicitudes HTTP, configurar variables de entorno y facilitar el desarrollo del proyecto.
