@@ -21,8 +21,6 @@ El proyecto surge como una solución académica que integra desarrollo web, base
 
 La plataforma contempla el registro de síntomas, hábitos saludables, antecedentes médicos y estados de bienestar. A partir de esta información, el sistema podrá presentar resúmenes personalizados y ofrecer orientación general mediante un chatbot inteligente.
 
-> **Aviso de responsabilidad médica:** VitalMind AI no sustituye el diagnóstico, tratamiento, prescripción ni atención de un profesional de la salud. La información y las recomendaciones generadas por la plataforma son únicamente orientativas.
-
 ---
 
 ## 3. Planteamiento del problema
@@ -101,7 +99,7 @@ Desde el punto de vista académico, VitalMind AI permite aplicar conocimientos r
 | **Profesor o asesor** | Evalúa el proceso, la metodología y los entregables | Evidencias, documentación y funcionalidad | Alta |
 | **Familiares o cuidadores** | Apoyan el seguimiento del bienestar del usuario | Información clara y organizada | Media |
 | **Profesionales de la salud** | Podrían consultar reportes como apoyo informativo | Información comprensible y confiable | Media |
-| **Instituciones académicas** | Analizan el proyecto como prototipo tecnológico | Aplicación adecuada de conocimientos técnicos | Media |
+
 
 ---
 
@@ -114,7 +112,6 @@ VitalMind AI contempla el registro y procesamiento de información relacionada c
 - Síntomas registrados.
 - Hábitos saludables.
 - Estado físico.
-- Estado emocional.
 - Indicadores personales de bienestar.
 - Información utilizada para generar gráficas y estadísticas.
 - Consultas realizadas al chatbot.
@@ -251,8 +248,6 @@ Seguimiento del bienestar
 ```
 
 El usuario podrá iniciar sesión, registrar información personal de salud, consultar un resumen de su bienestar y recibir sugerencias orientativas.
-
-La comunicación entre el navegador, la API y los servicios del sistema deberá realizarse mediante mecanismos seguros.
 
 ---
 

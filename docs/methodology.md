@@ -1,5 +1,4 @@
 # Metodología del Proyecto VitalMind AI
-
 ## 1. Introducción
 
 VitalMind AI combina dos enfoques metodológicos complementarios:
@@ -536,10 +535,10 @@ No se utilizarán actas o minutas formales para las reuniones. Por ello, las dec
 |---|---|
 | **Jira** | Backlog, épicas, historias, tareas, sprints y seguimiento |
 | **Microsoft Teams** | Reuniones y comunicación formal |
-| **WhatsApp** | Comunicación rápida |
+| **WhatsApp** | Comunicación rápida entre integrantes del equipo|
 | **GitHub** | Repositorio, ramas, commits, Pull Requests y releases |
-| **Figma** | Diseño UX/UI y prototipos |
-| **VS Code** | Desarrollo y documentación |
+| **Figma** | Diseño UX/UI y prototipos desarrollados y diseñados |
+| **VS Code** | Desarrollo y documentación del proyecto|
 | **Git** | Control de versiones |
 
 ---
