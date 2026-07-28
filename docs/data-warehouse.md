@@ -12,7 +12,7 @@
 
 ## 1. Propósito
 
-Este documento describe la estructura recibida en `Warehouse.zip`, su relación con VitalMind AI y los cambios necesarios para convertirla en un almacén analítico.
+Este documento describe la estructura recibida en `Data_Warehouse`, su relación con VitalMind AI y los cambios necesarios para convertirla en un almacén analítico.
 
 El paquete contiene:
 
@@ -177,11 +177,7 @@ Por lo tanto, el dataset procesado todavía debe integrarse a un esquema analít
 
 ## 9. Propuesta de Data Mart
 
-Se recomienda conservar `vitalmind` como base operacional y crear una base separada:
 
-```text
-vitalmind_dw
-```
 
 ### Granularidad propuesta
 
