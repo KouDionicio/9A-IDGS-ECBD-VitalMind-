@@ -86,18 +86,20 @@ FEATURE_COLUMNS = (
 SCRIPT_PATH = Path(__file__).resolve()
 ML_SERVICE_DIR = SCRIPT_PATH.parent.parent
 
-TRAIN_PATH = (
+MODEL_DATA_DIR = (
     ML_SERVICE_DIR
     / "data"
-    / "training"
-    / "train.csv"
+    / "modeling"
+)
+
+TRAIN_PATH = (
+    MODEL_DATA_DIR
+    / "train_model.csv"
 )
 
 VALIDATION_PATH = (
-    ML_SERVICE_DIR
-    / "data"
-    / "validation"
-    / "validation.csv"
+    MODEL_DATA_DIR
+    / "validation_model.csv"
 )
 
 MODELS_DIR = (
@@ -115,7 +117,7 @@ REPORTS_DIR = (
 
 BEST_MODEL_PATH = (
     MODELS_DIR
-    / "best_risk_classifier.joblib"
+    / "best_risk_classifier_safe.joblib"
 )
 
 LABEL_ENCODER_PATH = (
@@ -125,14 +127,13 @@ LABEL_ENCODER_PATH = (
 
 TUNING_RESULTS_PATH = (
     REPORTS_DIR
-    / "hyperparameter_tuning_results.csv"
+    / "safe_hyperparameter_tuning_results.csv"
 )
 
 BEST_METRICS_PATH = (
     REPORTS_DIR
-    / "best_validation_metrics.json"
+    / "safe_best_validation_metrics.json"
 )
-
 
 # ============================================================
 # 3. CARGA DE DATOS

@@ -99,25 +99,25 @@ FEATURE_COLUMNS = (
 SCRIPT_PATH = Path(__file__).resolve()
 ML_SERVICE_DIR = SCRIPT_PATH.parent.parent
 
-TRAIN_DATA_PATH = (
+MODEL_DATA_DIR = (
     ML_SERVICE_DIR
     / "data"
-    / "training"
-    / "train.csv"
+    / "modeling"
+)
+
+TRAIN_DATA_PATH = (
+    MODEL_DATA_DIR
+    / "train_model.csv"
 )
 
 VALIDATION_DATA_PATH = (
-    ML_SERVICE_DIR
-    / "data"
-    / "validation"
-    / "validation.csv"
+    MODEL_DATA_DIR
+    / "validation_model.csv"
 )
 
 TEST_DATA_PATH = (
-    ML_SERVICE_DIR
-    / "data"
-    / "test"
-    / "test.csv"
+    MODEL_DATA_DIR
+    / "test_model.csv"
 )
 
 MODELS_DIR = (
@@ -150,19 +150,18 @@ LABEL_ENCODER_PATH = (
 
 METRICS_PATH = (
     REPORTS_DIR
-    / "initial_validation_metrics.json"
+    / "safe_validation_metrics.json"
 )
 
 PREDICTIONS_PATH = (
     REPORTS_DIR
-    / "validation_predictions.csv"
+    / "safe_validation_predictions.csv"
 )
 
 COMPARISON_PATH = (
     REPORTS_DIR
-    / "initial_model_comparison.csv"
+    / "safe_model_comparison.csv"
 )
-
 
 # ============================================================
 # 3. CARGA Y VALIDACIÓN
