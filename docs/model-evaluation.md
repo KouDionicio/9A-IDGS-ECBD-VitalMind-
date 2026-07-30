@@ -2,13 +2,11 @@
 
 # 🤖 Evaluación de Modelos — VitalMind AI
 
-![Estado](https://img.shields.io/badge/Estado-Evaluación%20parcial-F59E0B?style=for-the-badge)
-![Problema](https://img.shields.io/badge/Problema-Clasificación%20multiclase-2563EB?style=for-the-badge)
-![Modelo](https://img.shields.io/badge/Seleccionado-Regresión%20Logística-0F766E?style=for-the-badge)
+<img src="https://img.shields.io/badge/Estado-Evaluación%20parcial-F59E0B?style=for-the-badge" alt="Estado">
+<img src="https://img.shields.io/badge/Problema-Clasificación%20multiclase-2563EB?style=for-the-badge" alt="Problema">
+<img src="https://img.shields.io/badge/Seleccionado-Regresión%20Logística-0F766E?style=for-the-badge" alt="Modelo Seleccionado">
 
 </div>
-
----
 
 ## 1. Propósito
 
@@ -22,8 +20,6 @@ ml-service/app/notebooks/
 └── 02_risk_model_comparison.ipynb
 ```
 
-> [!IMPORTANT]
-> Los resultados corresponden a datos sintéticos y no representan validación clínica. El conjunto de prueba todavía permanece reservado.
 
 ---
 
@@ -260,34 +256,10 @@ Se seleccionó porque:
 - Puede integrarse en un pipeline reproducible.
 - Utiliza un flujo temporalmente seguro.
 
----
-
-## 12. Artefactos utilizados
-
-El notebook de comparación hace referencia a:
-
-```text
-ml-service/reports/classification/
-├── initial_validation_metrics.json
-├── initial_model_comparison.csv
-├── validation_predictions.csv
-├── safe_initial_model_comparison.csv
-├── safe_tuning_results.csv
-└── safe_best_model_metrics.json
-```
-
-```text
-ml-service/app/models/risk-classification/
-├── logistic_regression_pipeline.joblib
-├── random_forest_pipeline.joblib
-└── risk_label_encoder.joblib
-```
-
-La existencia y ubicación definitiva de estos archivos debe verificarse antes de cerrar la documentación.
 
 ---
 
-## 13. Evaluación final pendiente
+## 12. Evaluación final pendiente
 
 El conjunto de prueba no fue utilizado en los notebooks proporcionados.
 
@@ -302,12 +274,11 @@ La evaluación final deberá:
 7. Registrar la versión del modelo.
 8. Confirmar el tiempo de inferencia.
 
-> [!WARNING]
-> Las métricas de validación no deben presentarse como resultados finales del modelo hasta completar la evaluación del conjunto de prueba.
+
 
 ---
 
-## 14. Limitaciones
+## 13. Limitaciones
 
 - Los datos son sintéticos.
 - Las etiquetas fueron generadas mediante reglas.
@@ -320,7 +291,7 @@ La evaluación final deberá:
 
 ---
 
-## 15. Conclusión
+## 14. Conclusión
 
 La Regresión Logística con preparación temporal segura es el mejor candidato actual para clasificar el nivel preventivo de riesgo.
 
