@@ -2,12 +2,11 @@
 
 # ⚖️ Ética, Privacidad y Uso Responsable — VitalMind AI
 
-![Estado](https://img.shields.io/badge/Estado-Avance%20documental-F59E0B?style=for-the-badge)
-![Datos](https://img.shields.io/badge/Datos-Sintéticos-2563EB?style=for-the-badge)
-![Enfoque](https://img.shields.io/badge/Enfoque-Preventivo-0F766E?style=for-the-badge)
+<img src="https://img.shields.io/badge/Estado-Avance%20documental-F59E0B?style=for-the-badge" alt="Estado">
+<img src="https://img.shields.io/badge/Datos-Sintéticos-2563EB?style=for-the-badge" alt="Datos">
+<img src="https://img.shields.io/badge/Enfoque-Preventivo-0F766E?style=for-the-badge" alt="Enfoque">
 
 </div>
-
 ---
 
 ## 1. Propósito
@@ -16,8 +15,7 @@ Este documento establece los principios éticos, de privacidad y seguridad que d
 
 La plataforma busca apoyar el seguimiento físico y emocional mediante registros, análisis de datos y modelos de Machine Learning. Sus resultados deben utilizarse únicamente como orientación preventiva e informativa.
 
-> [!IMPORTANT]
-> VitalMind AI no realiza diagnósticos médicos, no prescribe tratamientos y no sustituye la atención de profesionales de la salud.
+
 
 ---
 
@@ -116,7 +114,6 @@ El usuario deberá poder:
 - Rechazar recomendaciones.
 - Cerrar su cuenta.
 
-> La implementación definitiva de consentimiento, eliminación y conservación de datos permanece pendiente de aprobación técnica y legal.
 
 ---
 
