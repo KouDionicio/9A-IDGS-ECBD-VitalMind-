@@ -765,16 +765,65 @@ Mientras no exista el archivo `LICENSE`, el proyecto debe considerarse de **uso 
 - [RFC 8725 — JSON Web Token Best Current Practices](https://www.rfc-editor.org/info/rfc8725/)
 - [GitHub Docs — Licensing a repository](https://docs.github.com/articles/licensing-a-repository)
 
-### Tecnologías
+### 🧰 Tecnologías utilizadas
 
-- [React — Documentación oficial](https://react.dev/)
-- [Node.js — Documentación oficial](https://nodejs.org/en/docs/)
-- [Express.js — Documentación oficial](https://expressjs.com/)
-- [MongoDB — Documentación oficial](https://www.mongodb.com/docs/)
-- [FastAPI — Documentación oficial](https://fastapi.tiangolo.com/)
-- [scikit-learn — Guía de usuario](https://scikit-learn.org/stable/user_guide.html)
-- [Socket.IO — Documentación oficial](https://socket.io/docs/v4/)
+#### 🎨 Frontend
 
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="28" alt="React"/> **React** | Desarrollo de interfaces y componentes reutilizables. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" width="28" alt="HTML5"/> **HTML5** | Estructura y organización del contenido web. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" width="28" alt="CSS3"/> **CSS3** | Diseño visual, estilos y adaptación responsiva. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="28" alt="JavaScript"/> **JavaScript** | Lógica e interacción de la aplicación en el navegador. |
+
+#### ⚙️ Backend y servicios
+
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" width="28" alt="Node.js"/> **Node.js** | Ejecución del servidor y lógica del Backend. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" width="28" alt="Express.js"/> **Express.js** | Creación de rutas, controladores y servicios REST. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" width="28" alt="FastAPI"/> **FastAPI** | Exposición de los modelos de Machine Learning mediante API. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg" width="28" alt="Socket.IO"/> **Socket.IO** | Comunicación en tiempo real entre Backend y Frontend. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swagger/swagger-original.svg" width="28" alt="Swagger"/> **Swagger / OpenAPI** | Descripción y prueba de los endpoints de la API. |
+
+#### 🗄️ Bases de datos
+
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" width="28" alt="MongoDB"/> **MongoDB** | Almacenamiento de información utilizada por la aplicación. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" width="28" alt="MySQL"/> **MySQL** | Gestión de la base operacional y propuesta del Data Mart. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" width="28" alt="MySQL Workbench"/> **MySQL Workbench** | Diseño, visualización y administración del modelo relacional. |
+
+#### 🤖 Datos e Inteligencia Artificial
+
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" width="28" alt="Python"/> **Python** | Procesamiento de datos y desarrollo de modelos inteligentes. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" width="28" alt="scikit-learn"/> **scikit-learn** | Entrenamiento, comparación y evaluación de modelos. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" width="28" alt="pandas"/> **pandas** | Limpieza, transformación y análisis de datasets. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" width="28" alt="NumPy"/> **NumPy** | Operaciones numéricas y manejo de arreglos. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" width="28" alt="Matplotlib"/> **Matplotlib** | Generación de gráficas para el análisis de datos. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" width="28" alt="Jupyter Notebook"/> **Jupyter Notebook** | Desarrollo del EDA y experimentación con modelos. |
+| <img src="https://cdn.simpleicons.org/python/3776AB" width="28" alt="Joblib"/> **Joblib** | Serialización y almacenamiento de modelos entrenados. |
+
+#### 🔐 Seguridad
+
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.simpleicons.org/letsencrypt/003A70" width="28" alt="bcrypt"/> **bcrypt** | Protección de contraseñas mediante funciones hash. |
+| <img src="https://cdn.simpleicons.org/jsonwebtokens/000000" width="28" alt="JWT"/> **JWT** | Autenticación de usuarios y control de sesiones. |
+| <img src="https://cdn.simpleicons.org/letsencrypt/003A70" width="28" alt="HTTPS y TLS"/> **HTTPS / TLS** | Protección de la información transmitida entre servicios. |
+
+#### 🧩 Diseño, gestión y colaboración
+
+| Tecnología | Uso principal |
+|---|---|
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" width="28" alt="Figma"/> **Figma** | Diseño de interfaces y elaboración de prototipos. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" width="28" alt="Jira"/> **Jira** | Gestión de épicas, historias, tareas y sprints. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" width="28" alt="Git"/> **Git** | Control de versiones y seguimiento de cambios. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" width="28" alt="GitHub"/> **GitHub** | Administración del repositorio, ramas y Pull Requests. |
+| <img src="https://devicons.io/devicons/icons/microsoft-teams.svg" width="28" alt="Microsoft Teams"/> **Microsoft Teams** | Reuniones y comunicación formal del equipo. |
+| <img src="https://cdn.simpleicons.org/whatsapp/25D366" width="28" alt="WhatsApp"/> **WhatsApp** | Comunicación rápida y coordinación interna. |
 ---
 
 <div align="center">
