@@ -1,7 +1,5 @@
 
-Este archivo no utiliza formato Markdown. Su contenido inicial sugerido es:
 
-~~~text
 pandas
 numpy
 scikit-learn
@@ -12,8 +10,11 @@ xgboost
 prophet
 transformers
 torch
-~~~
+fastapi
+uvicorn[standard]
+pydantic
+httpx
 
-Las versiones exactas deberán fijarse después de comprobar cuáles funcionan correctamente en el entorno del proyecto.
 
----
+
+
