@@ -155,8 +155,3 @@ dashboard/index.html
 
 El objetivo de **VitalMind API** es proporcionar una estructura organizada para la gestión de información mediante una API conectada a una base de datos, permitiendo integrar posteriormente aplicaciones web, móviles o dashboards para consultar y visualizar los datos.
 
-## Autora
-
-**Jennifer Bautista Barrios**
-
-Proyecto desarrollado como parte de la formación en **Desarrollo de Software**.
