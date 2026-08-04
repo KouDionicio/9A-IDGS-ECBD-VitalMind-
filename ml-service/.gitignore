@@ -40,3 +40,7 @@ data/confidential/
 .cache/
 huggingface/
 ```
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
