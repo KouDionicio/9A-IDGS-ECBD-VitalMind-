@@ -1,103 +1,81 @@
-<div align="center">
-
-# 🏛️ Almacén de Datos — VitalMind AI
-
-<img src="https://img.shields.io/badge/Estado-En%20revisión-F59E0B?style=for-the-badge" alt="Estado">
-<img src="https://img.shields.io/badge/MySQL-8.0-2563EB?style=for-the-badge" alt="MySQL">
-<img src="https://img.shields.io/badge/Modelo-Operacional-7C3AED?style=for-the-badge" alt="Modelo">
-
-</div>
-
----
+# Almacén de Datos — VitalMind AI
 
 ## 1. Propósito
 
-Este documento describe la estructura recibida en `Data_Warehouse`, su relación con VitalMind AI y los cambios necesarios para convertirla en un almacén analítico.
+Este documento distingue la base de datos operacional disponible en el proyecto del modelo analítico requerido por la guía del Proyecto Integrador.
 
-El paquete contiene:
 
-```text
-Warehouse/
-├── Backup_OnlyData_VitalMind.sql
-├── Backup_Onlystructure_VitalMind.sql
-├── DB_VitalMind.sql
-├── DIccionario de datos VitalMind.html
-└── MySQL Workbench Models VitalMind.mwb
-```
 
----
+## 2. Base de datos operacional observada
 
-## 2. Tecnología y configuración
-
-| Elemento | Descripción |
+| Elemento | Configuración |
 |---|---|
 | Motor | MySQL 8 |
-| Base de datos | `vitalmind` |
 | Motor de almacenamiento | InnoDB |
-| Codificación | `utf8mb4` |
-| Intercalación | `utf8mb4_unicode_ci` |
-| Modelo visual | MySQL Workbench |
-| Integridad | Llaves primarias y foráneas |
+| Juego de caracteres | `utf8mb4` |
+| Acceso desde backend | `mysql2` |
+| Nombre local observado | `vitalmind` |
 
----
+La conexión se administra mediante variables de entorno.
 
-## 3. Tablas identificadas
+## 3. Tablas presentes en el respaldo
 
-| Tabla | Propósito |
+```text
+appointments
+audit_logs
+habit_logs
+medical_history_items
+medication_logs
+medications
+notifications
+refresh_tokens
+symptom_logs
+users
+```
+
+Para el alcance actual tienen relación directa:
+
+| Tabla | Uso |
 |---|---|
-| `users` | Almacena usuarios, roles y datos generales de perfil |
-| `habit_logs` | Registra hábitos diarios como agua, ejercicio, sueño, nutrición y meditación |
-| `symptom_logs` | Almacena síntomas, signos físicos, estado de ánimo y notas |
-| `medications` | Define los medicamentos registrados por cada usuario |
-| `medication_logs` | Registra cuándo un medicamento fue tomado |
-| `medical_history_items` | Guarda antecedentes médicos por categoría |
-| `appointments` | Administra citas médicas |
-| `notifications` | Registra recordatorios, consejos, alertas y mensajes de IA |
-| `audit_logs` | Mantiene trazabilidad de las acciones realizadas |
-| `refresh_tokens` | Administra tokens de renovación de sesión |
+| `users` | Cuenta y perfil |
+| `habit_logs` | Hábitos por fecha |
+| `symptom_logs` | Síntomas y mediciones |
+| `medications` | Medicamentos, dosis y horarios |
+| `medication_logs` | Confirmaciones y estados de toma |
+| `notifications` | Recordatorios y avisos |
+| `refresh_tokens` | Renovación de sesión |
+| `audit_logs` | Trazabilidad |
 
----
+El respaldo conserva tablas de etapas previas. Su presencia no las convierte en parte central del alcance actual.
 
-## 4. Relaciones principales
+## 4. Ajustes observados en el backend
+
+Las migraciones del backend amplían la estructura con campos como:
+
+- `stress_level`;
+- `energy_level`;
+- `sleep_quality`;
+- `log_date`;
+- registros emocionales.
+
+Estos campos permiten construir parte del contrato que utiliza el ML Service.
+
+## 5. Relaciones operacionales principales
 
 ```mermaid
 erDiagram
     USERS ||--o{ HABIT_LOGS : registra
     USERS ||--o{ SYMPTOM_LOGS : registra
-    USERS ||--o{ MEDICATIONS : posee
-    USERS ||--o{ MEDICATION_LOGS : realiza
-    USERS ||--o{ MEDICAL_HISTORY_ITEMS : contiene
-    USERS ||--o{ APPOINTMENTS : agenda
-    USERS ||--o{ NOTIFICATIONS : recibe
-    USERS ||--o{ AUDIT_LOGS : ejecuta
-    USERS ||--o{ REFRESH_TOKENS : utiliza
+    USERS ||--o{ MEDICATIONS : configura
     MEDICATIONS ||--o{ MEDICATION_LOGS : genera
+    USERS ||--o{ NOTIFICATIONS : recibe
+    USERS ||--o{ REFRESH_TOKENS : mantiene
+    USERS ||--o{ AUDIT_LOGS : produce
 ```
 
-La tabla `users` actúa como entidad central de la base operacional.
+La cuenta de aplicación debe consultar únicamente sus propios registros.
 
----
-
-## 5. Integridad observada
-
-La estructura incluye:
-
-- Llaves primarias autoincrementales.
-- Llaves foráneas entre usuarios y registros.
-- Eliminación en cascada en tablas dependientes.
-- Asignación a `NULL` cuando se desea conservar el registro.
-- Restricción única en `habit_logs` para evitar dos registros del mismo usuario en la misma fecha.
-- Correo electrónico único en `users`.
-
-Ejemplo de restricción importante:
-
-```sql
-UNIQUE KEY uq_habit_user_date (user_id, log_date)
-```
-
----
-
-## 6. Volumen del respaldo de datos
+## 6. Volumen del respaldo revisado
 
 | Tabla | Registros |
 |---|---:|
@@ -112,110 +90,103 @@ UNIQUE KEY uq_habit_user_date (user_id, log_date)
 | `appointments` | 4 |
 | `refresh_tokens` | 0 |
 
-La mayor parte de los registros clínicos y de hábitos pertenece a un solo usuario, por lo que el respaldo funciona como demostración, pero no como fuente analítica representativa.
 
----
+## 7. Diferencia entre operación y análisis
 
-## 7. Evaluación del modelo recibido
-
-### Aspectos correctos
-
-- Organización clara de entidades operacionales.
-- Uso de claves primarias y foráneas.
-- Separación de medicamentos y eventos de consumo.
-- Registro de auditoría.
-- Manejo de roles.
-- Respaldo separado de estructura y datos.
-- Modelo disponible en MySQL Workbench.
-
-### Aspectos por mejorar
-
-| Elemento | Situación observada | Recomendación |
+| Aspecto | MySQL operacional | Dataset / Data Mart analítico |
 |---|---|---|
-| `appointment_time` | Se almacena como texto | Utilizar `TIME` |
-| `joined_label` y `last_active_label` | Guardan etiquetas de texto | Almacenar fechas reales |
-| `time_label` | Representa tiempo con texto libre | Utilizar fecha u hora estructurada |
-| `audit_logs.payload` | Está definido como `LONGTEXT` | Considerar tipo `JSON` |
-| Hábitos | Campos sin unidad explícita | Usar nombres como `water_glasses` o `exercise_minutes` |
-| Rangos | No existen suficientes restricciones | Agregar validaciones o `CHECK` |
-| Datos de ejemplo | Algunas dosis y textos son inconsistentes | Limpiar antes de la entrega final |
+| Objetivo | Ejecutar funciones de la aplicación | Analizar comportamiento histórico |
+| Granularidad | Registros por módulo | Una fila por usuario y fecha |
+| Fuente actual | Aplicación | Dataset sintético y transformación |
+| Estructura | Relacional normalizada | Modelo dimensional simplificado |
+| ML | El backend transforma datos disponibles | Fuente preparada para análisis |
+| Estado | Disponible | Diseño documentado; carga dimensional no confirmada |
 
----
+## 8. Mapeo operacional hacia ML
 
-## 8. Diferencia con el dataset analítico
-
-El dataset procesado de Machine Learning contiene:
-
-```text
-5,000 registros
-250 usuarios sintéticos
-35 columnas
-```
-
-La base operacional no contiene directamente todas sus variables. Entre los campos no representados se encuentran:
-
-```text
-profile_type
-sleep_score
-activity_score
-nutrition_score
-emotional_score
-physical_condition_score
-wellbeing_score
-risk_factors_count
-risk_level
-is_anomaly
-weight_source
-stress_level
-energy_level
-sleep_quality
-```
-
-Por lo tanto, el dataset procesado todavía debe integrarse a un esquema analítico independiente o mediante un proceso ETL.
-
----
-
-## 9. Propuesta de Data Mart
+| Campo operacional | Campo ML |
+|---|---|
+| `habit_logs.water` | `water_glasses` |
+| `habit_logs.exercise` | `exercise_minutes` |
+| `habit_logs.sleep` | `sleep_hours` |
+| `habit_logs.nutrition` | `healthy_meals_count` |
+| `habit_logs.meditation` | `meditation_minutes` |
+| `symptom_logs.temperature` | `temperature_c` |
+| `symptom_logs.systolic` | `systolic_mmhg` |
+| `symptom_logs.diastolic` | `diastolic_mmhg` |
+| `symptom_logs.glucose` | `glucose_mg_dl` |
+| `symptom_logs.heart_rate` | `heart_rate_bpm` |
 
 
 
-### Granularidad propuesta
+## 9. Data Mart de seguimiento diario
 
-> Un registro de bienestar de un usuario sintético en una fecha determinada.
+### 9.1 Objetivo
 
-### Modelo estrella propuesto
+Concentrar, por usuario y fecha, las variables necesarias para análisis de hábitos, mediciones, medicamentos y resultados de modelos.
+
+### 9.2 Granularidad
+
+**Una fila por usuario y fecha.**
+
+Esta granularidad coincide con el dataset sintético y permite agregar información operacional diaria sin mezclar múltiples eventos en una sola métrica sin control.
+
+### 9.3 Esquema
+
+Se propone un esquema estrella simplificado:
 
 ```mermaid
 flowchart TB
-    F[fact_wellbeing_records]
+    DU[dim_usuario]
+    DF[dim_fecha]
+    DFU[dim_fuente]
+    FM[fact_seguimiento_diario]
 
-    D1[dim_user_profile]
-    D2[dim_date]
-    D3[dim_mood]
-    D4[dim_risk]
-    D5[dim_profile_type]
-
-    D1 --> F
-    D2 --> F
-    D3 --> F
-    D4 --> F
-    D5 --> F
+    DU --> FM
+    DF --> FM
+    DFU --> FM
 ```
 
-### Tabla de hechos propuesta
+### 9.4 Dimensiones
 
-`fact_wellbeing_records`
+#### `dim_usuario`
 
-Podría almacenar:
+| Campo | Tipo | Función |
+|---|---|---|
+| `usuario_key` | BIGINT | Clave sustituta |
+| `user_id` | VARCHAR | Identificador de origen |
+| `age` | INT | Edad disponible |
+| `height_cm` | DECIMAL | Estatura disponible |
+
+No se incluyen nombre, correo ni otros datos innecesarios para el análisis.
+
+#### `dim_fecha`
+
+| Campo | Tipo | Función |
+|---|---|---|
+| `fecha_key` | INT | Fecha `YYYYMMDD` |
+| `fecha` | DATE | Fecha completa |
+| `anio` | SMALLINT | Año |
+| `mes` | TINYINT | Mes |
+| `dia` | TINYINT | Día |
+| `dia_semana` | TINYINT | Día de semana |
+
+#### `dim_fuente`
+
+| Campo | Tipo | Función |
+|---|---|---|
+| `fuente_key` | SMALLINT | Clave sustituta |
+| `nombre_fuente` | VARCHAR | `manual`, `wear_os`, `simulacion` u otra fuente confirmada |
+| `detalle` | VARCHAR | Descripción de procedencia |
+
+`wear_os` solo deberá utilizarse cuando la medición provenga realmente del smartwatch.
+
+### 9.5 Tabla de hechos: `fact_seguimiento_diario`
+
+Medidas posibles:
 
 ```text
-record_id
-user_key
-date_key
-mood_key
-risk_key
-profile_type_key
-water_liters
+water_glasses
 exercise_minutes
 sleep_hours
 healthy_meals_count
@@ -226,82 +197,151 @@ systolic_mmhg
 diastolic_mmhg
 glucose_mg_dl
 heart_rate_bpm
-bmi
-sleep_score
-activity_score
-nutrition_score
-emotional_score
-physical_condition_score
+stress_level
+energy_level
+sleep_quality
+medication_confirmations
 wellbeing_score
-risk_factors_count
-is_anomaly
+risk_level
+cluster_id
 ```
 
-### Dimensiones propuestas
 
-| Dimensión | Contenido |
-|---|---|
-| `dim_user_profile` | Usuario sintético, edad, estatura y peso de perfil |
-| `dim_date` | Día, mes, año, semana y trimestre |
-| `dim_mood` | Estado de ánimo y orden de interpretación |
-| `dim_risk` | Nivel de riesgo bajo, medio o alto |
-| `dim_profile_type` | Tipo de perfil sintético |
+## 10. Script DDL de diseño
 
----
+El siguiente script documenta el modelo propuesto. 
 
-## 10. Flujo esperado
+```sql
+CREATE TABLE dim_usuario (
+    usuario_key BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(64) NOT NULL UNIQUE,
+    age INT NULL,
+    height_cm DECIMAL(6,2) NULL
+);
 
-```mermaid
-flowchart LR
-    A[vitalmind_dataset_raw.csv] --> B[Staging]
-    B --> C[Limpieza y transformación]
-    C --> D[vitalmind_dataset_processed.csv]
-    D --> E[vitalmind_dw]
-    E --> F[EDA]
-    E --> G[Machine Learning]
-    E --> H[Dashboard]
+CREATE TABLE dim_fecha (
+    fecha_key INT PRIMARY KEY,
+    fecha DATE NOT NULL UNIQUE,
+    anio SMALLINT NOT NULL,
+    mes TINYINT NOT NULL,
+    dia TINYINT NOT NULL,
+    dia_semana TINYINT NOT NULL
+);
+
+CREATE TABLE dim_fuente (
+    fuente_key SMALLINT AUTO_INCREMENT PRIMARY KEY,
+    nombre_fuente VARCHAR(40) NOT NULL UNIQUE,
+    detalle VARCHAR(255) NULL
+);
+
+CREATE TABLE fact_seguimiento_diario (
+    seguimiento_key BIGINT AUTO_INCREMENT PRIMARY KEY,
+    usuario_key BIGINT NOT NULL,
+    fecha_key INT NOT NULL,
+    fuente_key SMALLINT NOT NULL,
+
+    water_glasses DECIMAL(6,2) NULL,
+    exercise_minutes DECIMAL(7,2) NULL,
+    sleep_hours DECIMAL(5,2) NULL,
+    healthy_meals_count INT NULL,
+    meditation_minutes DECIMAL(7,2) NULL,
+
+    pain DECIMAL(5,2) NULL,
+    temperature_c DECIMAL(5,2) NULL,
+    systolic_mmhg DECIMAL(6,2) NULL,
+    diastolic_mmhg DECIMAL(6,2) NULL,
+    glucose_mg_dl DECIMAL(7,2) NULL,
+    heart_rate_bpm DECIMAL(6,2) NULL,
+
+    stress_level DECIMAL(5,2) NULL,
+    energy_level DECIMAL(5,2) NULL,
+    sleep_quality DECIMAL(5,2) NULL,
+
+    medication_confirmations INT NULL,
+    wellbeing_score DECIMAL(6,2) NULL,
+    risk_level VARCHAR(16) NULL,
+    cluster_id INT NULL,
+
+    UNIQUE KEY uq_usuario_fecha_fuente
+        (usuario_key, fecha_key, fuente_key),
+
+    CONSTRAINT fk_fact_usuario
+        FOREIGN KEY (usuario_key)
+        REFERENCES dim_usuario(usuario_key),
+
+    CONSTRAINT fk_fact_fecha
+        FOREIGN KEY (fecha_key)
+        REFERENCES dim_fecha(fecha_key),
+
+    CONSTRAINT fk_fact_fuente
+        FOREIGN KEY (fuente_key)
+        REFERENCES dim_fuente(fuente_key)
+);
 ```
 
----
+## 11. Justificación del diseño
 
-## 11. Seguridad y privacidad
+El esquema evita copiar directamente el modelo transaccional y permite:
 
-Los respaldos incluyen datos de usuario, información médica, correos, hashes y registros de auditoría.
+- consultar tendencias por fecha;
+- combinar hábitos y mediciones en una granularidad controlada;
+- registrar el origen de cada dato;
+- almacenar resultados analíticos junto con la fecha de referencia;
+- incorporar más adelante mediciones reales de Wear OS sin confundirlas con simulación;
+- mantener identificadores operacionales fuera del modelo de Machine Learning cuando no son necesarios.
 
-Aunque sean datos de prueba, se recomienda:
+## 12. Flujo de carga previsto
 
-- No subir respaldos con información sensible a un repositorio público.
-- Utilizar únicamente datos ficticios.
-- Anonimizar nombres y correos.
-- No publicar hashes de contraseña.
-- Evitar almacenar información clínica completa dentro de `audit_logs.payload`.
-- Mantener respaldos en una ubicación con acceso controlado.
+```text
+CSV sintético / MySQL operacional / Wear OS confirmado
+                    ↓
+            extracción controlada
+                    ↓
+          transformación y calidad
+                    ↓
+       dimensiones + hecho diario
+                    ↓
+          análisis y reporting
+```
 
----
+En el estado actual, el flujo de modelado carga archivos procesados y conjuntos temporales. 
+## 13. Calidad del almacén
 
-## 12. Estado actual
+Al implementar la carga deben comprobarse:
+
+- unicidad por usuario, fecha y fuente;
+- claves sustitutas válidas;
+- integridad referencial;
+- fechas existentes en `dim_fecha`;
+- valores numéricos en unidades correctas;
+- procedencia de cada registro;
+- ausencia de duplicados por reintentos;
+- no mezclar datos sintéticos con datos reales sin marcar la fuente.
+
+
+
+## 14. Seguridad
+
+- secretos fuera del código;
+- mínimo privilegio de la cuenta MySQL;
+- cifrado en tránsito;
+- contraseñas con hash;
+- acceso a datos propios;
+- auditoría;
+- respaldo protegido;
+- retención definida;
+- no replicar PII innecesaria al Data Mart.
+
+## 15. Estado
 
 | Elemento | Estado |
 |---|---|
-| Base operacional | Implementada |
-| Relaciones y llaves | Implementadas |
-| Respaldo de estructura | Disponible |
-| Respaldo de datos | Disponible |
-| Modelo Workbench | Disponible |
-| Diccionario técnico HTML | Disponible |
-| Data Mart | Pendiente |
-| Esquema estrella | Propuesto |
-| Tabla de hechos | Propuesta |
-| Dimensiones | Propuestas |
-| Carga del dataset procesado | Pendiente |
-| ETL analítico | Pendiente |
+| Base MySQL operacional | Disponible |
+| Acceso desde backend | Código disponible |
+| Dataset analítico sintético | Disponible |
+| Modelo dimensional | Diseñado en este documento |
+| Script DDL del Data Mart | Documentado |
+| Smartwatch Wear OS | Plataforma confirmada |
+| Bluetooth | Confirmado |
 
----
 
-## 13. Conclusión
-
-La estructura entregada es adecuada como base de datos operacional para registrar usuarios, hábitos, síntomas, medicamentos, citas y notificaciones.
-
-Sin embargo, para cumplir con el componente analítico del proyecto debe conservarse como sistema operacional y complementarse con un Data Mart separado, alimentado mediante ETL desde el dataset procesado.
-
-La propuesta de `fact_wellbeing_records` y sus dimensiones sirve como punto de partida, pero deberá confirmarse con el equipo de Backend y Machine Learning antes de implementarse.

@@ -1,285 +1,262 @@
-<div align="center">
-
-# ⚖️ Ética, Privacidad y Uso Responsable — VitalMind AI
-
-<img src="https://img.shields.io/badge/Estado-Avance%20documental-F59E0B?style=for-the-badge" alt="Estado">
-<img src="https://img.shields.io/badge/Datos-Sintéticos-2563EB?style=for-the-badge" alt="Datos">
-<img src="https://img.shields.io/badge/Enfoque-Preventivo-0F766E?style=for-the-badge" alt="Enfoque">
-
-</div>
----
+# Ética, Privacidad y Uso Responsable — VitalMind AI
 
 ## 1. Propósito
 
-Este documento establece los principios éticos, de privacidad y seguridad que deben orientar el desarrollo de **VitalMind AI**.
+VitalMind AI trabaja con información relacionada con salud, hábitos y bienestar. Este documento establece criterios para tratar esos datos y los resultados de Machine Learning de forma responsable dentro del proyecto académico.
 
-La plataforma busca apoyar el seguimiento físico y emocional mediante registros, análisis de datos y modelos de Machine Learning. Sus resultados deben utilizarse únicamente como orientación preventiva e informativa.
-
-
-
----
 
 ## 2. Alcance
 
-Estas reglas aplican a:
+Aplica a:
 
-- Dataset sintético y procesos de transformación.
-- Modelos supervisados y no supervisados.
-- API inteligente.
-- Chatbot.
-- Dashboard.
-- Base de datos.
-- Notificaciones y alertas.
-- Integraciones con dispositivos o servicios externos.
-- Documentación y pruebas.
+- aplicación Android en Kotlin;
+- smartwatch Wear OS y comunicación Bluetooth;
+- backend y API;
+- MySQL;
+- datasets;
+- ETL;
+- modelos supervisados y no supervisados;
+- chatbot;
+- dashboard;
+- reportes y alertas;
+- pruebas y registros de auditoría.
 
----
+## 3. Datos utilizados y necesidad
 
-## 3. Principios éticos
+Los modelos actuales utilizan datos sintéticos de:
 
-| Principio | Aplicación en VitalMind AI |
-|---|---|
-| **Beneficio** | Las funciones deben apoyar el bienestar y evitar recomendaciones innecesarias o riesgosas. |
-| **No daño** | Ningún resultado debe presentarse como diagnóstico o decisión clínica definitiva. |
-| **Autonomía** | El usuario debe poder aceptar, rechazar o ignorar recomendaciones y notificaciones. |
-| **Privacidad** | Solo deben recolectarse los datos necesarios para cada funcionalidad. |
-| **Transparencia** | La plataforma debe indicar cuándo una respuesta o recomendación fue generada por IA. |
-| **Equidad** | Los modelos deben revisarse para detectar diferencias injustificadas entre grupos. |
-| **Trazabilidad** | Las predicciones deben registrar fecha, versión del modelo y datos generales de entrada. |
-| **Supervisión humana** | Los casos sensibles deben incluir límites claros y orientación hacia ayuda profesional. |
+- edad, estatura y peso;
+- hidratación;
+- actividad física;
+- sueño;
+- alimentación;
+- meditación;
+- dolor;
+- temperatura;
+- presión arterial;
+- glucosa;
+- frecuencia cardiaca;
+- estado de ánimo;
+- estrés;
+- energía;
+- calidad del sueño.
 
----
-
-## 4. Naturaleza de los datos
-
-El proyecto utiliza actualmente datos **sintéticos** para fines académicos.
-
-Esto significa que:
-
-- Los registros no representan pacientes reales.
-- Los identificadores son artificiales.
-- Los resultados no pueden considerarse evidencia clínica.
-- Los modelos deben volver a validarse antes de utilizar datos reales.
-- Los respaldos de demostración deben evitar nombres, correos y datos reconocibles.
-
-Aunque los datos sean sintéticos, deben manejarse con prácticas similares a las que se aplicarían a información sensible.
-
----
-
-## 5. Privacidad y minimización
-
-VitalMind AI debe recolectar únicamente la información necesaria para ofrecer sus funciones.
-
-### Datos que requieren mayor protección
-
-- Síntomas.
-- Signos físicos.
-- Medicamentos.
-- Antecedentes médicos.
-- Estado de ánimo.
-- Estrés.
-- Conversaciones con el chatbot.
-- Inferencias y niveles de riesgo.
-- Historial de uso de la aplicación.
-
-### Reglas mínimas
-
-- No utilizar nombres reales en datasets académicos.
-- No incluir CURP, NSS, domicilio o teléfonos reales.
-- Evitar guardar información sensible dentro de logs técnicos.
-- No publicar respaldos de base de datos en repositorios abiertos.
-- Anonimizar textos antes de analizarlos.
-- Limitar el acceso según el rol del usuario.
-- Documentar qué datos se almacenan y para qué se utilizan.
-
----
-
-## 6. Consentimiento y control del usuario
-
-Cuando la plataforma utilice datos reales, deberá informar:
-
-- Qué información se recopila.
-- Para qué se utiliza.
-- Qué modelos analizan los datos.
-- Qué recomendaciones pueden generarse.
-- Cuáles son los límites del sistema.
-- Durante cuánto tiempo se conserva la información.
-
-El usuario deberá poder:
-
-- Consultar sus datos.
-- Corregir información incorrecta.
-- Eliminar registros cuando corresponda.
-- Desactivar notificaciones.
-- Rechazar recomendaciones.
-- Cerrar su cuenta.
+Cada variable se utiliza porque forma parte del problema analítico definido. Identificadores, variables exclusivas de simulación y puntajes que producirían fuga de información se excluyen del entrenamiento.
 
 
----
+## 4. Principios
 
-## 7. Seguridad de la información
+### 4.1 Finalidad
 
-Controles definidos o previstos para el proyecto:
+Solo deben recopilarse datos necesarios para una función o análisis definido.
 
-| Control | Estado |
-|---|---|
-| Hash de contraseñas con bcrypt | Previsto / identificado en Backend |
-| Autenticación con JWT | Prevista |
-| Comunicación mediante HTTPS/TLS | Prevista |
-| Control de acceso por roles | Implementación parcial |
-| Auditoría de acciones | Identificada en la base operacional |
-| Protección de secretos y variables de entorno | Pendiente de validación |
-| Cifrado de datos almacenados | Pendiente de definición |
-| Política de respaldos | Pendiente |
-| Eliminación segura de datos | Pendiente |
+### 4.2 Minimización
 
-Las contraseñas, tokens, cadenas de conexión y claves privadas nunca deben almacenarse directamente en el repositorio.
+No se debe enviar al backend, al servicio de IA o a un proveedor externo información que no sea necesaria.
 
----
+### 4.3 Transparencia
 
-## 8. Uso responsable de Machine Learning
+La persona usuaria debe poder distinguir:
 
-### Reglas generales
+- dato registrado manualmente;
+- dato proveniente del smartwatch;
+- indicador calculado;
+- predicción;
+- recomendación por reglas;
+- respuesta generativa.
 
-- Separar entrenamiento, validación y prueba.
-- Evitar fuga de información.
-- Documentar variables utilizadas y excluidas.
-- Evaluar métricas globales y por clase.
-- Revisar errores en la clase de mayor riesgo.
-- Mantener una versión identificable del modelo.
-- No ocultar limitaciones.
-- No utilizar una métrica alta como prueba de validez clínica.
+### 4.4 Control
 
-### Riesgos principales
+El alcance actual utiliza una cuenta general que accede a sus propios datos.
 
-| Riesgo | Consecuencia | Medida preventiva |
-|---|---|---|
-| Falso negativo | No detectar un registro relevante | Priorizar Recall en clases sensibles y revisar errores |
-| Falso positivo | Generar preocupación innecesaria | Usar lenguaje preventivo y solicitar confirmación |
-| Sesgo | Peor desempeño para ciertos grupos | Evaluar métricas por edad, perfil y otras variables disponibles |
-| Fuga de información | Métricas artificialmente altas | Usar particiones temporales o por usuario |
-| Sobreajuste | Mal desempeño con datos nuevos | Validación independiente y control de complejidad |
-| Falta de explicación | El usuario no entiende el resultado | Mostrar factores generales y nivel de confianza |
-| Dependencia excesiva | El usuario confía demasiado en la IA | Repetir límites y recomendar atención profesional cuando aplique |
+### 4.5 Seguridad desde el diseño
 
----
+Autenticación, validación, secretos, cifrado en tránsito y auditoría forman parte de la arquitectura.
 
-## 9. Alertas y clasificación de riesgo
+## 5. Privacidad
 
-Las alertas deben:
+Controles mínimos:
 
-- Utilizar lenguaje claro y no alarmista.
-- Evitar afirmar que el usuario tiene una enfermedad.
-- Indicar que la recomendación se basa en datos registrados.
-- Permitir confirmar o corregir información.
-- Diferenciar entre seguimiento básico, prevención y posible atención profesional.
-- Registrar la versión del modelo que generó la inferencia.
+- no publicar `.env`;
+- no almacenar contraseñas en texto plano;
+- no registrar tokens completos;
+- minimizar PII;
+- separar datos reales y sintéticos;
+- usar HTTPS/TLS fuera de desarrollo;
+- limitar el acceso a datos propios;
+- definir retención y eliminación;
+- proteger respaldos;
+- evitar enviar datos innecesarios al proveedor conversacional.
 
-Ejemplo de mensaje adecuado:
+## 6. Wear OS, Bluetooth y permisos
 
-> Se identificaron cambios en tus registros recientes. Considera dar seguimiento a tus síntomas y consultar a un profesional si continúan o empeoran.
+La plataforma confirmada es Wear OS y la comunicación con la aplicación Android es mediante Bluetooth.
 
-Ejemplo que debe evitarse:
+El modelo del smartwatch y la API o SDK de salud todavía no están definidos. Por ello:
 
-> Tienes una enfermedad grave.
+- no deben solicitarse permisos de sensores inexistentes;
+- no se debe afirmar que una métrica puede leerse hasta confirmar que el dispositivo la expone;
+- la aplicación debe informar qué datos sincroniza;
+- las mediciones deben guardar origen y fecha;
+- la pérdida de conexión no debe provocar duplicados;
+- Bluetooth no sustituye las medidas de seguridad de aplicación y backend.
 
----
+## 7. Machine Learning
 
-## 10. Chatbot y mensajes sensibles
+Los modelos se entrenaron con datos sintéticos. Sus métricas no equivalen a validación clínica.
 
-El chatbot debe:
+### 7.1 Clasificación
 
-- Informar que es un asistente automatizado.
-- Evitar diagnóstico y prescripción.
-- Reconocer preguntas fuera de alcance.
-- No solicitar datos innecesarios.
-- Proteger el historial conversacional.
-- Redirigir a atención profesional en situaciones sensibles.
-- Utilizar respuestas previamente revisadas para escenarios de riesgo.
-- Evitar lenguaje culpabilizante o manipulador.
+`risk_level` es una etiqueta creada por reglas del proyecto. Una salida `high` no significa enfermedad ni emergencia.
 
-La clasificación de mensajes sensibles deberá validarse con especial atención a los falsos negativos.
+### 7.2 Regresión
 
----
+`wellbeing_score` es un objetivo sintético. Su escala resume reglas del dataset y no es un instrumento clínico.
 
-## 11. Aprendizaje no supervisado
+### 7.3 Clustering
 
-Los clusters, perfiles y anomalías deben presentarse como patrones exploratorios.
+Los clusters de K-Means describen similitud estadística. No deben recibir nombres médicos, estigmatizantes ni permanentes.
 
-No deben interpretarse como:
+### 7.4 PCA
 
-- Diagnósticos.
-- Personalidades definitivas.
-- Condiciones psicológicas.
-- Causas médicas.
-- Clasificaciones permanentes del usuario.
+La representación bidimensional conserva solo parte de la información y se utiliza para visualización.
 
-Los nombres de grupos deben ser neutrales y descriptivos, por ejemplo:
+### 7.5 Anomalías
+
+Isolation Forest identifica rareza estadística. Su F1 bajo frente a la etiqueta sintética externa confirma que no debe utilizarse como conclusión de salud.
+
+## 8. Sesgos posibles
+
+La simulación incorpora decisiones del equipo sobre distribuciones, perfiles y reglas. Los sesgos pueden surgir por:
+
+- rangos de edad elegidos;
+- proporción de perfiles;
+- relación artificial entre variables;
+- reglas que generan objetivos;
+- clases con distinta representación;
+- ausencia de datos reales de Wear OS;
+- diferencias futuras entre el dataset sintético y una población real.
+
+Con datos reales deberían revisarse resultados por subgrupos técnicamente pertinentes y distribución de errores.
+
+## 9. Intervención humana
+
+Debe intervenir una persona responsable cuando:
+
+- un resultado se quiera interpretar fuera del alcance académico;
+- una recomendación parezca médica;
+- una medición pueda estar afectada por error del dispositivo;
+- exista una solicitud de cambio de tratamiento;
+- el chatbot produzca una respuesta dudosa;
+- una alerta pueda tener consecuencias sensibles;
+- se decida incorporar datos reales.
+
+La aplicación puede sugerir buscar valoración profesional cuando la persona tenga dudas o un valor le preocupe, sin determinar una causa.
+
+## 10. Alertas
+
+Las alertas deben ser informativas.
+
+Adecuado:
+
+> Se detectó un cambio respecto a los valores registrados. Revisa la medición y su contexto.
+
+No adecuado:
+
+> Tienes una enfermedad.
+
+Las alertas no deben:
+
+- diagnosticar;
+- ordenar suspender o iniciar medicamentos;
+- afirmar una causa;
+- presentar una probabilidad como certeza.
+
+## 11. Medicamentos
+
+El módulo es digital y permite registrar medicamento, dosis, horario, recordatorio y confirmación manual.
+
+No debe:
+
+- decidir dosis;
+- recomendar iniciar o suspender un medicamento;
+- modificar un tratamiento;
+- interpretar automáticamente una omisión como emergencia.
+
+## 12. Chatbot
+
+El chatbot utiliza Mistral AI.
+
+Debe:
+
+- explicar resultados disponibles;
+- reconocer límites;
+- evitar inventar mediciones;
+- evitar inventar salidas de modelos;
+- no diagnosticar;
+- no prescribir;
+- no enviar información personal innecesaria al proveedor.
+
+
+## 13. Preguntas obligatorias de la guía
+
+### ¿Qué datos se utilizan?
+
+Datos sintéticos de perfil, hábitos, síntomas, mediciones y percepción de bienestar. La aplicación operacional también maneja cuenta, medicamentos, notificaciones y registros propios.
+
+### ¿Por qué son necesarios?
+
+Permiten entrenar y evaluar los mecanismos seleccionados y mostrar seguimiento de la información registrada.
+
+### ¿Qué sesgos pueden existir?
+
+Sesgos por reglas de simulación, distribuciones elegidas, representación de clases y diferencias futuras respecto a datos reales.
+
+### ¿Qué usuarios pueden verse afectados?
+
+La persona usuaria puede interpretar incorrectamente una alerta, un puntaje, una probabilidad o un cluster si la interfaz no explica su significado.
+
+### ¿Qué decisiones no deben automatizarse?
+
+Diagnósticos, prescripción, cambio de dosis, suspensión de medicamentos, interpretación clínica definitiva y decisiones sensibles basadas únicamente en un modelo.
+
+### ¿Cuándo debe intervenir una persona?
+
+Cuando se requiera interpretar un resultado de salud, validar una medición dudosa, resolver una respuesta sensible del chatbot o decidir cambios con impacto personal.
+
+### ¿Qué limitaciones tiene el modelo?
+
+Datos sintéticos, ausencia de validación clínica, objetivos construidos mediante reglas y falta de entrenamiento con mediciones reales de Wear OS.
+
+## 14. Anonimización y trazabilidad
+
+Los datasets usan identificadores sintéticos. En datos reales se deben reducir o seudonimizar identificadores cuando el análisis no necesite identidad.
+
+El ML Service utiliza:
 
 ```text
-Actividad baja y sueño irregular
+request_id
+user_id
+analysis_date
+model_versions
 ```
 
-Debe evitarse:
+para trazabilidad. Estos campos no se usan como predictores.
 
-```text
-Usuario poco saludable
-```
+## 15. Responsabilidades del equipo
 
----
+El equipo debe:
 
-## 12. Auditoría y trazabilidad
+- conocer las reglas de simulación;
+- explicar las métricas;
+- distinguir evidencia de planeación;
+- no inventar resultados;
+- proteger secretos;
+- mantener documentación actualizada;
+- revisar respuestas generativas;
+- validar cambios antes de presentarlos;
+- poder defender el funcionamiento del modelo y sus límites.
 
-Cada inferencia debería registrar, como mínimo:
+## 16. Conclusión
 
-```text
-inference_id
-user_id o identificador anonimizado
-model_name
-model_version
-inference_date
-result
-confidence
-input_schema_version
-```
-
-No es recomendable almacenar en los logs más datos sensibles de los necesarios.
-
----
-
-## 13. Responsabilidades del equipo
-
-| Área | Responsabilidad |
-|---|---|
-| Machine Learning | Evaluar métricas, sesgo, fuga de datos y limitaciones |
-| Backend | Proteger datos, autenticación, permisos, logs y endpoints |
-| Frontend | Mostrar advertencias, consentimiento y resultados comprensibles |
-| QA | Probar seguridad, validaciones, alertas y casos sensibles |
-| Documentación | Mantener límites, riesgos, decisiones y evidencias actualizados |
-| Todo el equipo | Revisar funciones sensibles antes de integrarlas |
-
----
-
-## 14. Aspectos pendientes
-
-Este documento deberá actualizarse cuando se definan:
-
-- Política formal de consentimiento.
-- Tiempo de conservación de datos.
-- Procedimiento de eliminación de cuentas.
-- Cifrado en almacenamiento.
-- Gestión de respaldos.
-- Protocolo final del chatbot.
-- Evaluación de sesgos por grupo.
-- Modelo no supervisado definitivo.
-- Política de uso de datos reales.
-- Responsable de aprobar funciones sensibles.
-- Normativa aplicable al contexto de despliegue.
-
----
-
-## 15. Conclusión
-
-VitalMind AI debe mantener un enfoque preventivo, transparente y centrado en el usuario.
-
-La calidad ética del sistema no depende únicamente de sus métricas, sino también de cómo protege los datos, comunica sus límites, reduce riesgos y permite que las decisiones importantes permanezcan bajo control humano.
+El uso responsable depende tanto de la seguridad técnica como de la interpretación. Los datos y modelos pueden apoyar el seguimiento personal, pero no deben automatizar decisiones médicas ni presentar resultados sintéticos como evidencia clínica.

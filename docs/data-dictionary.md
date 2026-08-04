@@ -1,125 +1,187 @@
-<div align="center">
+# Diccionario de Datos — VitalMind AI
 
-# 📘 Diccionario de Datos — VitalMind AI
+## 1. Propósito
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Estado-Documentado-0F766E?style=for-the-badge" alt="Estado">
-  <img src="https://img.shields.io/badge/Columnas-35-2563EB?style=for-the-badge" alt="Columnas">
-  <img src="https://img.shields.io/badge/Registros-5%2C000-7C3AED?style=for-the-badge" alt="Registros">
-</p>
+Este documento define los atributos de `vitalmind_dataset_raw.csv` y `vitalmind_dataset_processed.csv`, incluyendo tipo, unidad, rango observado, procedencia, reglas de validación y uso analítico.
 
-</div>
+Los valores y rangos corresponden a datos sintéticos del proyecto. No representan rangos clínicos oficiales.
 
-## 1. Descripción
+## 2. Resumen
 
-Este documento define los campos presentes en:
+| Archivo | Registros | Columnas | Nulos | Duplicados |
+|---|---:|---:|---:|---:|
+| `vitalmind_dataset_raw.csv` | 5,000 | 34 | 1,500 | 0 |
+| `vitalmind_dataset_processed.csv` | 5,000 | 35 | 0 | 0 |
 
-- `data/raw/vitalmind_dataset_raw.csv`
-- `data/processed/vitalmind_dataset_processed.csv`
+`weight_source` se agrega durante la preparación del archivo processed.
 
-Los rangos mostrados corresponden a los valores observados en el dataset procesado. No representan rangos clínicos oficiales.
+## 3. Atributos de identificación y tiempo
 
-### Convenciones
+| Campo | Tipo / clasificación | Unidad | Descripción | Rango / valores | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `record_id` | Texto nominal | N/A | Identificador único de observación | `REC_000001` a `REC_005000` | Generador | Único y no nulo | Trazabilidad; no predictor |
+| `user_id` | Texto nominal | N/A | Identificador de usuario sintético | 250 valores `USR_####` | Generador | No nulo; agrupación válida | Agrupar por usuario; no predictor |
+| `log_date` | Fecha | día | Fecha de observación | 2026-04-01 a 2026-06-29 | Generador | Fecha válida; sin duplicar `user_id + log_date` | Orden y split temporal |
 
-| Elemento | Descripción |
-|---|---|
-| **Raw** | Dataset original con 34 columnas y valores faltantes |
-| **Processed** | Dataset procesado con 35 columnas y sin valores nulos |
-| **Tipo lógico** | Tipo esperado para análisis, independientemente del tipo interno de pandas |
-| **Fuente** | Archivo donde aparece el campo |
-| **Uso** | Finalidad principal dentro del proyecto |
+## 4. Perfil sintético
 
----
+| Campo | Tipo / clasificación | Unidad | Descripción | Rango / valores | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `profile_type` | Categórico nominal | N/A | Perfil usado para controlar la simulación | `healthy`, `irregular`, `poor_habits`, `physically_vulnerable` | Generador | Catálogo cerrado | EDA de simulación; excluido del modelo |
+| `age` | Entero discreto | años | Edad sintética estable por usuario | 18 a 74 | Generador | Positiva y estable por usuario | Predictor |
+| `height_cm` | Decimal continuo | cm | Estatura sintética | 140.0 a 191.2 | Generador | Positiva y estable por usuario | Predictor y cálculo de BMI |
+| `weight_profile_kg` | Decimal continuo | kg | Peso base del perfil | 40.0 a 134.4 | Generador | Positivo | Respaldo de limpieza; no predictor final |
+| `weight_kg` | Decimal continuo | kg | Peso de la observación | 40.0 a 134.5 | Generador / ETL | Positivo; puede faltar en raw | Predictor |
+| `bmi` | Decimal continuo | kg/m² | Índice calculado con peso y estatura | 16.16 a 44.33 | Derivado | Recalcular después de imputar peso | Predictor |
+| `weight_source` | Categórico nominal | N/A | Procedencia del peso final | `symptom_log`, `profile_fallback` | ETL processed | Catálogo cerrado | Trazabilidad; no predictor |
 
-## 2. Identificación y tiempo
+## 5. Hábitos
 
-| Campo | Tipo lógico | Descripción | Valores o rango observado | Validación | Fuente | Uso |
+| Campo | Tipo / clasificación | Unidad | Descripción | Rango observado | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `water_glasses` | Decimal continuo | vasos | Consumo diario simulado de agua | 0.0 a 14.25 | Generador | No negativo | Predictor |
+| `water_liters` | Decimal continuo | L | Conversión de vasos a litros | 0.0 a 3.56 | Derivado | `water_glasses × 0.25` | EDA; excluido por redundancia |
+| `exercise_minutes` | Decimal continuo | min | Minutos de actividad física | 0.0 a 111.0 | Generador | No negativo | Predictor |
+| `sleep_hours` | Decimal continuo | h | Duración del sueño | 1.0 a 10.0 | Generador | Positiva | Predictor |
+| `healthy_meals_count` | Entero discreto | conteo | Comidas saludables según la simulación | 0 a 5 | Generador | Entero no negativo | Predictor |
+| `meditation_minutes` | Decimal continuo | min | Tiempo de meditación o relajación | 0.0 a 49.0 | Generador | No negativo | Predictor |
+
+## 6. Síntomas y mediciones
+
+| Campo | Tipo / clasificación | Unidad | Descripción | Rango observado | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `pain` | Entero ordinal | 0-10 | Intensidad de dolor sintética | 0 a 10 | Generador | Dentro de 0-10 | Predictor |
+| `temperature_c` | Decimal continuo | °C | Temperatura corporal sintética | 35.4 a 38.4 | Generador / imputación | Numérico; faltante permitido en raw | Predictor |
+| `systolic_mmhg` | Entero discreto | mmHg | Presión sistólica sintética | 82 a 156 | Generador / imputación | Mayor que diastólica después de limpieza | Predictor |
+| `diastolic_mmhg` | Entero discreto | mmHg | Presión diastólica sintética | 50 a 98 | Generador / imputación | Menor que sistólica después de limpieza | Predictor |
+| `glucose_mg_dl` | Entero discreto | mg/dL | Glucosa sintética | 50 a 147 | Generador / imputación | Numérico; faltante permitido en raw | Predictor |
+| `heart_rate_bpm` | Entero discreto | bpm | Frecuencia cardiaca sintética | 44 a 155 | Generador / imputación | Numérico; faltante permitido en raw | Predictor |
+
+
+## 7. Estado emocional y percepción
+
+| Campo | Tipo / clasificación | Unidad / escala | Descripción | Valores | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `mood` | Categórico ordinal | 5 categorías | Estado de ánimo sintético | `Muy mal`, `Mal`, `Regular`, `Bien`, `Muy bien` | Generador / imputación | Catálogo válido | Predictor |
+| `stress_level` | Entero ordinal | 1-10 | Nivel de estrés simulado | 1 a 10 | Generador / imputación | 1-10 | Predictor |
+| `energy_level` | Entero ordinal | 1-10 | Nivel de energía simulado | 1 a 10 | Generador / imputación | 1-10 | Predictor |
+| `sleep_quality` | Entero ordinal | 1-10 | Calidad percibida del sueño | 1 a 10 | Generador / imputación | 1-10 | Predictor |
+
+Distribución de `mood` en processed:
+
+| Valor | Registros |
+|---|---:|
+| `Muy mal` | 547 |
+| `Mal` | 1,278 |
+| `Regular` | 1,222 |
+| `Bien` | 1,221 |
+| `Muy bien` | 732 |
+
+## 8. Indicadores derivados
+
+| Campo | Tipo / clasificación | Unidad | Descripción | Rango observado | Fuente | Validación | Uso |
+|---|---|---|---|---|---|---|---|
+| `sleep_score` | Decimal continuo | 0-100 | Resumen sintético de duración y calidad del sueño | 0.00 a 99.49 | Fórmula del generador | 0-100 | EDA; excluido para evitar fuga |
+| `activity_score` | Decimal continuo | 0-100 | Resumen de actividad | 0.00 a 100.00 | Fórmula del generador | 0-100 | EDA; excluido para evitar fuga |
+| `nutrition_score` | Decimal continuo | 0-100 | Hidratación y comidas saludables | 0.00 a 100.00 | Fórmula del generador | 0-100 | EDA; excluido para evitar fuga |
+| `emotional_score` | Decimal continuo | 0-100 | Resumen de ánimo, energía, estrés y sueño | 4.94 a 95.95 | Fórmula del generador | 0-100 | EDA; excluido para evitar fuga |
+| `physical_condition_score` | Decimal continuo | 0-100 | Resumen de dolor y mediciones físicas | 62.20 a 100.00 | Fórmula del generador | 0-100 | EDA; excluido para evitar fuga |
+| `wellbeing_score` | Decimal continuo | 0-100 | Objetivo sintético de bienestar | 15.14 a 99.82 | Fórmula del generador | 0-100 | Objetivo de regresión |
+| `risk_factors_count` | Entero discreto | conteo | Número de reglas desfavorables activas | 0 a 9 | Fórmula del generador | Entero no negativo | Construcción de etiqueta; excluido como predictor |
+
+## 9. Etiquetas analíticas
+
+| Campo | Tipo / clasificación | Valores | Descripción | Fuente | Validación | Uso |
 |---|---|---|---|---|---|---|
-| `record_id` | Texto | Código único asignado a cada fila del dataset. Permite distinguir un registro de bienestar de cualquier otro y facilita su seguimiento durante la limpieza, el análisis y la carga de información. | `REC_000001` a `REC_005000` | Obligatorio y sin duplicados | Ambos | Llave del registro |
-| `user_id` | Texto | Identificador artificial que representa a una persona dentro del dataset sintético. Permite reunir todos los registros que pertenecen al mismo usuario sin utilizar nombres ni datos personales reales. | 250 usuarios, formato `USR_0001` | Obligatorio | Ambos | Agrupación por usuario |
-| `log_date` | Fecha | Fecha en la que se generó o registró la observación de bienestar. Se utiliza para ordenar la información cronológicamente y analizar cambios de hábitos, síntomas o indicadores a lo largo del tiempo. | 2026-04-01 a 2026-06-29 | Formato `YYYY-MM-DD` | Ambos | Análisis temporal |
+| `risk_level` | Categórico ordinal | `low`, `medium`, `high` | Etiqueta sintética de clasificación | Generador | Catálogo cerrado | Objetivo de clasificación |
+| `is_anomaly` | Booleano | `True`, `False` | Marca alteraciones controladas de simulación | Generador | Booleano | Evaluación exploratoria; excluido del clasificador |
 
----
+Distribución de riesgo:
 
-## 3. Perfil del usuario
+| Nivel | Registros | Porcentaje |
+|---|---:|---:|
+| `low` | 1,849 | 36.98 % |
+| `medium` | 1,970 | 39.40 % |
+| `high` | 1,181 | 23.62 % |
 
-| Campo | Tipo lógico | Unidad | Descripción | Rango o valores | Validación | Fuente | Uso |
-|---|---|---:|---|---|---|---|---|
-| `profile_type` | Categórico | N/A | Categoría general asignada al usuario sintético según la combinación de sus hábitos y condiciones simuladas. Sirve para representar distintos perfiles de bienestar y comparar su comportamiento dentro del análisis. | `healthy`, `physically_vulnerable`, `irregular`, `poor_habits` | Solo valores permitidos | Ambos | Segmentación y análisis |
-| `age` | Entero | Años | Edad simulada del usuario al que pertenece el registro. Puede utilizarse para estudiar diferencias de comportamiento o bienestar entre grupos de edad. | 18 a 74 | Mayor o igual a 18 | Ambos | Característica de entrada |
-| `height_cm` | Decimal | cm | Estatura del usuario expresada en centímetros. Este valor se utiliza junto con el peso para calcular o validar el índice de masa corporal. | 140.0 a 191.2 | Valor positivo | Ambos | Cálculo de IMC |
-| `weight_profile_kg` | Decimal | kg | Peso base definido para el perfil sintético del usuario. Funciona como referencia cuando el peso específico de un registro no se encuentra disponible. | 40.0 a 134.4 | Valor positivo | Ambos | Referencia del perfil |
-| `weight_kg` | Decimal | kg | Peso registrado para una observación específica. Puede variar ligeramente entre fechas y se utiliza en cálculos relacionados con el estado físico, como el índice de masa corporal. | 40.0 a 134.5 | Valor positivo; admite nulos solo en raw | Ambos | IMC y análisis físico |
-| `bmi` | Decimal | kg/m² | Índice de masa corporal obtenido a partir del peso y la estatura. Resume la relación entre ambas medidas y se utiliza como indicador descriptivo dentro del análisis físico. | 16.16 a 44.33 | Debe ser coherente con peso y estatura | Ambos | Indicador físico |
-| `weight_source` | Categórico | N/A | Indica de dónde proviene el valor final de `weight_kg` en el dataset procesado. Permite saber si el peso estaba disponible en el registro original o si se completó utilizando el peso base del perfil. | `symptom_log`, `profile_fallback` | Solo valores permitidos | Processed | Trazabilidad de imputación |
+## 10. Fórmulas principales
 
----
+### 10.1 BMI
 
-## 4. Hábitos de bienestar
+```text
+bmi = weight_kg / (height_cm / 100)²
+```
 
-| Campo | Tipo lógico | Unidad | Descripción | Rango observado | Validación | Fuente | Uso |
-|---|---|---:|---|---:|---|---|---|
-| `water_glasses` | Decimal | Vasos | Cantidad estimada de vasos de agua consumidos durante el día. Se utiliza para analizar el nivel de hidratación y su posible relación con otros indicadores de bienestar. | 0.0 a 14.25 | No negativo | Ambos | Hidratación |
-| `water_liters` | Decimal | L | Equivalencia en litros del consumo registrado en `water_glasses`. Facilita el uso de una unidad estándar para cálculos, comparaciones y visualizaciones. | 0.0 a 3.56 | Aproximadamente `water_glasses × 0.25` | Ambos | Hidratación |
-| `exercise_minutes` | Decimal | Minutos | Tiempo total dedicado a realizar actividad física durante el día. Permite medir el nivel de movimiento y analizar su relación con energía, sueño y bienestar. | 0.0 a 111.0 | No negativo | Ambos | Actividad física |
-| `sleep_hours` | Decimal | Horas | Número de horas que el usuario durmió durante el periodo registrado. Se utiliza para estudiar duración del descanso y su relación con estado de ánimo, energía y riesgo. | 1.0 a 10.0 | Mayor que 0 | Ambos | Sueño |
-| `healthy_meals_count` | Entero | Comidas | Cantidad de comidas consideradas saludables dentro del día. Representa de forma simplificada la calidad de la alimentación registrada por el usuario. | 0 a 5 | Entero no negativo | Ambos | Nutrición |
-| `meditation_minutes` | Decimal | Minutos | Tiempo dedicado a meditación, respiración o actividades de relajación. Se utiliza como indicador de prácticas orientadas al manejo del estrés y bienestar emocional. | 0.0 a 49.0 | No negativo | Ambos | Bienestar emocional |
+### 10.2 Agua
 
----
+```text
+water_liters = water_glasses × 0.25
+```
 
-## 5. Síntomas y mediciones físicas
+### 10.3 Sueño
 
-| Campo | Tipo lógico | Unidad | Descripción | Rango observado | Validación | Fuente | Uso |
-|---|---|---:|---|---:|---|---|---|
-| `pain` | Entero | Escala 0–10 | Nivel de dolor reportado en el registro. El valor 0 representa ausencia de dolor y 10 representa el nivel máximo dentro de la escala utilizada por el dataset. | 0 a 10 | Entero entre 0 y 10 | Ambos | Riesgo y síntomas |
-| `temperature_c` | Decimal | °C | Temperatura corporal registrada en grados Celsius. Se utiliza como una medición física de apoyo para analizar cambios o posibles registros fuera del comportamiento habitual. | 35.4 a 38.4 | Admite nulos solo en raw | Ambos | Riesgo físico |
-| `systolic_mmhg` | Entero | mmHg | Valor superior de la presión arterial, correspondiente a la presión generada cuando el corazón bombea sangre. Se utiliza como característica física dentro del análisis de riesgo. | 82 a 156 | Admite nulos solo en raw | Ambos | Riesgo físico |
-| `diastolic_mmhg` | Entero | mmHg | Valor inferior de la presión arterial, asociado con la presión existente cuando el corazón se encuentra en reposo entre latidos. Complementa el valor sistólico. | 50 a 98 | Admite nulos solo en raw | Ambos | Riesgo físico |
-| `glucose_mg_dl` | Entero | mg/dL | Cantidad de glucosa registrada en la sangre, expresada en miligramos por decilitro. Se utiliza como una variable física para analizar perfiles y factores de riesgo simulados. | 50 a 147 | Admite nulos solo en raw | Ambos | Riesgo físico |
-| `heart_rate_bpm` | Entero | bpm | Número de latidos del corazón por minuto registrados en la observación. Ayuda a describir el estado físico del usuario y detectar valores atípicos dentro del dataset. | 44 a 155 | Admite nulos solo en raw | Ambos | Riesgo físico |
+```text
+sleep_hours_score = clip(100 - abs(sleep_hours - 8) × 20, 0, 100)
 
----
+sleep_score =
+    0.60 × sleep_hours_score
+  + 0.40 × normalize_1_to_10(sleep_quality)
+```
 
-## 6. Estado emocional y percepción
+### 10.4 Actividad
 
-| Campo | Tipo lógico | Unidad | Descripción | Rango o valores | Validación | Fuente | Uso |
-|---|---|---:|---|---|---|---|---|
-| `mood` | Categórico | N/A | Categoría seleccionada para representar cómo se sentía emocionalmente el usuario en el momento del registro. Permite analizar tendencias de estado de ánimo y relacionarlas con sueño, hábitos y estrés. | `Muy mal`, `Mal`, `Regular`, `Bien`, `Muy bien` | Solo valores permitidos; admite nulos en raw | Ambos | Análisis emocional |
-| `stress_level` | Entero | Escala 1–10 | Nivel de estrés percibido por el usuario. Los valores bajos representan menor estrés y los valores altos representan una mayor sensación de tensión o presión. | 1 a 10 | Entero entre 1 y 10; admite nulos en raw | Ambos | Análisis emocional |
-| `energy_level` | Entero | Escala 1–10 | Nivel de energía que el usuario percibe durante el día. Se utiliza para estudiar su relación con descanso, actividad física, alimentación y estado emocional. | 1 a 10 | Entero entre 1 y 10; admite nulos en raw | Ambos | Bienestar general |
-| `sleep_quality` | Entero | Escala 1–10 | Valor subjetivo que representa qué tan reparador o satisfactorio fue el sueño. Complementa la duración registrada en `sleep_hours`, ya que dormir más tiempo no siempre significa descansar mejor. | 1 a 10 | Entero entre 1 y 10; admite nulos en raw | Ambos | Sueño y bienestar |
+```text
+activity_score = min(exercise_minutes / 60, 1) × 100
+```
 
----
+### 10.5 Nutrición
 
-## 7. Indicadores calculados
+```text
+nutrition_score =
+    0.55 × water_score
+  + 0.45 × meals_score
+```
 
-| Campo | Tipo lógico | Unidad | Descripción | Rango observado | Validación | Fuente | Uso |
-|---|---|---:|---|---:|---|---|---|
-| `sleep_score` | Decimal | Puntos | Puntuación calculada para resumir el estado del sueño combinando variables relacionadas con duración y calidad del descanso. Un valor mayor representa mejores condiciones dentro de la lógica del dataset. | 0.00 a 99.49 | Entre 0 y 100 | Ambos | Indicador analítico |
-| `activity_score` | Decimal | Puntos | Puntuación que resume el nivel de actividad física del usuario a partir de los minutos de ejercicio y otras reglas definidas durante la simulación. | 0.00 a 100.00 | Entre 0 y 100 | Ambos | Indicador analítico |
-| `nutrition_score` | Decimal | Puntos | Valor calculado para representar la calidad general de los hábitos de alimentación e hidratación registrados en una observación. | 0.00 a 100.00 | Entre 0 y 100 | Ambos | Indicador analítico |
-| `emotional_score` | Decimal | Puntos | Puntuación que resume el bienestar emocional considerando variables como estado de ánimo, estrés, energía y actividades de relajación. | 4.94 a 95.95 | Entre 0 y 100 | Ambos | Indicador analítico |
-| `physical_condition_score` | Decimal | Puntos | Indicador calculado que resume diferentes mediciones relacionadas con la condición física del usuario, como IMC, presión arterial, glucosa y frecuencia cardiaca. | 62.20 a 100.00 | Entre 0 y 100 | Ambos | Indicador analítico |
-| `wellbeing_score` | Decimal | Puntos | Puntuación general que integra diferentes áreas del bienestar, como sueño, actividad, nutrición, estado emocional y condición física. Puede utilizarse para comparar el estado global entre registros. | 15.14 a 99.82 | Entre 0 y 100 | Ambos | Posible variable objetivo |
-| `risk_factors_count` | Entero | Conteo | Número total de condiciones o valores que fueron considerados factores de riesgo dentro de las reglas de generación del dataset. Un valor mayor indica más factores presentes en el registro. | 0 a 9 | Entero no negativo | Ambos | Clasificación de riesgo |
+Las referencias internas del generador no constituyen indicaciones de salud.
 
-> Las fórmulas exactas de estos indicadores deben confirmarse con el script de simulación o transformación.
+### 10.6 Bienestar
 
----
+```text
+wellbeing_score =
+    0.25 × sleep_score
+  + 0.20 × activity_score
+  + 0.15 × nutrition_score
+  + 0.25 × emotional_score
+  + 0.15 × physical_condition_score
+  + ruido_uniforme(-5, 5)
+```
 
-## 8. Etiquetas analíticas
+## 11. Regla de `risk_factors_count`
 
-| Campo | Tipo lógico | Descripción | Valores | Validación | Fuente | Uso |
-|---|---|---|---|---|---|---|
-| `risk_level` | Categórico ordinal | Clasificación general del nivel de riesgo asignado al registro a partir de los factores y puntuaciones generados. Se utiliza como etiqueta para entrenar o evaluar modelos de clasificación. | `low`, `medium`, `high` | Solo valores permitidos | Ambos | Variable objetivo de clasificación |
-| `is_anomaly` | Booleano | Indicador que señala si el registro fue generado intencionalmente como un caso fuera del comportamiento habitual. Permite probar algoritmos de detección de anomalías. | `True`, `False` | Booleano obligatorio | Ambos | Evaluación de anomalías |
+Se cuentan condiciones como sueño bajo, poca actividad, hidratación baja, estrés alto, energía baja, dolor alto, cambios de frecuencia cardiaca, temperatura elevada y estados de ánimo desfavorables según reglas del generador.
 
----
+Las reglas completas se conservan en `simulation-rules.md`.
 
-## 9. Valores faltantes del dataset raw
+## 12. Regla de `risk_level`
 
-El dataset original contiene 150 valores faltantes en cada uno de los siguientes campos:
+Base:
+
+```text
+wellbeing_score < 45        -> high
+45 <= wellbeing_score < 70 -> medium
+wellbeing_score >= 70       -> low
+```
+
+Ajustes:
+
+- 5 o más factores fuerzan `high`;
+- 3 o más factores convierten `low` en `medium`;
+- una anomalía sintética convierte `low` en `medium`;
+- cerca de 45 y 70 existe 8 % de cambio controlado de clase.
+
+## 13. Valores faltantes
+
+En raw, cada uno de estos campos tiene 150 nulos:
 
 ```text
 weight_kg
@@ -134,44 +196,81 @@ energy_level
 sleep_quality
 ```
 
-El dataset procesado no contiene valores nulos.
+Total: 1,500 celdas nulas.
 
----
+## 14. Tratamiento en processed
 
-## 10. Clasificación de los datos
+- `weight_kg`: `weight_profile_kg` como respaldo.
+- Numéricos opcionales: mediana por usuario y, si no existe, mediana global.
+- `mood`: moda por usuario y luego global.
+- Recálculo de `water_liters` y `bmi`.
+- Registro de `weight_source`.
 
-| Clasificación | Campos principales |
-|---|---|
-| **Identificadores** | `record_id`, `user_id` |
-| **Temporales** | `log_date` |
-| **Numéricos continuos** | Peso, estatura, IMC, agua, sueño, temperatura y puntuaciones |
-| **Numéricos discretos** | Edad, comidas, dolor, presión, glucosa, frecuencia cardiaca y factores de riesgo |
-| **Categóricos nominales** | `profile_type`, `weight_source` |
-| **Categóricos ordinales** | `mood`, `risk_level`, escalas de estrés, energía y sueño |
-| **Booleanos** | `is_anomaly` |
-| **Datos sensibles simulados** | Perfil de salud, síntomas, signos físicos y estado emocional |
+Para entrenamiento final se aplica un procedimiento distinto: primero se divide temporalmente y después se aprenden estadísticas de imputación únicamente con entrenamiento.
 
----
+## 15. Características finales de los modelos supervisados
 
-## 11. Reglas mínimas de calidad
+```text
+age
+height_cm
+weight_kg
+bmi
+water_glasses
+exercise_minutes
+sleep_hours
+healthy_meals_count
+meditation_minutes
+pain
+temperature_c
+systolic_mmhg
+diastolic_mmhg
+glucose_mg_dl
+heart_rate_bpm
+mood
+stress_level
+energy_level
+sleep_quality
+```
 
-- `record_id` debe ser único.
-- `user_id` debe tener formato válido.
-- `log_date` debe convertirse a fecha.
-- El dataset procesado no debe contener nulos.
-- `risk_level`, `profile_type`, `mood` y `weight_source` deben respetar sus categorías.
-- `is_anomaly` debe ser booleano.
-- `bmi` debe ser coherente con `weight_kg` y `height_cm`.
-- `water_liters` debe ser coherente con `water_glasses`.
-- Las escalas deben permanecer dentro de sus límites.
-- La separación de entrenamiento y prueba debe evitar que registros del mismo usuario generen fuga de información.
 
----
+## 16. Variables del modelo K-Means
 
-## 12. Pendientes de confirmación
+El clustering agrega registros por usuario y utiliza 20 características:
 
-- Fórmulas exactas de los indicadores.
-- Regla de generación de `risk_level`.
-- Regla de generación de `is_anomaly`.
-- Estrategia exacta de imputación de cada campo.
-- Variables definitivas de entrada y salida para cada modelo.
+```text
+age
+height_cm
+weight_kg
+bmi
+water_glasses_mean
+exercise_minutes_mean
+sleep_hours_mean
+healthy_meals_count_mean
+meditation_minutes_mean
+pain_mean
+temperature_c_mean
+systolic_mmhg_mean
+diastolic_mmhg_mean
+glucose_mg_dl_mean
+heart_rate_bpm_mean
+stress_level_mean
+energy_level_mean
+sleep_quality_mean
+mood_score_mean
+records_count
+```
+
+## 17. Reglas mínimas de calidad
+
+- `record_id` único.
+- Una observación por `user_id + log_date`.
+- Fecha válida.
+- Tipos convertibles.
+- Categorías dentro de catálogo.
+- Puntajes derivados dentro de 0-100.
+- Presión sistólica mayor que diastólica tras la preparación.
+- Coherencia entre peso, estatura y BMI.
+- Coherencia entre vasos y litros.
+- Sin variables de fuga en el pipeline.
+- Estadísticas de imputación aprendidas solo con entrenamiento para evaluación final.
+

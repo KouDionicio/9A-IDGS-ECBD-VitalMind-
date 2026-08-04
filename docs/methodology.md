@@ -1,583 +1,255 @@
 # Metodología del Proyecto VitalMind AI
-## 1. Introducción
 
-VitalMind AI combina dos enfoques metodológicos complementarios:
+## 1. Propósito
 
-- **CRISP-DM**, utilizado para organizar el análisis de datos, la simulación del dataset, el proceso ETL, el modelado, la evaluación y el despliegue de los mecanismos de Machine Learning.
-- **Scrum**, utilizado para planificar, coordinar, desarrollar, revisar e integrar los componentes de software del proyecto.
+El proyecto combina desarrollo de software y extracción de conocimiento. Para evitar confundir ambos procesos se utilizan dos marcos con responsabilidades distintas:
 
-Esta separación permite evitar la confusión entre la metodología de análisis de datos y la metodología de desarrollo de software. CRISP-DM guía el trabajo relacionado con datos y modelos, mientras que Scrum organiza el trabajo colaborativo, los sprints, las tareas, los responsables y la entrega incremental del sistema.
+- **CRISP-DM**: metodología principal para el análisis de datos y Machine Learning.
+- **Scrum**: apoyo para planeación y seguimiento del trabajo de software y documentación.
 
----
+CRISP-DM organiza la evidencia requerida por el Proyecto Integrador; Scrum ayuda a distribuir actividades, responsables y fechas.
 
-## 2. Metodologías seleccionadas
+## 2. Justificación de CRISP-DM
 
-### 2.1 Metodología para análisis de datos: CRISP-DM
+CRISP-DM resulta adecuado porque permite mantener trazabilidad entre el problema, los datos, las transformaciones, los modelos y la integración. Sus seis fases pueden repetirse cuando se detecta un problema de calidad o cambia una decisión técnica.
 
-CRISP-DM se aplicará mediante seis fases:
+```mermaid
+flowchart LR
+    A[Comprensión del problema] --> B[Comprensión de los datos]
+    B --> C[Preparación]
+    C --> D[Modelado]
+    D --> E[Evaluación]
+    E --> F[Despliegue e integración]
+    E --> C
+    F --> A
+```
 
-1. Comprensión del negocio.
-2. Comprensión de los datos.
-3. Preparación de los datos.
-4. Modelado.
-5. Evaluación.
-6. Despliegue.
+## 3. Aplicación de CRISP-DM
 
-### 2.2 Metodología para desarrollo de software: Scrum
+### 3.1 Comprensión del problema
 
-Scrum se utilizará para dividir el trabajo en ciclos iterativos llamados sprints, organizar el backlog, asignar responsables, revisar avances, detectar bloqueos y entregar incrementos funcionales del proyecto.
+Se define la necesidad de organizar registros personales y convertir datos históricos en resultados preventivos. Las preguntas de análisis se encuentran en `context.md`.
 
----
+Entregables relacionados:
 
-## 3. Justificación de la metodología
+- contexto y problemática;
+- objetivos;
+- preguntas de análisis;
+- limitaciones;
+- propuestas de aplicación.
 
-VitalMind AI integra frontend, backend, bases de datos, Machine Learning, documentación, seguridad, QA e integración. Debido a esta diversidad de módulos, se requiere una metodología que permita:
+### 3.2 Comprensión de los datos
 
-- Dividir el trabajo en entregables claros.
-- Priorizar funcionalidades.
-- Asignar responsables.
-- Revisar avances de forma periódica.
-- Detectar riesgos y bloqueos.
-- Mantener trazabilidad mediante Jira y GitHub.
-- Integrar datos, modelos, API y frontend.
-- Actualizar documentación conforme avance el proyecto.
+Se revisan origen, estructura, tipos, nulos, duplicados, rangos, distribución de clases, relaciones entre variables y variables exclusivas de simulación.
 
-CRISP-DM es adecuada porque organiza el ciclo completo de análisis de datos y Machine Learning. Scrum complementa este proceso al proporcionar una estructura de trabajo incremental para el desarrollo del sistema.
+Entregables:
 
----
+- `data-sources.md`;
+- `data-dictionary.md`;
+- notebook EDA disponible en el servicio de ML;
+- `simulation-rules.md`.
 
-## 4. Aplicación de CRISP-DM en VitalMind AI
+### 3.3 Preparación de los datos
 
-| Fase | Aplicación en VitalMind AI | Entregables relacionados |
+Incluye validación estructural, limpieza, tratamiento de faltantes, recálculo de atributos, separación temporal, imputación aprendida solo con entrenamiento, transformación categórica y exclusión de variables con fuga de información.
+
+Entregable principal: `etl-process.md`.
+
+### 3.4 Modelado
+
+Se compararon:
+
+- Regresión Logística y Random Forest para clasificación;
+- Ridge, Random Forest Regressor y Dummy Regressor para regresión;
+- K-Means con diferentes valores de `k`;
+- PCA para reducción de dimensionalidad y visualización;
+- Isolation Forest para anomalías.
+
+### 3.5 Evaluación
+
+La evaluación considera métricas de clasificación y regresión, matriz de confusión, métricas internas de clustering, varianza explicada por PCA, revisión de anomalías y un conjunto temporal de prueba separado.
+
+### 3.6 Despliegue e integración
+
+La inferencia supervisada se sirve mediante FastAPI y se consume desde el backend. El mecanismo K-Means cuenta con artefacto serializado, pero todavía no dispone de un endpoint específico de consumo, por lo que ese requisito de la guía permanece pendiente.
+
+La aplicación actual se desarrolla en Kotlin con Android Studio. El smartwatch utiliza Wear OS y se comunica por Bluetooth. El modelo del reloj y la API o SDK de salud continúan sin confirmarse.
+
+## 4. Relación entre fases y entregables
+
+| Fase CRISP-DM | Actividad del proyecto | Evidencia principal |
 |---|---|---|
-| **Comprensión del negocio** | Definición de la problemática, usuarios, objetivos, alcance, limitaciones y necesidades de información. | `docs/context.md` |
-| **Comprensión de los datos** | Identificación de fuentes, entidades, atributos, tipos, variables y reglas de calidad. | `docs/data-sources.md`, `docs/data-dictionary.md` |
-| **Preparación de los datos** | Simulación, limpieza, transformación, ETL, anonimización, división de conjuntos y preparación para entrenamiento. | `docs/simulation-rules.md`, `docs/etl-process.md` |
-| **Modelado** | Entrenamiento de modelos supervisados y no supervisados. | Notebooks, scripts y modelos serializados |
-| **Evaluación** | Comparación de métricas, revisión de sobreajuste, utilidad, interpretabilidad, estabilidad y riesgo. | `docs/model-evaluation.md` |
-| **Despliegue** | Integración de modelos mediante FastAPI, consumo desde el prototipo web, persistencia de inferencias y actualización con Socket.IO. | `docs/api-contracts.md`, dashboard, endpoints y pruebas |
+| Comprensión del problema | Contexto, preguntas, objetivos, alcance | `context.md` |
+| Comprensión de datos | Fuentes, atributos, EDA | `data-sources.md`, `data-dictionary.md` |
+| Preparación | Simulación, limpieza, split temporal | `simulation-rules.md`, `etl-process.md` |
+| Modelado | Clasificación, regresión, clustering, PCA, anomalías | scripts y artefactos del ML Service |
+| Evaluación | Comparaciones, tuning y prueba final | `model-evaluation.md` |
+| Despliegue | API supervisada e integración con backend | `api-contracts.md` |
+| Validación transversal | Dataset, API, interfaz, seguridad | `testing.md` |
 
----
+## 5. Scrum como apoyo de gestión
 
-## 5. Organización de Scrum
+Scrum se utiliza como referencia de organización del trabajo. Las actividades se manejan por periodos, responsables y dependencias. Jira ha sido utilizado como herramienta de gestión del proyecto.
 
-### 5.1 Product Owner
 
-**Yazmin Gutiérrez Hernández**
+## 6. Organización del equipo
 
-Responsabilidades principales:
-
-- Representar las necesidades del usuario.
-- Priorizar funcionalidades.
-- Revisar el valor de los entregables.
-- Validar que el producto responda a los objetivos del proyecto.
-- Participar en la priorización del Product Backlog.
-- Coordinar la visión del frontend y la experiencia de usuario.
-
-### 5.2 Scrum Master
-
-**Citlalli Pérez Dionicio**
-
-Responsabilidades principales:
-
-- Facilitar la aplicación de Scrum.
-- Dar seguimiento a bloqueos e impedimentos.
-- Coordinar la integración entre áreas.
-- Verificar el cumplimiento del flujo de trabajo.
-- Apoyar la organización del tablero Jira.
-- Coordinar actividades de QA e integración.
-
-### 5.3 Equipo de desarrollo
-
-| Nombre | Matrícula | Rol |
-|---|---:|---|
-| **Yazmin Gutiérrez Hernández** | 230447 | Frontend y Experiencia de Usuario |
-| **Carlos Daniel García Pluma** | 230187 | Backend |
-| **Jennifer Bautista Barrios** | 230317 | Backend |
-| **Michelle Castro Otero** | 230881 | Inteligencia Artificial y Machine Learning |
-| **Obed Guzmán Flores** | 230142 | Documentación |
-| **Citlalli Pérez Dionicio** | 230237 | Control de Calidad (QA) e Integración |
-
-Los roles serán **fijos** durante el desarrollo del proyecto.
-
----
-
-## 6. Organización del trabajo en Jira
-
-### 6.1 Proyecto
-
-| Campo | Configuración propuesta |
+| Integrante | Participación principal |
 |---|---|
-| **Nombre** | VitalMind AI |
-| **Clave** | `VMAI` |
-| **Tipo** | Scrum |
-| **Versión inicial** | `0.1.0-alpha` |
-| **Versión objetivo** | `1.0.0-mvp` |
-
-### 6.2 Tipos de incidencias
-
-- **Epic:** módulo grande o bloque funcional.
-- **Story:** funcionalidad que aporta valor a un usuario.
-- **Task:** actividad técnica, documental o de configuración.
-- **Subtask:** división de una historia o tarea.
-- **Bug:** error detectado durante las pruebas.
-
-### 6.3 Estados del tablero
-
-```text
-Backlog
-   ↓
-Seleccionado
-   ↓
-En progreso
-   ↓
-En revisión
-   ↓
-En QA
-   ↓
-Terminado
-```
-
-Estado adicional:
-
-```text
-Bloqueado
-```
-
-Una actividad pasa a **Bloqueado** cuando existe una dependencia, error o impedimento que evita continuar.
-
-### 6.4 Estimación
-
-Se utilizarán puntos de historia con la escala de Fibonacci:
-
-```text
-1, 2, 3, 5, 8, 13
-```
-
-| Puntos | Interpretación |
-|---:|---|
-| 1 | Cambio muy pequeño |
-| 2 | Tarea sencilla |
-| 3 | Tarea pequeña |
-| 5 | Trabajo medio |
-| 8 | Trabajo grande |
-| 13 | Trabajo demasiado grande; debe dividirse |
-
----
-
-## 7. Épicas del proyecto
-
-1. Planeación y contexto del proyecto.
-2. Gestión Scrum y colaboración.
-3. Fuentes, datos y simulación.
-4. Data Warehouse y proceso ETL.
-5. Análisis Exploratorio de Datos.
-6. Modelos supervisados.
-7. Modelos no supervisados.
-8. Backend y API inteligente.
-9. Frontend y dashboard.
-10. Integración y Socket.IO.
-11. QA, seguridad y ética.
-12. Documentación y entrega final.
-
----
-
-## 8. Plan de sprints
-
-Se propone trabajar con **6 sprints de 2 semanas** cada uno.
-
-
-### Sprint 1 — Planeación y bases del proyecto
-
-**Objetivo:** establecer el contexto, la organización, la metodología, la arquitectura inicial y las reglas de trabajo.
-
-Entregables:
-
-- Proyecto Jira configurado.
-- Roles definidos.
-- Product Backlog inicial.
-- Contexto aprobado.
-- Metodología documentada.
-- Requerimientos.
-- Arquitectura preliminar.
-- Estrategia de ramas.
-- Wireframes iniciales.
-
-### Sprint 2 — Propuestas, fuentes y simulación
-
-**Objetivo:** definir la estructura de datos y generar el dataset sintético.
-
-Entregables:
-
-- Diez propuestas supervisadas.
-- Diez propuestas no supervisadas.
-- Fuentes y entidades.
-- Diccionario de datos.
-- Reglas de simulación.
-- Script generador.
-- Dataset sintético.
-- Validaciones iniciales.
-
-### Sprint 3 — Data Warehouse, ETL y EDA
-
-**Objetivo:** transformar, almacenar y analizar los datos.
-
-Entregables:
-
-- Data Warehouse o Data Mart.
-- Tabla de hechos y dimensiones.
-- Proceso ETL.
-- Dataset procesado.
-- Notebook EDA.
-- Gráficas e interpretaciones.
-- Conjuntos de entrenamiento, validación, prueba e inferencia.
-
-### Sprint 4 — Modelado y API de Machine Learning
-
-**Objetivo:** entrenar, evaluar, seleccionar y desplegar modelos.
-
-Entregables:
-
-- Modelos de clasificación.
-- Modelos de regresión.
-- Agrupamiento.
-- Reducción de dimensionalidad.
-- Comparación de métricas.
-- Selección de un modelo supervisado.
-- Selección de un modelo no supervisado.
-- Modelos serializados.
-- Endpoints inteligentes.
-- Swagger/OpenAPI.
-
-### Sprint 5 — Aplicación web, dashboard e integración
-
-**Objetivo:** integrar frontend, backend, modelos y comunicación en tiempo real.
-
-Entregables:
-
-- Registro e inicio de sesión.
-- Gestión de perfil.
-- Registro de síntomas.
-- Registro de hábitos.
-- Historial médico.
-- Dashboard.
-- Consumo de endpoints.
-- Persistencia de inferencias.
-- Socket.IO.
-- Prototipo inicial del chatbot.
-- Pruebas iniciales de integración.
-
-### Sprint 6 — QA, documentación y entrega
-
-**Objetivo:** validar, corregir, documentar y preparar la entrega final.
-
-Entregables:
-
-- Pruebas completas.
-- Correcciones.
-- README final.
-- Documentación de `docs/`.
-- Manual de instalación.
-- Manual de usuario.
-- Evidencias de GitHub.
-- Presentación.
-- Video demostrativo.
-- Release `1.0.0-mvp`.
-
----
-
-## 9. Eventos Scrum
-
-### 9.1 Sprint Planning
-
-Se realizará al inicio de cada sprint.
-
-Propósito:
-
-- Seleccionar historias y tareas.
-- Definir el objetivo del sprint.
-- Asignar responsables.
-- Estimar puntos.
-- Revisar dependencias.
-- Confirmar criterios de aceptación.
-
-Duración propuesta: **entre 60 y 90 minutos**.
-
-### 9.2 Daily Scrum
-
-Se propone realizar reuniones breves **dos veces por semana**, debido a la disponibilidad académica del equipo.
-
-Duración máxima recomendada: **15 minutos**.
-
-### 9.3 Sprint Review
-
-Se realizará al final de cada sprint.
-
-Participantes:
-
-- Equipo completo.
-- Product Owner.
-- Scrum Master.
-- Docente, cuando corresponda.
-
-Propósito:
-
-- Mostrar los entregables terminados.
-- Revisar evidencias.
-- Confirmar criterios de aceptación.
-- Registrar observaciones.
-- Decidir qué se integra.
-
-### 9.4 Sprint Retrospective
-
-Sí se realizará.
-
-Propósito:
-
-- Identificar qué funcionó.
-- Detectar problemas.
-- Definir mejoras.
-- Revisar la comunicación.
-- Evaluar la organización del trabajo.
-
-Duración propuesta: **30 a 45 minutos**.
-
-### 9.5 Refinamiento del backlog
-
-Se realizará **una vez por semana**.
-
-Actividades:
-
-- Aclarar historias.
-- Dividir tareas grandes.
-- Revisar prioridades.
-- Actualizar estimaciones.
-- Confirmar dependencias.
-- Preparar el siguiente sprint.
-
----
-
-## 10. Gestión del trabajo
-
-### 10.1 Creación y asignación de tareas
-
-- La Scrum Master coordinará la creación y organización de incidencias en Jira.
-- El Product Owner participará en la priorización.
-- Cada responsable técnico podrá proponer tareas de su módulo.
-- La asignación se realizará con base en el rol de cada integrante.
-- Las tareas deberán pertenecer a una épica y a un sprint.
-
-### 10.2 Estructura de identificadores
-
-Jira generará identificadores con la clave del proyecto:
-
-```text
-VMAI-1
-VMAI-2
-VMAI-3
-```
-
-Los títulos deberán ser claros, por ejemplo:
-
-```text
-VMAI-12 — Crear diccionario de datos
-VMAI-24 — Implementar endpoint supervisado
-VMAI-31 — Ejecutar pruebas de integración
-```
-
-### 10.3 Prioridades
-
-| Prioridad | Uso |
+| Yazmin Gutierrez Hernandez | Planeación, diseño de la aplicación, interfaz de smartwatch y visualización |
+| Obed Guzmán Flores | Investigación, requerimientos y documentación |
+| Citlalli Perez Dionicio | Preparación y planificación de pruebas |
+| Michelle Castro Otero | Modelo de datos y módulos de análisis e IA |
+| Carlos Daniel Garcia Pluma | Backend|
+| Jennifer Bautista Barrios | Backend |
+| Equipo completo | Integración final y entrega académica |
+
+## 7. Planeación temporal
+
+| ID | Actividad | Inicio | Fin | Estado |
+|---|---|---|---|---|
+| T01 | Planeación del proyecto | 20/05/2026 | 29/05/2026 | Concluido |
+| T02 | Investigación y contexto | 25/05/2026 | 05/06/2026 | Concluido |
+| T03 | Definición de requerimientos | 01/06/2026 | 12/06/2026 | Concluido |
+| T04 | Diseño de la aplicación | 08/06/2026 | 19/06/2026 | Concluido |
+| T05 | Diseño de interfaz para smartwatch | 31/07/2026 | 08/08/2026 | Concluido |
+| T06 | Modelo de datos | 25/07/2026 | 06/08/2026 | Concluido |
+| T07 | Servicios backend | 16/07/2026 | 16/08/2026 | Concluido |
+| T08 | Sincronización con smartwatch | 28/07/2026 | 16/08/2026 | En proceso |
+| T09 | Visualización de mediciones | 28/07/2026 | 16/08/2026 | Concluido |
+| T10 | Registro digital de medicamentos | 13/07/2026 | 24/07/2026 | Concluido |
+| T11 | Recordatorios y confirmación manual | 28/07/2026 | 04/08/2026 | Concluido |
+| T12 | Módulos de análisis e IA | 27/07/2026 | 07/08/2026 | Concluido |
+| T13 | Seguridad y privacidad | 03/08/2026 | 10/08/2026 | Concluido|
+| T14 | Preparación y pruebas planificadas | 05/08/2026 | 17/08/2026 | Concluido |
+| T15 | Documentación continua | 20/05/2026 | 18/08/2026 | Concluido |
+| T16 | Integración final | 10/08/2026 | 20/08/2026 | En proceso |
+| T17 | Entrega académica | 14/08/2026 | 20/08/2026 | En proceso |
+
+## 8. Criterios de aceptación
+
+### 8.1 Datos
+
+- estructura reproducible;
+- identificadores únicos;
+- reglas de calidad documentadas;
+- separación temporal antes de aprender estadísticas;
+- exclusión de variables con fuga.
+
+### 8.2 Modelos
+
+- comparación entre alternativas;
+- hiperparámetros registrados;
+- evaluación con métricas adecuadas;
+- modelo serializado;
+- interpretación de limitaciones.
+
+### 8.3 API
+
+- entrada validada;
+- respuesta estructurada;
+- versión del modelo;
+- manejo de errores;
+- sin secretos en respuestas;
+- documentación OpenAPI.
+
+### 8.4 Integración
+
+- consumo real del endpoint;
+- visualización del resultado;
+- tratamiento de errores;
+- evidencia de ejecución;
+- para Wear OS, conexión Bluetooth comprobada en el dispositivo seleccionado.
+
+## 9. Herramientas y tecnologías
+
+| Área | Herramienta o tecnología |
 |---|---|
-| **Highest** | Bloquea la entrega, la seguridad o la integración |
-| **High** | Requerimiento obligatorio |
-| **Medium** | Funcionalidad necesaria no bloqueante |
-| **Low** | Mejora visual o funcionalidad adicional |
+| Gestión | Jira |
+| Diseño | Figma |
+| Aplicación Android | Kotlin |
+| IDE | Android Studio |
+| Wearable | Wear OS |
+| Comunicación reloj-app | Bluetooth |
+| Backend | Node.js, Express |
+| Base de datos | MySQL |
+| ML Service | Python, FastAPI, scikit-learn |
+| IA conversacional | Mistral AI |
+| Documentación API | Swagger / OpenAPI |
+| Versionamiento | Git |
+| Dashboard entregado | HTML, JavaScript, Chart.js |
+| Documentación | Markdown |
 
----
 
-## 11. Criterios de aceptación
+## 10. Flujo de trabajo por área
 
-### 11.1 Aprobación de tareas
+### 10.1 Aplicación y wearable
 
-Una tarea será validada por integrantes distintos al responsable directo del módulo.
+- diseño de pantallas;
+- implementación Android en Kotlin;
+- interfaz para Wear OS;
+- comunicación Bluetooth;
+- consumo del backend;
+- manejo de estados de carga y error.
 
-| Área | Revisión |
-|---|---|
-| **Frontend** | Todos los integrantes, excepto Yazmin |
-| **Backend** | Todos los integrantes, excepto Carlos y Jennifer |
-| **Machine Learning** | Todos los integrantes, excepto Michelle |
-| **QA** | Todos los integrantes, excepto Citlalli |
-| **Documentación** | Todos los integrantes, excepto Obed |
-| **Integración final** | Docente |
+### 10.2 Backend
 
-### 11.2 Requisitos para considerar una tarea terminada
+- endpoints REST;
+- autenticación y validación;
+- acceso a MySQL;
+- integración con ML Service;
+- manejo de errores;
+- documentación Swagger.
 
-- Cumple su objetivo.
-- Cumple los criterios de aceptación.
-- Tiene responsable.
-- Tiene evidencias.
-- Fue revisada por integrantes distintos al autor.
-- No contiene errores críticos.
-- Tiene pruebas cuando corresponde.
-- Tiene documentación actualizada cuando corresponde.
-- Se integró mediante Pull Request.
-- No expone secretos ni datos sensibles.
+### 10.3 Datos
 
-### 11.3 Pull Requests
+- simulación;
+- validación;
+- ETL;
+- EDA;
+- división temporal;
+- trazabilidad de transformaciones.
 
-- Los cambios deberán integrarse mediante Pull Request.
-- Al menos **una persona distinta al autor** deberá revisar el Pull Request.
-- Para cambios de integración final, QA deberá participar en la revisión.
-- No se deberá trabajar directamente sobre `main`.
+### 10.4 Machine Learning
 
----
+- comparación de algoritmos;
+- ajuste de hiperparámetros;
+- evaluación;
+- serialización;
+- inferencia;
+- análisis no supervisado;
+- reducción de dimensionalidad.
 
-## 12. Definition of Ready
+### 10.5 Pruebas
 
-Una incidencia está lista para entrar a un sprint cuando:
+- dataset;
+- simulación;
+- ETL;
+- modelos;
+- API;
+- aplicación;
+- Bluetooth;
+- integración;
+- Socket.IO cuando sea implementado.
 
-- Tiene título claro.
-- Tiene descripción.
-- Pertenece a una épica.
-- Tiene responsable.
-- Tiene prioridad.
-- Tiene estimación.
-- Tiene criterios de aceptación.
-- Tiene dependencias identificadas.
-- El equipo comprende qué debe hacerse.
-- Existen insumos suficientes para comenzar.
+## 11. Control de cambios
 
----
+Cuando cambia un requisito se debe:
 
-## 13. Definition of Done
+1. identificar módulos y documentos afectados;
+2. revisar dependencias;
+3. actualizar la tarea correspondiente;
+4. modificar código o documentación;
+5. volver a ejecutar las pruebas relacionadas;
+6. mantener el estado real de la funcionalidad.
 
-Una incidencia puede marcarse como terminada cuando:
+## 12. Evidencias
 
-- El cambio solicitado fue implementado.
-- Cumple los criterios de aceptación.
-- Fue revisado.
-- Tiene pruebas cuando corresponde.
-- No existen errores críticos.
-- La documentación fue actualizada.
-- Tiene evidencias en Jira.
-- Se creó un Pull Request.
-- El cambio fue integrado.
-- No contiene credenciales ni datos sensibles.
+Una actividad solo debe marcarse como verificada cuando exista un archivo o resultado que la respalde. Las evidencias válidas pueden ser notebooks, datasets, reportes de métricas, modelos serializados, salidas de pruebas, documentación Swagger, capturas originales, video de demostración, registros de Jira e historial real de Git/GitHub.
 
----
+No deben crearse evidencias retrospectivas que parezcan originales.
 
-## 14. Control de cambios
 
-### 14.1 Solicitud de cambios
+## 13. Conclusión
 
-Los cambios de requerimientos deberán registrarse en Jira como:
-
-- Nueva historia.
-- Nueva tarea.
-- Cambio en una historia existente.
-- Bug.
-- Mejora.
-
-### 14.2 Aprobación
-
-- El Product Owner revisará el impacto funcional.
-- La Scrum Master revisará el impacto en planificación e integración.
-- El equipo técnico revisará la viabilidad.
-- El docente aprobará cambios relevantes que afecten la entrega final.
-
-### 14.3 Registro
-
-Los cambios se registrarán principalmente en:
-
-- Jira.
-- GitHub.
-- Microsoft Teams.
-- Documentación del proyecto.
-
-WhatsApp podrá utilizarse para comunicación rápida, pero las decisiones importantes deberán reflejarse en Jira o GitHub.
-
-### 14.4 Tareas no terminadas
-
-Cuando una tarea no se complete:
-
-1. Se identificará la causa.
-2. Se actualizará su estado.
-3. Se registrará el bloqueo.
-4. Se dividirá si es demasiado grande.
-5. Se regresará al backlog o se moverá al siguiente sprint.
-6. Se revisará su prioridad.
-
----
-
-## 15. Seguimiento y evidencias
-
-Se conservarán las siguientes evidencias:
-
-- Capturas del tablero Jira.
-- Commits.
-- Ramas.
-- Pull Requests.
-- Prototipos de Figma.
-- Resultados de pruebas.
-- Capturas del dashboard.
-- Evidencias de integración.
-- Modelos y métricas.
-- Documentos Markdown.
-
-No se utilizarán actas o minutas formales para las reuniones. Por ello, las decisiones relevantes deberán quedar registradas en Jira, GitHub o en la documentación correspondiente.
-
----
-
-## 16. Herramientas
-
-| Herramienta | Uso |
-|---|---|
-| **Jira** | Backlog, épicas, historias, tareas, sprints y seguimiento |
-| **Microsoft Teams** | Reuniones y comunicación formal |
-| **WhatsApp** | Comunicación rápida entre integrantes del equipo|
-| **GitHub** | Repositorio, ramas, commits, Pull Requests y releases |
-| **Figma** | Diseño UX/UI y prototipos desarrollados y diseñados |
-| **VS Code** | Desarrollo y documentación del proyecto|
-| **Git** | Control de versiones |
-
----
-
-## 17. Relación entre Scrum y CRISP-DM
-
-CRISP-DM define qué debe ocurrir en el proceso de datos y Machine Learning. Scrum define cómo se organiza el trabajo para lograrlo.
-
-| CRISP-DM | Sprints relacionados |
-|---|---|
-| Comprensión del negocio | Sprint 1 |
-| Comprensión de los datos | Sprint 2 |
-| Preparación de los datos | Sprints 2 y 3 |
-| Modelado | Sprint 4 |
-| Evaluación | Sprints 4 y 6 |
-| Despliegue | Sprints 4 y 5 |
-| Validación final | Sprint 6 |
-
----
-
-## 18. Riesgos metodológicos
-
-| Riesgo | Medida de control |
-|---|---|
-| Tareas demasiado grandes | Dividir en subtareas |
-| Falta de información | Marcar como bloqueado y registrar dependencia |
-| Cambios constantes | Registrar en Jira y priorizar |
-| Falta de revisión | Aplicar revisión cruzada |
-| Trabajo directo en `main` | Uso obligatorio de ramas y Pull Requests |
-| Documentación desactualizada | Incluir documentación en Definition of Done |
-| Métricas inventadas | Publicar solo resultados obtenidos y validados |
-| Datos sensibles expuestos | Revisiones de seguridad y uso de `.env.example` |
-
----
-
-## 19. Conclusión
-
-VitalMind AI utilizará CRISP-DM para organizar el análisis de datos y Machine Learning, y Scrum para gestionar el desarrollo colaborativo del software.
-
-La combinación de ambas metodologías permitirá relacionar la problemática, los datos, la preparación, los modelos, la API, el dashboard, las pruebas y la documentación dentro de un proceso ordenado, incremental y verificable.
-
-El proyecto se organizará mediante seis sprints de dos semanas, con roles fijos, seguimiento en Jira, control de versiones en GitHub, revisión cruzada, pruebas, evidencias y validación final por parte del docente.
+CRISP-DM es la metodología de análisis que da estructura al ciclo de datos, mientras que Scrum se utiliza para organizar el trabajo del equipo. La separación permite explicar con claridad qué parte corresponde a gestión y qué parte corresponde a extracción de conocimiento. La documentación registra tanto los componentes disponibles como los requisitos que todavía necesitan implementación o evidencia.

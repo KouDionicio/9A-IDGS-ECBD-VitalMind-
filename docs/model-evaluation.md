@@ -1,83 +1,24 @@
-<div align="center">
-
-# 🤖 Evaluación de Modelos — VitalMind AI
-
-<img src="https://img.shields.io/badge/Estado-Evaluación%20parcial-F59E0B?style=for-the-badge" alt="Estado">
-<img src="https://img.shields.io/badge/Problema-Clasificación%20multiclase-2563EB?style=for-the-badge" alt="Problema">
-<img src="https://img.shields.io/badge/Seleccionado-Regresión%20Logística-0F766E?style=for-the-badge" alt="Modelo Seleccionado">
-
-</div>
+# Evaluación de Modelos — VitalMind AI
 
 ## 1. Propósito
 
-Este documento resume el análisis exploratorio y la comparación de modelos desarrollados para clasificar el nivel preventivo de riesgo en VitalMind AI.
+Este documento presenta la comparación, ajuste, evaluación y selección de los mecanismos de Machine Learning desarrollados para VitalMind AI.
 
-La evaluación se basa en:
+Todos los resultados provienen de datos sintéticos. Las métricas describen desempeño técnico dentro del ejercicio académico y no representan validación clínica.
 
-```text
-ml-service/app/notebooks/
-├── 01_exploratory_data_analysis.ipynb
-└── 02_risk_model_comparison.ipynb
-```
+## 2. Preparación para evaluación
 
+Se utiliza una separación temporal:
 
----
+| Conjunto | Periodo | Registros |
+|---|---|---:|
+| Entrenamiento | 2026-07-26 a 2026-08-07 | 3,418 |
+| Validación | 2026-06-29 a 2026-08-08 | 731 |
+| Prueba | 2026-07-31 a 2026-09-12 | 851 |
 
-## 2. Estado actual
+Las estadísticas de imputación se calculan únicamente con entrenamiento.
 
-| Elemento | Estado |
-|---|---|
-| Análisis exploratorio | Completado |
-| Clasificación supervisada de riesgo | Evaluada en validación |
-| Ajuste de hiperparámetros | Completado |
-| Flujo temporal seguro | Seleccionado |
-| Evaluación final en prueba | Pendiente |
-| Modelo de regresión | Pendiente |
-| Modelo no supervisado | Pendiente |
-| Integración con API | Pendiente |
-
----
-
-## 3. Dataset evaluado
-
-| Característica | Resultado |
-|---|---:|
-| Registros | 5,000 |
-| Usuarios sintéticos | 250 |
-| Columnas | 35 |
-| Valores faltantes | 0 |
-| Filas duplicadas | 0 |
-| Duplicados por usuario y fecha | 0 |
-| Periodo | 2026-04-01 a 2026-06-29 |
-| Anomalías sintéticas | 3 % |
-
-### Distribución de la variable objetivo
-
-| Nivel de riesgo | Registros | Porcentaje |
-|---|---:|---:|
-| `low` | 1,849 | 36.98 % |
-| `medium` | 1,970 | 39.40 % |
-| `high` | 1,181 | 23.62 % |
-
-La distribución permite iniciar el entrenamiento sin un desbalance extremo, aunque la clase `high` tiene menor representación.
-
----
-
-## 4. Problema de Machine Learning
-
-| Elemento | Definición |
-|---|---|
-| Tipo | Clasificación supervisada multiclase |
-| Variable objetivo | `risk_level` |
-| Clases | `low`, `medium`, `high` |
-| Objetivo | Clasificar el nivel preventivo de riesgo a partir de hábitos, síntomas, signos físicos y variables emocionales |
-| Prioridad de evaluación | Mantener buen desempeño general y detectar correctamente la clase `high` |
-
----
-
-## 5. Variables utilizadas
-
-El clasificador utiliza 19 variables disponibles o previstas en Backend:
+Características supervisadas:
 
 ```text
 age
@@ -101,200 +42,317 @@ energy_level
 sleep_quality
 ```
 
-### Variables excluidas
+Se excluyen identificadores, variables de simulación, objetivos cruzados y puntajes derivados.
 
-Se excluyeron campos que podían causar fuga de información, duplicidad o dependencia de reglas internas de simulación:
+## 3. Clasificación supervisada
+
+### 3.1 Problema
+
+Objetivo:
 
 ```text
-record_id
-user_id
-log_date
-profile_type
-is_anomaly
-risk_factors_count
-wellbeing_score
-sleep_score
-activity_score
-nutrition_score
-emotional_score
-physical_condition_score
-water_liters
-weight_profile_kg
+risk_level
 ```
 
----
+Clases:
 
-## 6. Hallazgos del análisis exploratorio
+```text
+high
+low
+medium
+```
 
-Los registros de riesgo alto presentan, en promedio:
+### 3.2 Comparación inicial
 
-- Menos horas de sueño.
-- Menor actividad física.
-- Menor consumo de agua.
-- Menos comidas saludables.
-- Menor tiempo de meditación.
-- Mayor estrés.
-- Menor energía.
-- Menor calidad del sueño.
-- Mayor dolor.
-- Menor puntuación general de bienestar.
+Resultados de validación disponibles:
 
-También se identificaron relaciones fuertes entre algunas variables:
-
-| Variables | Correlación |
-|---|---:|
-| `weight_kg` y `bmi` | 0.87 |
-| `stress_level` y `energy_level` | -0.85 |
-| `energy_level` y `sleep_quality` | 0.75 |
-| `pain` y `energy_level` | -0.73 |
-| `pain` y `stress_level` | 0.73 |
-| `sleep_hours` y `stress_level` | -0.73 |
-
-Estas relaciones se revisaron para evitar redundancia y mejorar la interpretación.
-
----
-
-## 7. Modelos comparados
-
-Se evaluaron dos algoritmos:
-
-1. Regresión Logística.
-2. Random Forest Classifier.
-
-Las métricas utilizadas fueron:
-
-- Accuracy.
-- Precision ponderada.
-- Recall ponderado.
-- F1 ponderado.
-- F1 macro.
-- ROC-AUC multiclase.
-- Recall y F1 de la clase `high`.
-- Matriz de confusión.
-
-La selección no se realizó únicamente con Accuracy.
-
----
-
-## 8. Comparación inicial
-
-Resultados sobre el conjunto de validación con el flujo inicial:
-
-| Modelo | Accuracy | F1 macro | ROC-AUC |
+| Modelo | Accuracy | F1 macro | ROC-AUC ponderado |
 |---|---:|---:|---:|
 | Regresión Logística | 0.8933 | 0.8933 | 0.9771 |
 | Random Forest | 0.8824 | 0.8825 | 0.9701 |
 
-### Desempeño inicial por clase
+La Regresión Logística mostró mejor desempeño general y una estructura más simple para integración e interpretación.
 
-| Modelo | Clase | Precision | Recall | F1 |
-|---|---|---:|---:|---:|
-| Regresión Logística | `high` | 0.8549 | 0.9066 | 0.8800 |
-| Regresión Logística | `low` | 0.9266 | 0.9449 | 0.9357 |
-| Regresión Logística | `medium` | 0.8889 | 0.8407 | 0.8641 |
-| Random Forest | `high` | 0.8446 | 0.8956 | 0.8693 |
-| Random Forest | `low` | 0.9222 | 0.9331 | 0.9276 |
-| Random Forest | `medium` | 0.8719 | 0.8305 | 0.8507 |
+### 3.3 Comparación con preparación segura
 
-El análisis mostró que la clase `medium` concentra la mayor parte de las confusiones. No se observaron confusiones directas relevantes entre `high` y `low`.
+En la comparación que utiliza el flujo temporal y preparación segura:
 
----
+| Modelo | Accuracy | F1 macro | ROC-AUC ponderado |
+|---|---:|---:|---:|
+| Regresión Logística | 0.8865 | 0.8865 | 0.9767 |
+| Random Forest | 0.8782 | 0.8781 | 0.9709 |
 
-## 9. Corrección del flujo de preparación
+La tendencia de selección se mantiene.
 
-El flujo inicial utilizaba imputación global. Posteriormente se adoptó un flujo temporal seguro para impedir que las estadísticas de periodos futuros influyeran en la preparación de datos anteriores.
+### 3.4 Ajuste de hiperparámetros
 
-| Flujo | Modelo | Accuracy | F1 macro | Recall `high` | ROC-AUC |
-|---|---|---:|---:|---:|---:|
-| Imputación global inicial | Regresión Logística | 0.8933 | 0.8933 | 0.9066 | 0.9771 |
-| Imputación temporal segura | Regresión Logística | 0.8892 | 0.8890 | 0.9011 | 0.9765 |
+El modelo seleccionado se ajustó sobre validación. La configuración final es:
 
-La reducción fue menor al 1 % en las métricas comparadas. Se acepta porque el flujo temporal ofrece una evaluación más realista y reduce el riesgo de fuga de información.
+```text
+C = 10.0
+class_weight = balanced
+solver = lbfgs
+```
 
----
+Métricas de validación de la configuración segura:
 
-## 10. Ajuste de hiperparámetros
+| Métrica | Resultado |
+|---|---:|
+| Accuracy | 0.8892 |
+| F1 macro | 0.8890 |
+| ROC-AUC ponderado | 0.9765 |
+| Precision `high` | 0.8497 |
+| Recall `high` | 0.9011 |
+| F1 `high` | 0.8747 |
 
-En el flujo temporal seguro se evaluaron 338 configuraciones.
+### 3.5 Evaluación final en prueba
 
-### Mejores resultados por algoritmo
+Sobre 851 registros:
 
-| Modelo | Accuracy | F1 macro | Recall `high` | F1 `high` | ROC-AUC |
-|---|---:|---:|---:|---:|---:|
-| Regresión Logística | 0.8892 | 0.8890 | 0.9011 | 0.8747 | 0.9765 |
-| Random Forest | 0.8878 | 0.8881 | 0.9231 | 0.8773 | 0.9697 |
+| Métrica | Resultado |
+|---|---:|
+| Accuracy | 0.9048 |
+| Precision ponderada | 0.9052 |
+| Recall ponderado | 0.9048 |
+| F1 ponderado | 0.9049 |
+| Precision macro | 0.9017 |
+| Recall macro | 0.9059 |
+| F1 macro | 0.9037 |
+| ROC-AUC ponderado | 0.9804 |
+| ROC-AUC macro | 0.9808 |
 
-Random Forest logró un Recall ligeramente mayor para la clase `high`, pero la Regresión Logística obtuvo mejor F1 macro y ROC-AUC.
+Clase `high`:
 
----
+| Métrica | Resultado |
+|---|---:|
+| Precision | 0.8750 |
+| Recall | 0.9130 |
+| F1 | 0.8936 |
 
-## 11. Modelo seleccionado
+### 3.6 Matriz de confusión
 
-El modelo seleccionado para la evaluación final es:
+Orden:
 
-| Parámetro | Valor |
-|---|---|
-| Algoritmo | Regresión Logística |
-| `C` | 10.0 |
-| `class_weight` | `balanced` |
-| `solver` | `lbfgs` |
-| Accuracy de validación | 0.8892 |
-| F1 macro de validación | 0.8890 |
-| Recall de clase `high` | 0.9011 |
-| F1 de clase `high` | 0.8747 |
-| ROC-AUC multiclase | 0.9765 |
+```text
+high
+low
+medium
+```
 
-### Justificación
+```text
+               Pred. high   Pred. low   Pred. medium
+Real high           189          0            18
+Real low              0        300            20
+Real medium          27         16           281
+```
 
-Se seleccionó porque:
+## 4. Regresión supervisada
 
-- Presenta desempeño equilibrado entre las tres clases.
-- Mantiene Recall superior al 90 % para `high`.
-- Obtiene el mejor F1 macro.
-- Obtiene el mejor ROC-AUC entre las configuraciones finales.
-- Es más interpretable que Random Forest.
-- Puede integrarse en un pipeline reproducible.
-- Utiliza un flujo temporalmente seguro.
+### 4.1 Problema
+
+Objetivo:
+
+```text
+wellbeing_score
+```
+
+### 4.2 Comparación inicial
+
+| Modelo | MAE | RMSE | R² |
+|---|---:|---:|---:|
+| Ridge Regression | 2.8878 | 3.5190 | 0.9644 |
+| Random Forest Regressor | 3.0494 | 3.7504 | 0.9596 |
+| Dummy Regressor | 16.1651 | 18.6662 | -0.0011 |
+
+Ridge obtuvo el menor error y el mayor R² entre las alternativas comparadas.
+
+### 4.3 Ajuste
+
+Configuración seleccionada:
+
+```text
+alpha = 10.0
+```
+
+Validación:
+
+| Métrica | Resultado |
+|---|---:|
+| MAE | 2.8873 |
+| RMSE | 3.5172 |
+| R² | 0.9645 |
+| Error absoluto mediano | 2.6660 |
+
+### 4.4 Evaluación final
+
+| Métrica | Resultado |
+|---|---:|
+| MAE | 3.1230 |
+| RMSE | 3.8266 |
+| R² | 0.9584 |
+| Error absoluto mediano | 2.7044 |
+
+El rango bruto de predicción observado llegó aproximadamente a 103.88; la capa de inferencia limita el valor devuelto a 0-100.
+
+## 5. Agrupamiento no supervisado
+
+### 5.1 Datos
+
+K-Means utiliza perfiles agregados por usuario a partir de entrenamiento. Se excluyen:
+
+```text
+risk_level
+wellbeing_score
+profile_type
+is_anomaly
+risk_factors_count
+```
+
+### 5.2 Selección de número de clusters
+
+| k | Silhouette | Davies-Bouldin | Calinski-Harabasz | Inercia |
+|---:|---:|---:|---:|---:|
+| 2 | 0.3615 | 1.0408 | 184.4039 | 2867.6892 |
+| 3 | 0.2419 | 1.6982 | 131.5282 | 2421.3006 |
+| 4 | 0.2293 | 1.7312 | 103.6715 | 2208.2007 |
+| 5 | 0.2175 | 1.7212 | 85.6610 | 2084.5951 |
+| 6 | 0.1528 | 1.9586 | 74.9596 | 1971.5649 |
+
+Se seleccionó `k = 2` porque obtiene el mayor Silhouette y el menor Davies-Bouldin dentro de las opciones evaluadas.
+
+Tamaños:
+
+```text
+Cluster 0: 160 usuarios
+Cluster 1: 90 usuarios
+```
+
+### 5.3 Interpretación de clusters
+
+Los reportes describen:
+
+- un grupo con estrés y dolor relativamente más altos y valores menores de actividad, sueño, alimentación, energía y calidad del sueño;
+- un grupo con el patrón relativo contrario.
+
+Estas descripciones son estadísticas. Los identificadores de cluster no tienen significado ordinal ni médico.
+
+## 6. Reducción de dimensionalidad
+
+PCA se utiliza como apoyo para representar los perfiles de clustering en dos dimensiones.
+
+```text
+Varianza explicada por PCA 2D = 0.6558
+```
+
+Esto equivale aproximadamente a 65.58 % de la varianza de las características estandarizadas utilizadas en esa representación.
+
+PCA cumple una función de visualización e interpretación; no sustituye el modelo K-Means.
+
+## 7. Detección de anomalías
+
+Isolation Forest utiliza:
+
+```text
+contamination = 0.03
+```
+
+En 3,418 registros de entrenamiento:
+
+| Elemento | Resultado |
+|---|---:|
+| Anomalías detectadas | 103 |
+| Proporción | 3.01 % |
+
+Comparación con `is_anomaly`:
+
+| Métrica | Resultado |
+|---|---:|
+| Accuracy | 0.9491 |
+| Precision | 0.1262 |
+| Recall | 0.1340 |
+| F1 | 0.1300 |
+| Verdaderos positivos | 13 |
+| Verdaderos negativos | 3,231 |
+| Falsos positivos | 90 |
+| Falsos negativos | 84 |
+
+La accuracy resulta alta por el predominio de registros normales. El F1 bajo muestra que la anomalía estadística detectada no coincide con la regla externa utilizada para alterar datos.
+
+## 8. Selección de mecanismos para API
+
+La guía solicita dos mecanismos:
+
+### 8.1 Supervisado
+
+**Regresión Logística de riesgo.**
+
+Criterios:
+
+- mejor desempeño que Random Forest en validación;
+- buen F1 macro;
+- recall alto para `high`;
+- salida probabilística;
+- facilidad de integración;
+- artefacto serializado;
+- endpoint disponible.
+
+Estado:
+
+```text
+Seleccionado e integrado
+```
+
+### 8.2 No supervisado
+
+**K-Means de perfiles de bienestar.**
+
+Criterios:
+
+- comparación de diferentes valores de `k`;
+- mejor Silhouette con `k = 2`;
+- modelo serializado;
+- perfiles descriptivos disponibles;
+- PCA complementario para visualización;
+- salida comprensible como cluster.
+
+Estado:
+
+```text
+Seleccionado, pero sin endpoint no supervisado implementado
+```
+
+## 9. Artefactos serializados
+
+```text
+app/models/risk-classification/best_risk_classifier_safe.joblib
+app/models/wellbeing-regression/best_wellbeing_regressor.joblib
+app/models/wellbeing-clustering/wellbeing_kmeans_pipeline.joblib
+app/models/anomaly-detection/isolation_forest_pipeline.joblib
+```
+
+## 10. Integración
+
+El ML Service expone actualmente:
+
+```http
+POST /api/v1/analyze
+```
+
+La respuesta contiene clasificación de riesgo, bienestar, BMI, recomendaciones, versiones de modelo y reporte de faltantes.
 
 
----
 
-## 12. Evaluación final pendiente
+## 11. Riesgos de interpretación
 
-El conjunto de prueba no fue utilizado en los notebooks proporcionados.
-
-La evaluación final deberá:
-
-1. Cargar el pipeline temporal seguro seleccionado.
-2. Mantener los hiperparámetros sin cambios.
-3. Ejecutar una sola evaluación sobre prueba.
-4. Calcular métricas globales y por clase.
-5. Generar la matriz de confusión final.
-6. Guardar las predicciones.
-7. Registrar la versión del modelo.
-8. Confirmar el tiempo de inferencia.
+- `risk_level` es una etiqueta sintética.
+- `wellbeing_score` deriva de una fórmula sintética.
+- El alto R² refleja en parte relaciones incorporadas por el generador.
+- Los clusters no son categorías médicas.
+- PCA simplifica información y no conserva el 100 % de la varianza.
+- Isolation Forest no reproduce bien la etiqueta sintética de anomalía.
+- El desempeño puede cambiar con mediciones reales de Wear OS.
 
 
+## 12. Conclusión
 
----
-
-## 13. Limitaciones
-
-- Los datos son sintéticos.
-- Las etiquetas fueron generadas mediante reglas.
-- Los resultados no representan evidencia clínica.
-- El rendimiento puede cambiar con datos reales.
-- Todavía no se documenta una evaluación final de prueba.
-- No se proporcionaron resultados de regresión.
-- No se proporcionaron resultados de aprendizaje no supervisado.
-- La integración con la API inteligente permanece pendiente.
-
----
-
-## 14. Conclusión
-
-La Regresión Logística con preparación temporal segura es el mejor candidato actual para clasificar el nivel preventivo de riesgo.
-
-Su selección se basa en el equilibrio entre F1 macro, Recall de la clase `high`, ROC-AUC, interpretabilidad y control de fuga de información.
-
-El modelo todavía debe evaluarse una sola vez sobre el conjunto de prueba antes de considerarse la versión final para integración.
+La evaluación disponible respalda la selección de Regresión Logística para el mecanismo supervisado y K-Means para el mecanismo no supervisado. Ridge Regression se conserva como componente adicional de estimación de bienestar. 

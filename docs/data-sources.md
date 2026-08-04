@@ -1,182 +1,228 @@
-<div align="center">
+# Fuentes de Datos — VitalMind AI
 
-# 🗃️ Fuentes de Datos — VitalMind AI
+## 1. Propósito
 
-### Descripción, procedencia, estructura y calidad de los datasets del proyecto
+Este documento identifica las fuentes de información utilizadas o contempladas por VitalMind AI, su función dentro del análisis y los principales resultados del análisis exploratorio de datos.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Estado-Documentado-0F766E?style=for-the-badge" alt="Estado">
-  <img src="https://img.shields.io/badge/Datos-Sintéticos-2563EB?style=for-the-badge" alt="Datos">
-  <img src="https://img.shields.io/badge/Formato-CSV-F59E0B?style=for-the-badge" alt="Formato">
-  <img src="https://img.shields.io/badge/Registros-5%2C000-7C3AED?style=for-the-badge" alt="Registros">
-</p>
+El componente de Machine Learning se desarrolló principalmente con datos sintéticos. La base MySQL corresponde a la operación de la aplicación.
 
-</div>
+## 2. Fuentes identificadas
 
-
-
-## 📌 Propósito del documento
-
-Este documento describe las fuentes de datos utilizadas en **VitalMind AI**, su procedencia, formato, volumen, estructura general, calidad y relación con las etapas de análisis y Machine Learning.
-
-Actualmente, el proyecto cuenta con dos archivos principales:
-
-- Un dataset original o **raw**, que conserva los datos antes de completar el tratamiento de valores faltantes.
-- Un dataset **processed**, preparado para análisis, entrenamiento y consumo por los módulos de Machine Learning.
+| Fuente | Tipo | Formato / tecnología | Estado | Uso |
+|---|---|---|---|---|
+| `vitalmind_dataset_raw.csv` | Datos sintéticos | CSV | Disponible | Fuente original para validación, ETL y modelado |
+| `vitalmind_dataset_processed.csv` | Datos sintéticos procesados | CSV | Disponible | EDA y revisión general |
+| `train_model.csv` | Datos de modelado | CSV | Disponible | Entrenamiento |
+| `validation_model.csv` | Datos de modelado | CSV | Disponible | Selección y ajuste |
+| `test_model.csv` | Datos de modelado | CSV | Disponible | Evaluación final |
+| MySQL operacional | Base relacional | MySQL | Disponible | Registros de la aplicación |
+| Aplicación Android | Captura de usuario | Kotlin / Android Studio | En desarrollo | Perfil, hábitos, síntomas, medicamentos y consulta |
+| Smartwatch | Wearable | Wear OS + Bluetooth | En desarrollo | Fuente física futura de mediciones compatibles |
+| API de salud del smartwatch | Fuente externa | Pendiente de confirmar | No definida | Acceso a sensores o métricas del reloj |
 
 
----
+## 3. Archivos principales del dataset
 
-## 📂 Archivos disponibles
+| Archivo | Registros | Columnas | Valores nulos | Filas duplicadas |
+|---|---:|---:|---:|---:|
+| `vitalmind_dataset_raw.csv` | 5,000 | 34 | 1,500 | 0 |
+| `vitalmind_dataset_processed.csv` | 5,000 | 35 | 0 | 0 |
 
+La columna adicional en processed es `weight_source`.
 
-```text
-data/
-├── raw/
-│   └── vitalmind_dataset_raw.csv
-└── processed/
-    └── vitalmind_dataset_processed.csv
-```
-
-| Archivo | Etapa | Registros | Columnas | Valores nulos | Duplicados |
-|---|---|---:|---:|---:|---:|
-| `vitalmind_dataset_raw.csv` | Fuente original | 5,000 | 34 | 1,500 celdas nulas | 0 |
-| `vitalmind_dataset_processed.csv` | Datos procesados | 5,000 | 35 | 0 | 0 |
-
-El archivo procesado conserva los **5,000 registros** del archivo original y agrega la columna `weight_source`, utilizada para identificar la procedencia del valor de peso.
-
----
-
-## 🧭 Origen y naturaleza de los datos
+## 4. Origen y naturaleza del dataset sintético
 
 | Elemento | Descripción |
 |---|---|
-| **Origen** | Generación sintética interna para el proyecto VitalMind AI |
-| **Responsable técnico** | Área de Inteligencia Artificial y Machine Learning |
-| **Formato** | CSV |
-| **Tipo de datos** | Estructurados |
-| **Cobertura temporal** | Del 1 de abril de 2026 al 29 de junio de 2026 |
-| **Usuarios sintéticos** | 250 |
-| **Registros por usuario** | Entre 10 y 30 |
-| **Promedio de registros por usuario** | 20 |
-| **Uso previsto** | EDA, ETL, modelado, evaluación e inferencia |
-| **Datos reales de pacientes** | No |
-| **Datos personales identificables** | No se observan identificadores reales |
+| Origen | Generación interna del proyecto |
+| Semilla | 2026 |
+| Usuarios sintéticos | 250 |
+| Registros | 5,000 |
+| Cobertura temporal | 2026-04-01 a 2026-06-29 |
+| Registros por usuario | 10 a 30 |
+| Promedio aproximado | 20 registros por usuario |
+| Datos personales reales | No |
+| Uso | EDA, ETL, entrenamiento, validación, prueba e inferencia controlada |
 
-Cada registro representa una observación de bienestar asociada a un usuario sintético y a una fecha determinada.
+Cada fila representa una observación de bienestar de una persona sintética en una fecha.
 
----
+## 5. Entidades relevantes
 
-## 🔄 Flujo de los datos
+### 5.1 Entidades del análisis
+
+| Entidad | Identificador | Descripción |
+|---|---|---|
+| Usuario sintético | `user_id` | Perfil artificial utilizado para generar observaciones |
+| Observación diaria | `record_id` | Registro de una fecha con hábitos, mediciones y percepción |
+| Perfil sintético | `profile_type` | Regla generadora usada solo para simulación |
+| Resultado analítico | `risk_level`, `wellbeing_score` | Etiquetas u objetivos creados para el ejercicio de ML |
+
+### 5.2 Entidades de la aplicación operacional
+
+La base MySQL contiene entidades para cuenta, hábitos, síntomas/mediciones, medicamentos, registros de toma, notificaciones, sesiones y auditoría. Su detalle se documenta en `data-warehouse.md`.
+
+### 5.3 Entidad wearable
+
+El smartwatch es un dispositivo Wear OS que se comunica con la aplicación Android mediante Bluetooth. Las métricas disponibles dependerán del modelo seleccionado y de la API o SDK de salud que se confirme.
+
+## 6. Grupos de atributos
+
+### 6.1 Identificación y tiempo
+
+```text
+record_id
+user_id
+log_date
+```
+
+### 6.2 Perfil
+
+```text
+profile_type
+age
+height_cm
+weight_profile_kg
+weight_kg
+bmi
+weight_source
+```
+
+### 6.3 Hábitos
+
+```text
+water_glasses
+water_liters
+exercise_minutes
+sleep_hours
+healthy_meals_count
+meditation_minutes
+```
+
+### 6.4 Síntomas y mediciones
+
+```text
+pain
+temperature_c
+systolic_mmhg
+diastolic_mmhg
+glucose_mg_dl
+heart_rate_bpm
+```
+
+### 6.5 Percepción y estado emocional
+
+```text
+mood
+stress_level
+energy_level
+sleep_quality
+```
+
+### 6.6 Indicadores derivados
+
+```text
+sleep_score
+activity_score
+nutrition_score
+emotional_score
+physical_condition_score
+wellbeing_score
+risk_factors_count
+```
+
+### 6.7 Etiquetas
+
+```text
+risk_level
+is_anomaly
+```
+
+## 7. Clasificación general de los datos
+
+| Grupo | Clasificación |
+|---|---|
+| Identificadores | Cualitativos nominales |
+| Fecha | Temporal estructurado |
+| Edad, conteos y escalas enteras | Cuantitativos discretos |
+| Peso, estatura, temperatura, horas y puntajes | Cuantitativos continuos |
+| `mood` | Cualitativo ordinal |
+| `risk_level` | Cualitativo ordinal |
+| `profile_type` | Cualitativo nominal de simulación |
+| `is_anomaly` | Binario |
+| CSV | Datos estructurados |
+| MySQL | Datos estructurados relacionales |
+| Mensajes del chatbot | Datos no estructurados si se conservaran |
+| Comunicación smartwatch-app | Datos estructurados o semiestructurados según el contrato futuro |
+
+El detalle por campo se encuentra en `data-dictionary.md`.
+
+## 8. Flujo de los datos
 
 ```mermaid
 flowchart LR
-    A[Generación sintética] --> B[vitalmind_dataset_raw.csv]
-    B --> C[Validación y limpieza]
-    C --> D[Tratamiento de valores faltantes]
-    D --> E[Conversión de tipos]
-    E --> F[Generación de weight_source]
-    F --> G[vitalmind_dataset_processed.csv]
-    G --> H[EDA]
-    G --> I[Entrenamiento]
-    G --> J[Validación y prueba]
-    G --> K[Inferencia y API]
+    G[Generador sintético] --> R[Raw CSV]
+    R --> V[Validación]
+    V --> C[Limpieza]
+    C --> P[Processed CSV]
+    R --> S[Separación temporal]
+    S --> T[Train]
+    S --> VA[Validation]
+    S --> TE[Test]
+    T --> M[Entrenamiento]
+    VA --> M
+    M --> O[Modelos serializados]
+    TE --> E[Evaluación final]
 ```
 
----
 
-## 🧱 Unidad de análisis
+## 9. Calidad del archivo raw
 
-La unidad de análisis corresponde a:
+Se verificó:
 
-> **Un registro de bienestar de un usuario sintético en una fecha determinada.**
+- 5,000 `record_id` únicos;
+- 0 filas duplicadas;
+- 1,500 celdas nulas;
+- 1,326 filas con al menos un faltante;
+- 150 anomalías sintéticas.
 
-Cada observación integra datos de perfil, hábitos, síntomas, signos, estado emocional, puntuaciones calculadas y etiquetas de riesgo.
+Cada uno de estos campos contiene 150 nulos:
 
-Los campos `record_id` y `user_id` permiten distinguir cada observación y agrupar los registros por usuario.
+```text
+weight_kg
+temperature_c
+systolic_mmhg
+diastolic_mmhg
+glucose_mg_dl
+heart_rate_bpm
+mood
+stress_level
+energy_level
+sleep_quality
+```
 
----
+## 10. Calidad del archivo processed
 
-## 🧩 Organización de las variables
+La versión procesada conserva:
 
-### 1. Identificación y tiempo
+- 5,000 registros;
+- 35 columnas;
+- 0 valores nulos;
+- 0 duplicados.
 
-| Campo | Descripción general |
+Cambios principales:
+
+| Transformación | Resultado |
 |---|---|
-| `record_id` | Identificador único del registro |
-| `user_id` | Identificador sintético del usuario |
-| `log_date` | Fecha de la observación |
+| Peso faltante | Respaldo con `weight_profile_kg` |
+| Trazabilidad del peso | `weight_source` |
+| Numéricos opcionales | Mediana por usuario y luego global |
+| `mood` | Moda por usuario y luego global |
+| Derivados | Recálculo de `water_liters` y `bmi` |
+| Volumen | No se eliminan registros |
 
-### 2. Perfil del usuario
+## 11. Perfil general del dataset
 
-| Campo | Descripción general |
-|---|---|
-| `profile_type` | Perfil sintético de hábitos o condición general |
-| `age` | Edad |
-| `height_cm` | Estatura en centímetros |
-| `weight_profile_kg` | Peso registrado en el perfil |
-| `weight_kg` | Peso asociado al registro |
-| `bmi` | Índice de masa corporal |
-| `weight_source` | Procedencia del peso en el dataset procesado |
-
-### 3. Hábitos de bienestar
-
-| Campo | Descripción general |
-|---|---|
-| `water_glasses` | Vasos de agua |
-| `water_liters` | Consumo estimado en litros |
-| `exercise_minutes` | Minutos de ejercicio |
-| `sleep_hours` | Horas de sueño |
-| `healthy_meals_count` | Número de comidas saludables |
-| `meditation_minutes` | Minutos de meditación |
-
-### 4. Síntomas y mediciones físicas
-
-| Campo | Descripción general |
-|---|---|
-| `pain` | Nivel de dolor |
-| `temperature_c` | Temperatura corporal en °C |
-| `systolic_mmhg` | Presión arterial sistólica |
-| `diastolic_mmhg` | Presión arterial diastólica |
-| `glucose_mg_dl` | Glucosa en mg/dL |
-| `heart_rate_bpm` | Frecuencia cardiaca en latidos por minuto |
-
-### 5. Bienestar emocional y percepción
-
-| Campo | Descripción general |
-|---|---|
-| `mood` | Estado de ánimo categórico |
-| `stress_level` | Nivel de estrés |
-| `energy_level` | Nivel de energía |
-| `sleep_quality` | Calidad percibida del sueño |
-
-### 6. Indicadores calculados
-
-| Campo | Descripción general |
-|---|---|
-| `sleep_score` | Puntuación asociada al sueño |
-| `activity_score` | Puntuación de actividad |
-| `nutrition_score` | Puntuación de nutrición |
-| `emotional_score` | Puntuación emocional |
-| `physical_condition_score` | Puntuación de condición física |
-| `wellbeing_score` | Puntuación integral de bienestar |
-| `risk_factors_count` | Cantidad de factores de riesgo identificados |
-
-### 7. Etiquetas y control analítico
-
-| Campo | Descripción general |
-|---|---|
-| `risk_level` | Nivel de riesgo: bajo, medio o alto |
-| `is_anomaly` | Indicador booleano de registro anómalo |
-
-> [!NOTE]
-> La función exacta de cada campo, su regla de cálculo, unidad, rango válido y uso como entrada o salida de modelos se documentará en `docs/data-dictionary.md`.
-
----
-
-## 📊 Perfil general del dataset
-
-### Distribución de perfiles
+### 11.1 Perfiles sintéticos
 
 | Perfil | Registros | Porcentaje |
 |---|---:|---:|
@@ -184,208 +230,129 @@ Los campos `record_id` y `user_id` permiten distinguir cada observación y agrup
 | `poor_habits` | 1,280 | 25.60 % |
 | `irregular` | 1,229 | 24.58 % |
 | `physically_vulnerable` | 715 | 14.30 % |
-| **Total** | **5,000** | **100 %** |
 
-### Distribución del nivel de riesgo
+### 11.2 Riesgo sintético
 
 | Nivel | Registros | Porcentaje |
 |---|---:|---:|
 | `low` | 1,849 | 36.98 % |
 | `medium` | 1,970 | 39.40 % |
 | `high` | 1,181 | 23.62 % |
-| **Total** | **5,000** | **100 %** |
 
-### Registros anómalos
+### 11.3 Anomalías
 
 | Valor | Registros | Porcentaje |
 |---|---:|---:|
 | `False` | 4,850 | 97.00 % |
 | `True` | 150 | 3.00 % |
-| **Total** | **5,000** | **100 %** |
 
-### Estados de ánimo en el archivo original
+## 12. Análisis exploratorio de datos
 
-| Estado | Registros |
+El notebook `01_exploratory_data_analysis.ipynb` revisa calidad, distribuciones, relaciones entre variables, perfiles, riesgo y posible fuga de información.
+
+### 12.1 Hallazgos de calidad
+
+- el dataset processed no contiene faltantes ni duplicados;
+- las tres clases de riesgo tienen representación suficiente para iniciar experimentación;
+- la clase `medium` es la más frecuente y `high` la menos frecuente;
+- los registros mantienen orden temporal por usuario;
+- existen variables derivadas que deben excluirse para evitar fuga.
+
+### 12.2 Comparación de perfiles sintéticos
+
+Promedios observados en el notebook:
+
+| Perfil | Sueño (h) | Ejercicio (min) | Agua (vasos) | Estrés | Energía | Dolor | Bienestar |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `healthy` | 7.74 | 45.85 | 8.51 | 1.82 | 6.71 | 0.75 | 82.00 |
+| `irregular` | 6.44 | 25.90 | 6.30 | 4.09 | 3.97 | 2.51 | 61.89 |
+| `physically_vulnerable` | 5.96 | 15.27 | 5.14 | 5.32 | 2.65 | 5.85 | 50.53 |
+| `poor_habits` | 5.29 | 10.97 | 3.65 | 6.48 | 1.67 | 4.74 | 40.47 |
+
+Estos perfiles sirven para comprobar que la simulación generó comportamientos distintos. `profile_type` no se usa como predictor.
+
+### 12.3 Relaciones fuertes detectadas
+
+El notebook identifica correlaciones absolutas aproximadas de 0.70 o más:
+
+| Variables | Correlación |
 |---|---:|
-| `Mal` | 1,231 |
-| `Bien` | 1,182 |
-| `Regular` | 1,179 |
-| `Muy bien` | 719 |
-| `Muy mal` | 539 |
-| Valor faltante | 150 |
+| `weight_kg` - `bmi` | 0.87 |
+| `stress_level` - `energy_level` | -0.85 |
+| `energy_level` - `sleep_quality` | 0.75 |
+| `pain` - `energy_level` | -0.73 |
+| `pain` - `stress_level` | 0.73 |
+| `sleep_hours` - `stress_level` | -0.73 |
+| `sleep_hours` - `sleep_quality` | 0.72 |
+| `sleep_hours` - `energy_level` | 0.71 |
 
----
+La correlación no se interpreta como causalidad. Se utiliza para revisar redundancia y decisiones de preparación.
 
-## 🔍 Calidad del dataset original
+### 12.4 Decisiones derivadas del EDA
 
-El archivo `vitalmind_dataset_raw.csv` presenta las siguientes características:
+Se excluyen del entrenamiento:
 
-- 5,000 identificadores de registro únicos.
-- 0 filas duplicadas.
-- 1,500 valores nulos distribuidos en 10 columnas.
-- 150 valores faltantes en cada una de las columnas afectadas.
-- 1,326 filas contienen al menos un valor faltante.
-- Se conservan 150 registros marcados como anomalías.
+- identificadores;
+- fecha como predictor directo;
+- `profile_type`;
+- `is_anomaly`;
+- `risk_factors_count`;
+- objetivos cruzados;
+- puntajes derivados que participaron en la construcción de los objetivos;
+- `water_liters` cuando ya se usa `water_glasses`;
+- `weight_profile_kg` cuando se usa `weight_kg`.
 
-### Columnas con valores faltantes
+## 13. Rangos observados principales
 
-| Campo | Valores nulos | Porcentaje |
-|---|---:|---:|
-| `weight_kg` | 150 | 3.00 % |
-| `temperature_c` | 150 | 3.00 % |
-| `systolic_mmhg` | 150 | 3.00 % |
-| `diastolic_mmhg` | 150 | 3.00 % |
-| `glucose_mg_dl` | 150 | 3.00 % |
-| `heart_rate_bpm` | 150 | 3.00 % |
-| `mood` | 150 | 3.00 % |
-| `stress_level` | 150 | 3.00 % |
-| `energy_level` | 150 | 3.00 % |
-| `sleep_quality` | 150 | 3.00 % |
-
-La existencia de valores faltantes permite probar actividades de limpieza, imputación, validación y control de calidad dentro del proceso ETL.
-
----
-
-## ✅ Estado del dataset procesado
-
-El archivo `vitalmind_dataset_processed.csv` presenta:
-
-- 5,000 registros.
-- 35 columnas.
-- 0 valores nulos.
-- 0 filas duplicadas.
-- Conservación de `record_id` y `user_id`.
-- Conservación de la etiqueta `is_anomaly`.
-- Incorporación de `weight_source`.
-- Conversión a enteros de varias mediciones que en el archivo original estaban representadas como valores numéricos con posibilidad de nulos.
-
-### Cambios observados entre archivos
-
-| Cambio | Evidencia observada |
-|---|---|
-| Tratamiento de valores faltantes | El dataset procesado no contiene valores nulos |
-| Columna nueva | Se agregó `weight_source` |
-| Procedencia del peso | `symptom_log`: 4,850 registros; `profile_fallback`: 150 |
-| Conversión de tipos | Presión, glucosa, frecuencia cardiaca, estrés, energía y calidad del sueño pasan a enteros |
-| Conservación del volumen | Ambos archivos contienen 5,000 registros |
-| Conservación de anomalías | Se mantienen 150 registros con `is_anomaly = True` |
-
-
----
-
-## 📐 Rangos observados
-
-Los siguientes rangos describen los valores presentes en el dataset procesado. No deben confundirse automáticamente con rangos clínicos de referencia.
+Los rangos describen el dataset y no son umbrales clínicos.
 
 | Variable | Mínimo | Máximo |
 |---|---:|---:|
 | Edad | 18 | 74 |
 | Estatura | 140.0 cm | 191.2 cm |
 | Peso | 40.0 kg | 134.5 kg |
-| IMC | 16.16 | 44.33 |
-| Agua | 0.0 L | 3.56 L |
-| Ejercicio | 0.0 min | 111.0 min |
-| Sueño | 1.0 h | 10.0 h |
-| Comidas saludables | 0 | 5 |
-| Meditación | 0.0 min | 49.0 min |
-| Dolor | 0 | 10 |
-| Temperatura | 35.4 °C | 38.4 °C |
-| Presión sistólica | 82 mmHg | 156 mmHg |
-| Presión diastólica | 50 mmHg | 98 mmHg |
-| Glucosa | 50 mg/dL | 147 mg/dL |
-| Frecuencia cardiaca | 44 bpm | 155 bpm |
-| Estrés | 1 | 10 |
-| Energía | 1 | 10 |
-| Calidad del sueño | 1 | 10 |
-| Puntuación de bienestar | 15.14 | 99.82 |
-| Factores de riesgo | 0 | 9 |
+| BMI | 16.16 | 44.33 |
+| Agua | 0.0 | 14.25 vasos |
+| Ejercicio | 0.0 | 111.0 min |
+| Sueño | 1.0 | 10.0 h |
+| Temperatura | 35.4 | 38.4 °C |
+| Sistólica | 82 | 156 mmHg |
+| Diastólica | 50 | 98 mmHg |
+| Glucosa | 50 | 147 mg/dL |
+| Frecuencia cardiaca | 44 | 155 bpm |
+| Bienestar | 15.14 | 99.82 |
 
----
+## 14. Uso en Machine Learning
 
-## 🧠 Uso analítico previsto
+Los datos se usan para:
 
-Los datos pueden utilizarse para:
-
-### Aprendizaje supervisado
-
-- Clasificación del nivel de riesgo.
-- Clasificación preventiva de síntomas.
-- Estimación de adherencia a hábitos.
-- Estimación de bienestar o calidad del sueño.
-- Detección supervisada de registros sensibles, si se generan etiquetas adecuadas.
-
-### Aprendizaje no supervisado
-
-- Segmentación de usuarios por hábitos.
-- Agrupación de patrones de bienestar.
-- Detección de anomalías.
-- Reducción de dimensionalidad.
-- Exploración de perfiles de riesgo.
-
-### Análisis descriptivo
-
-- Evolución temporal de indicadores.
-- Comparación entre perfiles.
-- Relación entre hábitos y bienestar.
-- Distribución de riesgo.
-- Análisis de anomalías y valores faltantes.
+- clasificación de `risk_level`;
+- regresión de `wellbeing_score`;
+- clustering de perfiles agregados;
+- PCA para visualización;
+- detección exploratoria de anomalías;
+- pruebas de inferencia.
 
 
----
+## 15. Relación con la base operacional y Wear OS
 
-## 🔐 Privacidad y tratamiento responsable
+Los CSV y MySQL tienen propósitos distintos:
 
-Aunque los datos son sintéticos, el proyecto debe mantener prácticas responsables:
+- los CSV permiten desarrollar y evaluar modelos con un conjunto controlado;
+- MySQL almacena datos operativos de la aplicación;
+- el backend transforma registros operativos al contrato del ML Service;
+- el smartwatch Wear OS se comunica con la aplicación mediante Bluetooth;
+- todavía no se ha definido la API o SDK que expondrá las mediciones del reloj;
 
-- No incorporar nombres, CURP, NSS, teléfonos, correos o domicilios reales.
-- Conservar identificadores artificiales.
-- Evitar mezclar los datos sintéticos con información de personas reales.
-- No presentar los registros como evidencia clínica.
-- No publicar credenciales, tokens ni cadenas de conexión.
-- Documentar las transformaciones aplicadas.
-- Mantener trazabilidad entre datos originales y procesados.
-- Mostrar las predicciones como orientación, no como diagnóstico.
-- Limitar el acceso a los datos según el rol del sistema.
 
----
+## 16. Privacidad
 
-## 🧪 Validaciones recomendadas
+Los CSV no contienen nombres, correos, teléfonos ni identificadores reales. Aun así, el diseño mantiene principios de:
 
-Antes de utilizar el dataset procesado para entrenamiento deben verificarse:
+- minimización;
+- acceso a datos propios;
+- cifrado en tránsito;
+- protección de secretos;
+- trazabilidad;
+- separación entre datos de prueba y datos reales.
 
-- Unicidad de `record_id`.
-- Integridad de `user_id`.
-- Formato válido de `log_date`.
-- Ausencia de nulos.
-- Ausencia de duplicados.
-- Consistencia entre `water_glasses` y `water_liters`.
-- Coherencia entre peso, estatura e IMC.
-- Valores permitidos de `profile_type`, `mood` y `risk_level`.
-- Tipos correctos de variables numéricas y booleanas.
-- Distribución de clases.
-- Separación por usuario para evitar fuga de información.
-- Conservación de la proporción de anomalías.
-- Reproducibilidad del proceso de transformación.
-
----
-
-## 🗂️ Relación con otros documentos
-
-| Documento | Relación |
-|---|---|
-| [`data-dictionary.md`](./data-dictionary.md) | Definirá cada atributo, tipo, unidad, rango y regla |
-| [`simulation-rules.md`](./simulation-rules.md) | Explicará cómo se generaron los datos sintéticos |
-| [`etl-process.md`](./etl-process.md) | Documentará las transformaciones de raw a processed |
-| [`data-warehouse.md`](./data-warehouse.md) | Describirá el almacén analítico |
-| [`model-evaluation.md`](./model-evaluation.md) | Indicará qué variables se utilizaron y con qué resultados |
-| [`testing.md`](./testing.md) | Registrará las pruebas de calidad y consistencia |
-
----
-
-## 📝 Conclusión
-
-VitalMind AI dispone de una fuente sintética estructurada con 5,000 observaciones y 250 usuarios artificiales. La existencia de una versión original y una versión procesada permite conservar trazabilidad y separar adecuadamente la fuente de los datos utilizados para análisis y modelado.
-
-El dataset procesado elimina los valores faltantes, conserva el volumen original, añade información de procedencia del peso y deja los datos en condiciones iniciales para EDA, ETL, entrenamiento y evaluación.
-
-Las reglas exactas de simulación y transformación deberán complementarse con los scripts técnicos correspondientes para garantizar reproducibilidad y evitar documentar supuestos como hechos.
