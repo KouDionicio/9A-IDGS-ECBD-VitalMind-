@@ -8,7 +8,13 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.exceptions import (
+    RequestValidationError,
+)
 
+from app.core.exception_handlers import (
+    request_validation_exception_handler,
+)
 from app.api.system import router as system_router
 from app.core.config import (
     APP_NAME,
@@ -18,7 +24,9 @@ from app.services.model_loader import (
     load_all_artifacts,
     unload_all_artifacts,
 )
-
+from app.api.analysis import(
+    router as analysis_router,
+) 
 
 @asynccontextmanager
 async def lifespan(
@@ -48,6 +56,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+app.add_exception_handler(
+    RequestValidationError,
+    request_validation_exception_handler,
+)
+
 app.include_router(
     system_router
+)
+
+
+
+app.include_router(
+    analysis_router
 )
