@@ -31,7 +31,7 @@ router = APIRouter(
     response_model=AnalysisResponse,
     status_code=status.HTTP_200_OK,
     responses={
-        status.HTTP_422_UNPROCESSABLE_ENTITY: {
+        status.HTTP_422_UNPROCESSABLE_CONTENT: {
             "model": ValidationErrorResponse,
             "description": (
                 "La solicitud no contiene datos "
