@@ -9,7 +9,6 @@ Su objetivo es facilitar la consulta y análisis de los datos mediante gráficos
 ## Tecnologías utilizadas
 
 * HTML5
-* JavaScript
 * Chart.js
 
 ## Estructura
