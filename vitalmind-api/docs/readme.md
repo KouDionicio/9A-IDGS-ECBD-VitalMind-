@@ -54,6 +54,3 @@ Esta documentación forma parte del proyecto **VitalMind**, el cual incluye:
 * Migraciones
 * Documentación técnica
 
-## Autora
-
-**Jennifer Bautista Barrios**
