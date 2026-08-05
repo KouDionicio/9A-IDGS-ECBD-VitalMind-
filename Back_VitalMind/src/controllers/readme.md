@@ -1,6 +1,4 @@
 # Controllers
-
-
 La carpeta `controllers` contiene los controladores del backend de **VitalMind**. Cada controlador se encarga de procesar las solicitudes HTTP, ejecutar la lógica correspondiente y enviar las respuestas al cliente.
 
 ## 📁 Controladores
