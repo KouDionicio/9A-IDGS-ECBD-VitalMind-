@@ -4,7 +4,6 @@
 
 Este documento describe la generación del dataset sintético utilizado en VitalMind AI. La simulación busca producir datos coherentes para practicar validación, ETL, EDA, entrenamiento, evaluación e inferencia.
 
-Las reglas son construcciones académicas y no representan criterios clínicos.
 
 ## 2. Configuración general
 
@@ -35,8 +34,6 @@ Se contemplan:
 - anomalías controladas;
 - ruido en objetivos;
 - casos cercanos a umbrales.
-
-No se implementa una estacionalidad mensual o semanal explícita. Por ello, no debe documentarse una tendencia estacional que el generador no produce.
 
 ## 4. Perfiles
 
@@ -114,7 +111,7 @@ sleep_score =
 activity_score = min(exercise_minutes / 60, 1) × 100
 ```
 
-El generador contempla una penalización si el ejercicio supera 150 minutos, aunque el dataset entregado no alcanza ese caso.
+
 
 ### 8.3 Nutrición
 
@@ -315,29 +312,16 @@ Para reproducir el dataset se deben conservar:
 
 Cambiar cualquiera de estos elementos puede modificar el resultado.
 
-## 16. Relación con el producto
 
-El dataset no contiene pasos ni saturación de oxígeno. El smartwatch confirmado utiliza Wear OS y Bluetooth, pero la API o SDK de salud no está definida.
-
-Cuando se incorporen datos reales de un reloj, deberán revisarse distribución, unidades, frecuencia, faltantes y errores de sensor antes de reutilizar los modelos.
-
-## 17. Limitaciones
+## 16. Limitaciones
 
 - perfiles artificiales;
 - relaciones definidas por reglas;
 - objetivos sintéticos;
 - ausencia de estacionalidad real;
-- ausencia de errores de sensores Wear OS;
 - ausencia de validación clínica;
-- desempeño no generalizable sin nueva evaluación.
 
-## 18. Referencias internas
 
-- [`data-sources.md`](./data-sources.md)
-- [`data-dictionary.md`](./data-dictionary.md)
-- [`etl-process.md`](./etl-process.md)
-- [`model-evaluation.md`](./model-evaluation.md)
+## 17. Conclusión
 
-## 19. Conclusión
-
-La simulación combina perfiles, variación, faltantes, anomalías y ruido de frontera para producir un conjunto reproducible. Las reglas son suficientemente explícitas para defender el origen del dataset, pero no deben trasladarse a decisiones médicas.
+La simulación combina perfiles, variación, faltantes, anomalías, para producir un conjunto reproducible. Las reglas son suficientemente explícitas para defender el origen del dataset, pero no deben trasladarse a decisiones médicas.
