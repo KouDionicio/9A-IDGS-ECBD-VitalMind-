@@ -56,12 +56,12 @@ class AnalysisFeatures(BaseModel):
     )
 
     height_cm: float = Field(
-        gt=0,
+        gt=120,
         le=220,
     )
 
     weight_kg: float = Field(
-        gt=0,
+        gt=30,
         le=250,
     )
 
@@ -217,6 +217,7 @@ class AnalysisResults(BaseModel):
     risk_classification: RiskClassificationResult
     wellbeing: WellbeingResult
     calculated_bmi: float
+    recommendations: list[str] 
 
 
 class ModelVersions(BaseModel):

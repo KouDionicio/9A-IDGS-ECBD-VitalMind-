@@ -11,6 +11,9 @@ from fastapi import FastAPI
 from fastapi.exceptions import (
     RequestValidationError,
 )
+from app.api.chat import (
+    router as chat_router,
+)
 
 from app.core.exception_handlers import (
     request_validation_exception_handler,
@@ -69,4 +72,8 @@ app.include_router(
 
 app.include_router(
     analysis_router
+)
+
+app.include_router(
+    chat_router 
 )

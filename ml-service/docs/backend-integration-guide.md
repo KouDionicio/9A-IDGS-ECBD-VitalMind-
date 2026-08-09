@@ -395,11 +395,22 @@ symptom_logs.heart_rate  -> heart_rate_bpm
 symptom_logs.weight      -> weight_kg
 ```
 
-La fuente de los siguientes campos todavía debe confirmarse en la base:
+Los campos emocionales deberán obtenerse desde:
 
-* `stress_level`
-* `energy_level`
-* `sleep_quality`
+```text
+emotional_logs.mood -> mood
+emotional_logs.stress_level -> stress_level
+emotional_logs.energy_level -> energy_level
+emotional_logs.sleep_quality -> sleep_quality
+
+symptom_logs.log_date -> fecha real del síntoma
+emotional_logs.log_date -> fecha real del estado emocional
+habit_logs.log_date -> fecha real de los hábitos
+```
+
+Para el análisis se deberá seleccionar preferentemente el regsitro con 'log date' más cercano a 'analysis_date'
+
+
 
 ---
 

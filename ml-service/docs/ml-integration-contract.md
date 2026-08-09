@@ -517,3 +517,14 @@ Respuesta esperada:
 * Las probabilidades no representan certeza médica.
 * El contrato deberá revisarse cuando existan datos reales.
 * Las imputaciones deberán quedar registradas en cada respuesta.
+
+## Fuente esperada de los datos
+
+Backend reunirá los datos desde:
+
+- `users`: edad, altura y peso de respaldo.
+- `habit_logs`: agua, ejercicio, sueño, nutrición y meditación.
+- `symptom_logs`: dolor y mediciones físicas.
+- `emotional_logs`: mood, estrés, energía y calidad del sueño.
+
+La selección temporal deberá basarse en `log_date`, no en `created_at`.

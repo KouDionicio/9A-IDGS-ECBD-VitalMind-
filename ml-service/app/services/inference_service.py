@@ -34,6 +34,8 @@ from app.schemas.inference import (
 from app.services.model_loader import (
     model_artifacts,
 )
+from app.services.recommendation_service import (
+    generate_recommendations,   )
 
 
 NUMERIC_MODEL_FEATURES = [
@@ -100,6 +102,11 @@ def calculate_bmi(
     if not np.isfinite(bmi):
         raise ValueError(
             "No fue posible calcular un BMI válido."
+        )
+    if not 10 <= bmi <= 70:
+        raise ValueError(
+            "El BMI calculado está fuera del rango "
+            "admitido por los modelos"
         )
 
     return float(bmi)
@@ -410,6 +417,12 @@ def analyze_request(
         )
     )
 
+    recommendations = generate_recommendations(
+    features=request.features.model_dump(),
+    risk_level=risk_result.risk_level,
+    wellbeing_score=wellbeing_result.score,
+    )
+
     return AnalysisResponse(
         request_id=request.request_id,
         user_id=request.user_id,
@@ -425,6 +438,7 @@ def analyze_request(
                 calculated_bmi,
                 4,
             ),
+            recommendations=recommendations,
         ),
         model_versions=ModelVersions(
             risk_classifier=(
