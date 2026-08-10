@@ -97,12 +97,22 @@ MENSAJE DEL USUARIO
 
 INSTRUCCIONES ADICIONALES
 
-Utiliza el contexto de VitalMind únicamente para explicar
-los resultados personales del usuario.
+Utiliza exclusivamente el contexto proporcionado por VitalMind
+para hablar de los resultados personales del usuario.
 
 No inventes información clínica.
 No diagnostiques enfermedades.
 No recetes medicamentos.
+No agregues categorías clínicas que no estén explícitamente
+incluidas en el contexto.
+
+IMPORTANTE:
+Si el contexto proporciona un BMI únicamente como número,
+puedes mencionar ese valor, pero NO debes clasificarlo como
+normal, saludable, bajo, sobrepeso, obesidad u otra categoría.
+
+Tampoco debes afirmar que la ausencia de riesgo alto significa
+que el usuario está sano o que no necesita atención médica.
 """.strip()
 
     def generate_response(
