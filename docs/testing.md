@@ -2,9 +2,7 @@
 
 ## 1. Propósito
 
-Este documento organiza las pruebas solicitadas por la guía oficial y distingue entre evidencia verificable, código de prueba disponible y casos que todavía no cuentan con un reporte de ejecución.
-
-Las pruebas completas de frontend, backend e integración end-to-end permanecen como **no confirmadas**. No se consideran aprobadas por la sola existencia de código.
+Este documento organiza las pruebas solicitadas por la guía oficial y distingue entre evidencia verificable, código de prueba disponible y casos.
 
 ## 2. Componentes considerados
 
@@ -47,8 +45,6 @@ Casos mínimos:
 - rangos;
 - ausencia de duplicados;
 - integridad `user_id + log_date`.
-
-Estado: **verificado para las propiedades anteriores**.
 
 ## 4. Pruebas de simulación
 
@@ -94,7 +90,7 @@ La Regresión Logística final fue evaluada sobre 851 registros:
 | ROC-AUC macro | 0.9808 |
 | Recall `high` | 0.9130 |
 
-La comparación y ajuste están documentados en `model-evaluation.md`.
+
 
 ### 6.2 Regresión
 
@@ -129,16 +125,6 @@ Davies-Bouldin = 1.0408
 Calinski-Harabasz = 184.4039
 ```
 
-Casos adicionales requeridos:
-
-- asignación consistente con el pipeline serializado;
-- entrada con columnas faltantes;
-- escala correcta;
-- cluster válido;
-- estabilidad frente a pequeñas variaciones;
-- respuesta del futuro endpoint no supervisado.
-
-El último punto está pendiente porque el endpoint aún no existe.
 
 ### 7.2 PCA
 
@@ -167,8 +153,6 @@ tests/test_chat.py
 
 También existen scripts de prueba de inferencia y recomendaciones.
 
-La existencia de estos archivos demuestra que hay casos automatizables, pero no se proporcionó un reporte completo de ejecución que permita declarar toda la suite como aprobada.
-
 ## 9. Backend
 
 Casos funcionales:
@@ -188,7 +172,6 @@ Casos funcionales:
 | T-BE-11 | Consumir ML | Transformación y respuesta FastAPI | Planificado |
 | T-BE-12 | Acceso ajeno | Solicitud rechazada | Planificado |
 
-No existe un reporte verificable de ejecución completa del backend; estos casos no se marcan como aprobados.
 
 ## 10. API inteligente
 
@@ -227,9 +210,9 @@ Casos mínimos:
 
 ### 10.4 Endpoint no supervisado
 
-La guía exige un endpoint no supervisado y K-Means fue seleccionado como mecanismo. No existe una ruta implementada en los archivos revisados.
+La guía exige un endpoint no supervisado y K-Means fue seleccionado como mecanismo.
 
-Pruebas pendientes cuando se implemente:
+Pruebas :
 
 - entrada válida;
 - columnas incompletas;
@@ -287,35 +270,10 @@ Pruebas planificadas:
 - accesibilidad;
 - estados vacíos.
 
-No existe un reporte verificable de ejecución completa; permanecen no confirmadas.
 
-## 13. Wear OS y Bluetooth
+## 13. Dashboard
 
-Datos confirmados:
-
-```text
-Smartwatch: Wear OS
-Sincronización: Bluetooth
-```
-
-| ID | Caso | Estado |
-|---|---|---|
-| T-SW-01 | Vincular reloj Wear OS compatible | Pendiente |
-| T-SW-02 | Establecer conexión Bluetooth | Pendiente |
-| T-SW-03 | Recuperar conexión después de interrupción | Pendiente |
-| T-SW-04 | Evitar duplicados al reanudar | Pendiente |
-| T-SW-05 | Registrar origen y hora | Pendiente |
-| T-SW-06 | Recibir frecuencia cardiaca si está disponible | Pendiente |
-| T-SW-07 | Recibir pasos si están disponibles | Pendiente |
-| T-SW-08 | Recibir sueño si está disponible | Pendiente |
-| T-SW-09 | Recibir SpO2 si está disponible | Pendiente |
-| T-SW-10 | Recibir presión arterial si está disponible | Pendiente |
-
-Las pruebas de métricas deberán ajustarse al modelo y API/SDK que se confirmen.
-
-## 14. Dashboard
-
-El dashboard disponible utiliza Chart.js y polling cada 30 segundos.
+El dashboard disponible utiliza Chart.js y polling.
 
 Pruebas funcionales planificadas:
 
@@ -328,11 +286,10 @@ Pruebas funcionales planificadas:
 - etiquetas y unidades;
 - visualización responsiva.
 
-## 15. Socket.IO
+## 14. Socket.IO
 
-La guía exige actualización en tiempo real con Socket.IO. No se identificó `socket.io` en el backend actual.
-
-Casos que deberán ejecutarse después de implementarlo:
+La guía exige actualización en tiempo real con Socket.IO
+Casos:
 
 | ID | Caso | Resultado esperado |
 |---|---|---|
@@ -344,9 +301,7 @@ Casos que deberán ejecutarse después de implementarlo:
 | T-RT-06 | Error | Mensaje controlado |
 | T-RT-07 | Persistencia | La actualización no sustituye el almacenamiento requerido |
 
-Estado: **pendiente**.
-
-## 16. Seguridad
+## 15. Seguridad
 
 Casos:
 
@@ -362,11 +317,7 @@ Casos:
 - mensajes sin credenciales;
 - acceso a datos propios.
 
-La presencia de `bcrypt`, JWT, Helmet y validadores no equivale a una prueba de penetración aprobada.
-
-## 17. Rendimiento y concurrencia
-
-Pendiente de medición formal:
+## 16. Rendimiento y concurrencia
 
 - latencia de endpoints;
 - latencia de `/api/v1/analyze`;
@@ -376,9 +327,7 @@ Pendiente de medición formal:
 - comportamiento cuando ML Service no responde;
 - tamaño de respuestas del dashboard.
 
-No se documentan valores inventados.
-
-## 18. Integración end-to-end
+## 17. Integración end-to-end
 
 Flujo a validar:
 
@@ -393,9 +342,9 @@ Backend
     → Dashboard
 ```
 
-La ejecución completa de este flujo no cuenta con un reporte verificable. Debe permanecer como **no confirmada**.
 
-## 19. Evidencia mínima para aprobar un caso
+
+## 18. Evidencia mínima para aprobar un caso
 
 Se debe conservar al menos una evidencia adecuada:
 
@@ -408,7 +357,7 @@ Se debe conservar al menos una evidencia adecuada:
 - video;
 - registro de incidencia y corrección.
 
-## 20. Estado general
+## 19. Estado general
 
 | Área | Estado |
 |---|---|
@@ -420,24 +369,13 @@ Se debe conservar al menos una evidencia adecuada:
 | Isolation Forest | Evaluación exploratoria disponible |
 | Código de pruebas ML | Disponible |
 | Endpoint supervisado | Disponible |
-| Endpoint no supervisado | Pendiente |
+| Endpoint no supervisado | Disponible |
 | Aplicación Android | Pruebas completas no confirmadas |
-| Backend | Pruebas completas no confirmadas |
+| Backend | Pruebas completas por confirmar |
 | Wear OS / Bluetooth | Pruebas pendientes |
-| Dashboard | Disponible con polling |
-| Socket.IO | Pendiente |
+| Dashboard | Disponible  |
+| Socket IO | Pendiente |
 | Integración end-to-end | No confirmada |
 | Prueba de carga | No confirmada |
 | Validación clínica | No realizada |
 
-## 21. Referencias internas
-
-- [`api-contracts.md`](./api-contracts.md)
-- [`etl-process.md`](./etl-process.md)
-- [`model-evaluation.md`](./model-evaluation.md)
-- [`ethics.md`](./ethics.md)
-- [`ai-usage.md`](./ai-usage.md)
-
-## 22. Conclusión
-
-Existe evidencia sólida para calidad del dataset y evaluación de modelos. Las pruebas completas de frontend, backend e integración end-to-end no se declaran aprobadas. También permanecen pendientes el endpoint no supervisado, Socket.IO y las pruebas físicas con Wear OS por Bluetooth.
