@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { getMySqlPool } from "../config/databases.js";
 
+
 let mysqlSeeded = false;
 
 const defaultUsers = [
