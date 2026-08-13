@@ -50,3 +50,5 @@ Router → Controller → Service → Base de datos
 ```
 
 Esta estructura permite separar responsabilidades y facilita el mantenimiento y escalabilidad del backend.
+
+---
