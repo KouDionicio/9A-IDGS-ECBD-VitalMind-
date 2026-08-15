@@ -6,3 +6,4 @@ export const metricsRouter = Router();
 
 metricsRouter.get("/summary", authRequired, getMetricsSummary);
 metricsRouter.get("/weekly", authRequired, getMetricsWeekly);
+
