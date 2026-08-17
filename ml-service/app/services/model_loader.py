@@ -18,7 +18,9 @@ from app.core.config import (
     PREPROCESSING_METADATA_PATH,
     RISK_LABEL_ENCODER_PATH,
     RISK_MODEL_PATH,
+    WELLBEING_CLUSTERING_MODEL_PATH,
     WELLBEING_MODEL_PATH,
+    ANOMALY_MODEL_PATH,
 )
 
 
@@ -29,6 +31,8 @@ class ModelArtifacts:
     risk_classifier: Any | None = None
     risk_label_encoder: Any | None = None
     wellbeing_regressor: Any | None = None
+    wellbeing_clusterer: Any | None = None
+    anomaly_detector: Any | None = None
     preprocessing_metadata: dict[str, Any] | None = None
 
     @property
@@ -39,6 +43,8 @@ class ModelArtifacts:
                 self.risk_classifier is not None,
                 self.risk_label_encoder is not None,
                 self.wellbeing_regressor is not None,
+                self.wellbeing_clusterer is not None,
+                self.anomaly_detector is not None,
                 self.preprocessing_metadata is not None,
             ]
         )
@@ -101,6 +107,11 @@ def load_all_artifacts() -> ModelArtifacts:
     )
 
     validate_artifact_path(
+        ANOMALY_MODEL_PATH,
+        "el detector de anomalías",
+    )
+
+    validate_artifact_path(
         RISK_LABEL_ENCODER_PATH,
         "el codificador de riesgo",
     )
@@ -109,7 +120,11 @@ def load_all_artifacts() -> ModelArtifacts:
         WELLBEING_MODEL_PATH,
         "el regresor de bienestar",
     )
-
+    validate_artifact_path(
+            WELLBEING_CLUSTERING_MODEL_PATH,
+            "el clusterizador de bienestar",
+        )
+    
     model_artifacts.risk_classifier = joblib.load(
         RISK_MODEL_PATH
     )
@@ -122,10 +137,18 @@ def load_all_artifacts() -> ModelArtifacts:
         WELLBEING_MODEL_PATH
     )
 
+    model_artifacts.wellbeing_clusterer = joblib.load(
+        WELLBEING_CLUSTERING_MODEL_PATH
+    )
+
     model_artifacts.preprocessing_metadata = (
         load_preprocessing_metadata(
             PREPROCESSING_METADATA_PATH
         )
+    )
+
+    model_artifacts.anomaly_detector = joblib.load(
+        ANOMALY_MODEL_PATH
     )
 
     if not model_artifacts.models_loaded:
@@ -142,4 +165,6 @@ def unload_all_artifacts() -> None:
     model_artifacts.risk_classifier = None
     model_artifacts.risk_label_encoder = None
     model_artifacts.wellbeing_regressor = None
+    model_artifacts.wellbeing_clusterer = None
     model_artifacts.preprocessing_metadata = None
+    model_artifacts.anomaly_detector = None

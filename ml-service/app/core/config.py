@@ -62,3 +62,21 @@ DISCLAIMER: Final[str] = (
     "entrenados sobre datos sintéticos. No representan "
     "un diagnóstico clínico."
 )
+
+WELLBEING_CLUSTERING_MODEL_VERSION: Final[str] = "1.0.0"
+
+WELLBEING_CLUSTERING_MODEL_PATH: Final[Path] = (
+    APP_DIR
+    / "models"
+    / "wellbeing-clustering"
+    / "wellbeing_kmeans_pipeline.joblib"
+)
+
+ANOMALY_MODEL_VERSION: Final[str] = "1.0.0"
+
+ANOMALY_MODEL_PATH: Final[Path] = (
+    APP_DIR
+    / "models"
+    / "anomaly-detection"
+    / "isolation_forest_pipeline.joblib"
+)

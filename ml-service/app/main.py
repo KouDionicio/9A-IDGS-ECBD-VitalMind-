@@ -31,6 +31,13 @@ from app.api.analysis import(
     router as analysis_router,
 ) 
 
+from app.api.clustering import (
+    router as clustering_router,
+)
+from app.api.anomaly import (
+    router as anomaly_router,   
+)
+
 @asynccontextmanager
 async def lifespan(
     app: FastAPI,
@@ -76,4 +83,12 @@ app.include_router(
 
 app.include_router(
     chat_router 
+)
+
+app.include_router(
+    clustering_router   
+)
+
+app.include_router(
+    anomaly_router   
 )
