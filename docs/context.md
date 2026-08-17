@@ -1,250 +1,136 @@
 # Contexto del Proyecto — VitalMind AI
 
-## 1. Identificación del proyecto
+## 1. Identificación
 
 | Elemento | Descripción |
 |---|---|
-| Nombre | VitalMind AI |
-| Empresa ficticia | NeuroviaLabs |
-| Programa educativo | Ingeniería en Desarrollo y Gestión de Software |
-| Universidad | Universidad Tecnológica de Xicotepec de Juárez |
+| Proyecto | VitalMind AI |
+| Empresa académica | NeuroviaLabs |
+| Programa | Ingeniería en Desarrollo y Gestión de Software |
 | Grupo | 9A |
+| Asignatura | Extracción del Conocimiento de Bases de Datos |
 | Periodo | Mayo-agosto de 2026 |
-| Modalidad | Proyecto colaborativo |
-| Estado | En desarrollo e integración |
-| Aplicación principal | Android, desarrollada en Kotlin con Android Studio |
-| Smartwatch | Dispositivo compatible con Wear OS |
-| Comunicación reloj-aplicación | Bluetooth |
-| Backend | Node.js y Express |
-| Base de datos operacional | MySQL |
-| Servicio de análisis e IA | Python, FastAPI y scikit-learn |
-| Público principal | Personas que desean registrar, consultar y comprender información sobre su salud, actividad, medicamentos y hábitos |
+| Enfoque | Monitoreo y seguimiento personal de salud |
+| Público | Usuarios generales que desean organizar y consultar su propia información |
 
-## 2. Contexto y proceso principal
+## 2. Contexto
 
-VitalMind AI es una solución de monitoreo y seguimiento personal de la salud. La aplicación Android organiza datos registrados por la persona usuaria y, cuando exista un reloj Wear OS compatible con las mediciones requeridas, recibe información del smartwatch mediante Bluetooth. El backend almacena los registros, concentra la lógica de negocio y comunica los datos necesarios al microservicio de análisis.
+VitalMind AI integra una aplicación móvil, un módulo para smartwatch Wear OS, servicios backend, una base de datos MySQL, un microservicio de Machine Learning y herramientas de visualización. La aplicación móvil se desarrolla con Kotlin en Android Studio y el reloj se vincula con el teléfono mediante Bluetooth. El código del módulo wearable utiliza además Google Play Services Wearable y AndroidX Health Services para la comunicación entre dispositivos y la lectura de métricas disponibles.
 
-El proceso principal consiste en capturar o sincronizar información, almacenarla, consultarla mediante historiales y gráficas, y utilizar modelos de Machine Learning para generar resultados preventivos de apoyo. Entre los datos contemplados se encuentran hábitos, síntomas, frecuencia cardiaca, presión arterial cuando exista una fuente compatible, sueño, actividad, medicamentos y variables de percepción de bienestar.
-
-Los resultados analíticos no son diagnósticos. La aplicación no prescribe ni modifica tratamientos y las mediciones dependen de la calidad de la fuente que las genere.
+El sistema permite registrar y consultar información como hábitos, sueño, actividad, medicamentos, síntomas y mediciones. Las capacidades que provienen del reloj dependen de los sensores, permisos y características del dispositivo compatible.
 
 ## 3. Problemática
 
-La información relacionada con la salud personal puede quedar distribuida entre registros manuales, aplicaciones y mediciones de dispositivos. Cuando los datos se encuentran separados, resulta más difícil revisar su evolución, reconocer cambios a lo largo del tiempo y relacionar hábitos con el bienestar reportado.
+Los datos personales de salud pueden quedar repartidos entre registros manuales, aplicaciones y dispositivos. Cuando la información se consulta de forma aislada resulta difícil identificar cambios, revisar tendencias o relacionar hábitos con mediciones a lo largo del tiempo.
 
-El proyecto atiende dos necesidades complementarias:
+VitalMind AI propone concentrar esa información en un mismo flujo para que el usuario pueda consultarla mediante historial, indicadores, gráficas y análisis preventivos. El sistema no pretende emitir diagnósticos ni sustituir una valoración profesional.
 
-1. **Organización del seguimiento personal:** reunir registros, mediciones, hábitos y medicamentos en una sola experiencia.
-2. **Extracción de conocimiento:** transformar datos históricos en indicadores, clasificaciones preventivas, agrupaciones y resúmenes que ayuden a interpretar patrones sin convertirlos en conclusiones clínicas.
+## 4. Solución propuesta
 
-Para el componente académico de análisis se utiliza un dataset sintético reproducible. Esto permite practicar el ciclo completo de preparación, modelado, evaluación e integración sin utilizar información personal real.
+La solución combina cinco capas:
 
-## 4. Necesidades de información y decisiones que se buscan apoyar
+1. **Captura y consulta:** aplicación móvil y smartwatch Wear OS.
+2. **Sincronización:** comunicación entre teléfono y reloj mediante Bluetooth y servicios Wear OS.
+3. **Servicios:** API REST con autenticación, validación y lógica de negocio.
+4. **Persistencia:** MySQL para usuarios, hábitos, mediciones, medicamentos, notificaciones y otros registros del prototipo.
+5. **Análisis:** microservicio FastAPI con modelos supervisados y no supervisados, recomendaciones y chatbot Mistral AI.
 
-El sistema busca aportar información para que la persona usuaria pueda:
+## 5. Objetivo general
 
-- revisar cómo han cambiado sus mediciones y hábitos;
-- consultar el cumplimiento de registros de medicamentos y horarios;
-- identificar tendencias generales en sueño, actividad, hidratación, estrés, energía y otras variables disponibles;
-- visualizar un nivel de riesgo sintético y un puntaje de bienestar como resultados del modelo;
-- recibir recomendaciones generales basadas en reglas;
-- entender de forma sencilla un resultado analítico mediante el chatbot.
+Desarrollar una solución digital integrada por una aplicación móvil y un smartwatch Wear OS que permita a usuarios generales recopilar, registrar, almacenar, consultar y analizar información relacionada con su salud y bienestar, incorporando sincronización Bluetooth, historial, visualizaciones y técnicas de Inteligencia Artificial con fines preventivos e informativos.
 
-En el proyecto de datos, la información también permite decidir qué variables conservar, qué modelos ofrecen mejor desempeño, qué mecanismo no supervisado resulta más útil y qué componentes están en condiciones de integrarse a una API.
+## 6. Objetivos específicos
 
-## 5. Stakeholders del proyecto
- Para efectos del Proyecto Integrador se distinguen los siguientes interesados del trabajo académico y técnico:
+- Registrar información de salud, hábitos, actividad, sueño y medicamentos.
+- Sincronizar datos disponibles desde un smartwatch compatible con Wear OS.
+- Almacenar los registros de forma organizada y permitir su consulta histórica.
+- Visualizar indicadores y tendencias mediante gráficas y dashboard.
+- Aplicar aprendizaje supervisado para clasificación y estimación de resultados informativos.
+- Aplicar aprendizaje no supervisado para agrupación y detección de observaciones atípicas.
+- Integrar los modelos mediante un microservicio FastAPI consumible desde el backend.
+- Proteger el acceso mediante autenticación, validaciones y variables de entorno.
+- Mantener trazabilidad entre datos sintéticos, preparación, modelos, métricas y contratos de API.
 
-| Stakeholder | Interés principal |
-|---|---|
-| Persona usuaria | Consultar y organizar sus propios registros de salud y bienestar |
-|Administrador| Consulta cantidad de regidstros, datos medicos de los usuarios|V
-| Equipo de desarrollo | Integrar aplicación, backend, datos, modelos y pruebas |
-| Docente y evaluación académica | Verificar que el proyecto cubra datos, modelos, integración, pruebas y documentación |
+## 7. Preguntas de análisis
 
+1. ¿Qué variables ayudan a estimar el nivel de riesgo sintético de un registro?
+2. ¿Qué combinación de variables permite aproximar un puntaje de bienestar?
+3. ¿Qué grupos naturales aparecen al analizar perfiles agregados de hábitos y mediciones?
+4. ¿Qué observaciones se alejan estadísticamente del patrón aprendido?
+5. ¿Qué calidad alcanzan los modelos supervisados sobre un conjunto temporal separado?
+6. ¿Cómo se integran los resultados del modelo con la aplicación mediante API?
+7. ¿Cómo pueden mostrarse los resultados sin presentarlos como conclusiones clínicas?
+8. ¿Qué cambios serían necesarios si los datos proceden de un smartwatch real?
 
-## 6. Preguntas de análisis
+## 8. Alcance funcional
 
-Las preguntas que orientan el componente de extracción de conocimiento son:
+- Registro e inicio de sesión.
+- Perfil general del usuario.
+- Registro de síntomas y mediciones.
+- Hábitos de hidratación, actividad, sueño, alimentación y meditación.
+- Registro digital de medicamentos, dosis, horarios y confirmación manual.
+- Historial y resumen personal.
+- Gráficas de evolución.
+- Chatbot informativo.
+- Recomendaciones generales basadas en reglas.
+- Inferencia supervisada de riesgo y bienestar.
+- Segmentación no supervisada de perfiles.
+- Detección exploratoria de anomalías.
+- Dashboard web de datos agregados.
 
-1. ¿Qué variables originales ayudan a clasificar el nivel de riesgo sintético?
-2. ¿Qué modelo de clasificación ofrece mejor equilibrio entre F1 macro, recall y ROC-AUC?
-3. ¿Qué tan bien puede estimarse `wellbeing_score` utilizando variables disponibles en una inferencia realista?
-4. ¿Qué grupos naturales aparecen cuando se agregan hábitos, mediciones y percepción de bienestar por usuario sintético?
-5. ¿Qué número de clusters ofrece mejor separación según Silhouette, Davies-Bouldin y Calinski-Harabasz?
-6. ¿Qué registros se consideran atípicos mediante un detector no supervisado y qué tan distinta es esa noción de la anomalía creada por simulación?
-7. ¿Qué variables muestran relaciones fuertes que deban revisarse antes del entrenamiento para evitar redundancia o fuga de información?
-8. ¿Cómo se exponen los resultados de los modelos mediante una API sin presentarlos como diagnóstico?
-9. ¿Qué requisitos faltan para consumir un mecanismo no supervisado desde el prototipo?
-10. ¿Qué cambios serán necesarios cuando las mediciones provengan de un smartwatch Wear OS real en lugar de datos sintéticos?
-
-## 7. Objetivo general
-
-Desarrollar una solución digital integrada por una aplicación y un smartwatch que permita recopilar, almacenar, consultar y analizar información relacionada con la salud del usuario, facilitando el seguimiento de mediciones, actividad, medicamentos, hábitos y tendencias mediante interfaces accesibles, recordatorios y herramientas de análisis.
-
-## 8. Objetivos específicos
-
-1. Implementar registro, autenticación y gestión del perfil general del usuario.
-2. Organizar el registro de hábitos, síntomas, mediciones y medicamentos en una base de datos.
-3. Permitir la consulta de historiales, indicadores, gráficas y reportes.
-4. Gestionar medicamentos de forma digital mediante dosis, horarios, recordatorios y confirmación manual de toma.
-5. Integrar la comunicación entre una aplicación Kotlin y un smartwatch Wear OS mediante Bluetooth.
-6. Desarrollar servicios backend que conecten la aplicación, MySQL y el microservicio de Machine Learning.
-7. Preparar y evaluar datos sintéticos mediante un proceso reproducible que evite fuga de información.
-8. Implementar clasificación, regresión, agrupamiento y reducción de dimensionalidad con evaluación documentada.
-9. Exponer resultados supervisados mediante una API y dejar definido el trabajo pendiente para el endpoint no supervisado exigido por la guía.
-10. Proteger la información mediante autenticación, validación, manejo de secretos y comunicación segura.
-11. Mantener pruebas y documentación diferenciando evidencia ejecutada de actividades todavía pendientes.
-
-## 9. Alcance funcional
-
-El alcance actual contempla:
-
-- registro e inicio de sesión;
-- perfil general de usuario;
-- registro y consulta de hábitos;
-- registro manual de síntomas y mediciones;
-- registro digital de medicamentos, dosis y horarios;
-- confirmación manual de toma;
-- recordatorios y notificaciones;
-- historiales, indicadores y gráficas;
-- aplicación Android en Kotlin;
-- interfaz para smartwatch Wear OS;
-- comunicación Bluetooth entre reloj y aplicación;
-- backend REST en Node.js y Express;
-- almacenamiento operacional en MySQL;
-- microservicio FastAPI;
-- clasificación preventiva de riesgo sintético;
-- estimación de bienestar;
-- agrupamiento exploratorio con K-Means;
-- reducción de dimensionalidad con PCA como apoyo al clustering;
-- detección exploratoria de anomalías;
-- recomendaciones basadas en reglas;
-- chatbot con Mistral AI.
-
-
-## 10. Datos de salud contemplados
-
-A nivel de producto se consideran, según disponibilidad de la fuente:
-
-- frecuencia cardiaca;
-- presión arterial;
-- saturación de oxígeno;
-- actividad física y pasos;
-- duración y calidad del sueño;
-- peso y estatura;
-- síntomas registrados manualmente;
-- hidratación, ejercicio, alimentación y meditación;
-- medicamentos, dosis, horarios y confirmaciones;
-- estado de ánimo, estrés, energía y calidad percibida del sueño.
-
-## 11. Fuentes disponibles
-
-| Fuente | Uso |
-|---|---|
-| `vitalmind_dataset_raw.csv` | Simulación original con faltantes controlados |
-| `vitalmind_dataset_processed.csv` | Análisis exploratorio y validación general |
-| Conjuntos temporales de modelado | Entrenamiento, validación y prueba |
-| MySQL operacional | Datos de la aplicación por módulo |
-| Aplicación Kotlin | Captura y consulta de información |
-| Smartwatch Wear OS | Fuente física prevista mediante Bluetooth; métricas sujetas a compatibilidad |
-
-## 12. Estado técnico observado
-
-| Componente | Evidencia disponible | Estado |
-|---|---|---|
-| Aplicación Android | Tecnología confirmada: Kotlin y Android Studio | En desarrollo |
-| Wearable | Wear OS y comunicación Bluetooth confirmados | En desarrollo; modelo y API/SDK de salud sin confirmar |
-| Backend | API REST Node.js / Express | Código disponible |
-| Base de datos | MySQL, respaldo y migraciones | Estructura disponible |
-| Dataset | Raw y processed con 5,000 registros sintéticos | Disponible |
-| EDA | Notebook `01_exploratory_data_analysis.ipynb` | Disponible |
-| Clasificación | Regresión Logística evaluada | Implementada |
-| Regresión | Ridge Regression evaluada | Implementada |
-| Agrupamiento | K-Means con artefacto serializado | Implementado de forma exploratoria |
-| Reducción | PCA 2D para apoyo al clustering | Implementada como análisis |
-| Anomalías | Isolation Forest | Implementado de forma exploratoria |
-| Chatbot | Mistral AI | Código disponible |
-| Endpoint supervisado | `/api/v1/analyze` | Implementado |
-| Endpoint no supervisado | Requerido por la guía | Pendiente |
-| Dashboard | Dashboard HTML/Chart.js con consultas periódicas | Disponible, pero sin Socket.IO |
-| Socket.IO | Requisito de la guía para tiempo real | No identificado en el backend actual |
-| Pruebas completas frontend/backend/E2E | Requieren reporte de ejecución | No confirmadas |
-
-## 13. Arquitectura funcional
+## 9. Arquitectura general
 
 ```mermaid
 flowchart LR
-    W[Smartwatch Wear OS] <-->|Bluetooth| A[Aplicación movil/Web]
-    A <--> B[API Node.js / Express]
+    W[Smartwatch Wear OS] <-->|Bluetooth| A[Aplicación móvil/Web]
+    A <--> B[API / Backend]
     B <--> D[(MySQL)]
-    B <--> I[ML Service FastAPI]
+    B <--> M[Microservicio FastAPI]
+    M --> S[Modelos serializados]
+    M --> C[Chatbot Mistral AI]
+    B --> V[Dashboard y visualizaciones]
 ```
 
-## 14. Arquitectura analítica del Proyecto Integrador
+El microservicio de ML no necesita consultar MySQL directamente: recibe desde el backend los campos requeridos para inferencia.
 
-```mermaid
-flowchart LR
-    S[Simulación sintética] --> R[Dataset raw]
-    R --> E[ETL y preparación]
-    E --> P[Conjuntos train / validation / test]
-    P --> M[Entrenamiento y evaluación]
-    M --> O[Modelos serializados]
-    O --> API[API inteligente]
-    API --> B[Backend]
-    B --> A[Aplicación Kotlin / Wear OS]
-    B --> DB[(MySQL)]
-    B -. requisito pendiente .-> SO[Socket.IO]
-    SO -. actualización en tiempo real .-> DASH[Dashboard]
-```
+## 10. Evidencia visual de la aplicación
 
+### Pantalla principal
 
-## 15. Dataset y preparación
+![Pantalla principal](./assets/capturas-aplicacion/01-pantalla-principal.png)
 
-El dataset sintético contiene:
+La pantalla principal resume bienestar, hábitos y accesos a funciones de seguimiento.
 
-- 5,000 registros;
-- 250 usuarios sintéticos;
-- fechas del 1 de abril al 29 de junio de 2026;
-- 34 columnas en raw y 35 en processed;
-- 1,500 valores faltantes controlados en raw;
-- 150 anomalías sintéticas;
-- cero filas duplicadas.
+### Registro de mediciones
 
-La evaluación final utiliza separación temporal antes de aprender estadísticas de imputación:
+![Registro de mediciones](./assets/capturas-aplicacion/07-registro-mediciones.png)
 
-| Conjunto | Registros | Periodo |
-|---|---:|---|
-| Entrenamiento | 3,418 | 2026-04-01 a 2026-06-01 |
-| Validación | 731 | 2026-06-02 a 2026-06-14 |
-| Prueba | 851 | 2026-06-15 a 2026-06-29 |
+El formulario permite capturar valores como dolor, temperatura, frecuencia cardiaca, presión arterial, glucosa y peso cuando corresponda.
 
+### Resumen e historial
 
-## 16. Modelos y mecanismos seleccionados
+![Historial de síntomas](./assets/capturas-aplicacion/06-historial-sintomas.png)
 
-El proyecto cuenta con:
+El resumen combina evolución gráfica e historial de registros personales.
 
-- Regresión Logística para `risk_level`;
-- Ridge Regression para `wellbeing_score`;
-- K-Means para agrupamiento de perfiles agregados;
-- PCA para representación bidimensional;
-- Isolation Forest para exploración de anomalías.
+## 11. Limitaciones técnicas
 
+- Los modelos se entrenaron con datos sintéticos y sus métricas no representan validación clínica.
+- La saturación de oxígeno y otras métricas dependen de que el smartwatch y sus sensores las soporten.
+- El dashboard independiente de la API se actualiza automáticamente mediante consultas periódicas cada 30 segundos. El frontend web contiene un cliente Socket.IO, pero el backend incluido en esta versión no expone un servidor Socket.IO; por ello no se declara validada una actualización push de extremo a extremo.
+- La base operacional y los CSV de entrenamiento cumplen funciones diferentes: la primera soporta la aplicación y los segundos reproducen el trabajo analítico.
+- El uso de datos reales requeriría una nueva evaluación de calidad, privacidad, sesgo y desempeño.
 
-## 17. Limitaciones
+## 12. Documentos relacionados
 
-- Los modelos se entrenaron con datos sintéticos.
-- No existe validación clínica.
-- El modelo específico de smartwatch no está confirmado.
-- No está confirmada una API o SDK de salud para Wear OS.
-- Saturación de oxígeno y pasos no forman parte del dataset actual.
-- El endpoint no supervisado exigido por la guía todavía no está implementado.
-- El dashboard actual no utiliza Socket.IO.
-- No existe reporte verificable de ejecución completa de las pruebas de frontend, backend e integración end-to-end.
-- No se identificó en este paquete documental un conjunto independiente de inferencia.
-- Las métricas obtenidas no garantizan el mismo comportamiento con datos reales.
-
-## 18. Resultado esperado
-
-El resultado académico busca demostrar el flujo completo desde el problema y los datos hasta el consumo de resultados analíticos desde el prototipo. Las partes ya respaldadas por archivos incluyen simulación, ETL, EDA, entrenamiento, evaluación, modelos serializados, API supervisada, backend y dashboard.
-
+- [`methodology.md`](./methodology.md)
+- [`data-sources.md`](./data-sources.md)
+- [`data-dictionary.md`](./data-dictionary.md)
+- [`simulation-rules.md`](./simulation-rules.md)
+- [`etl-process.md`](./etl-process.md)
+- [`eda.md`](./eda.md)
+- [`model-evaluation.md`](./model-evaluation.md)
+- [`api-contracts.md`](./api-contracts.md)
+- [`dashboard.md`](./dashboard.md)
+- [`testing.md`](./testing.md)
+- [`ethics.md`](./ethics.md)

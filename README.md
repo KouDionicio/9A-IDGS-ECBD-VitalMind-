@@ -2,7 +2,7 @@
 
 # 🩺 Proyecto VitalMind AI
 
-### Plataforma inteligente de salud integral con análisis de datos e Inteligencia Artificial orientativa
+### Aplicación de monitoreo de salud conectada con smartwatch, análisis de datos e Inteligencia Artificial orientativa
 <p align="center">
   <img src="https://img.shields.io/badge/Estado-En%20desarrollo-0F766E?style=for-the-badge" alt="Estado">
   <img src="https://img.shields.io/badge/Versión-0.1.0--alpha-blue?style=for-the-badge" alt="Versión">
@@ -53,12 +53,10 @@
 
 ## 📖 Descripción general
 
-**VitalMind AI** es una plataforma web inteligente de salud integral orientada al seguimiento personal y al autocuidado del bienestar físico y emocional. El proyecto integra diseño centrado en el usuario, desarrollo web, bases de datos, análisis de datos e Inteligencia Artificial orientativa.
+**VitalMind AI** es una aplicación de monitoreo y seguimiento personal de salud conectada con un smartwatch compatible con **Wear OS**. La aplicación móvil se desarrolla con **Kotlin** en **Android Studio** y la vinculación entre teléfono y reloj utiliza **Bluetooth**.
 
-La plataforma busca centralizar información relacionada con el historial médico, síntomas, hábitos y registros de bienestar. A partir de estos datos, se plantea ofrecer un dashboard dinámico, visualizaciones estadísticas, mecanismos de Machine Learning y orientación asistida mediante un chatbot.
+La solución integra API, base de datos MySQL, visualizaciones, un microservicio de Machine Learning con FastAPI y un chatbot con Mistral AI. Permite registrar y consultar hábitos, sueño, actividad, medicamentos, síntomas y mediciones disponibles, además de analizar los registros con técnicas supervisadas y no supervisadas.
 
-> [!IMPORTANT]
-> **VitalMind AI no sustituye el diagnóstico, tratamiento, prescripción ni atención de un profesional de la salud.** Los resultados, alertas y recomendaciones del sistema serán únicamente informativos y orientativos.
 
 ---
 
@@ -66,67 +64,56 @@ La plataforma busca centralizar información relacionada con el historial médic
 
 | Elemento | Estado |
 |---|---|
-| **Estado general** | En desarrollo |
-| **Versión actual propuesta** | `0.1.0-alpha` |
-| **Tipo de versión** | Versión inicial no estable del MVP |
-| **Funcionalidades terminadas** | Por confirmar con cada equipo técnico |
-| **Frontend** | En desarrollo |
-| **Backend** | En desarrollo |
-| **Dataset simulado** | En desarrollo |
-| **Data Warehouse y ETL** | En desarrollo |
-| **Modelos supervisados** | En desarrollo |
-| **Modelo no supervisado** | En definición y desarrollo |
-| **Chatbot** | Planeado |
-| **Dashboard y Socket.IO** | En desarrollo |
-| **Pruebas** | En planeación |
-| **Despliegue** | Pendiente |
+| **Estado general** | Prototipo académico integrado |
+| **Versión** | `0.1.0-alpha` |
+| **Aplicación móvil** | Kotlin + Android Studio |
+| **Smartwatch** | Wear OS; módulo wearable disponible |
+| **Sincronización** | Bluetooth y servicios Wear OS |
+| **Backend principal** | Node.js + Express + MySQL |
+| **ML Service** | FastAPI con modelos supervisados y no supervisados |
+| **Chatbot** | Mistral AI (`mistral-small-latest`) |
+| **Dashboard** | Implementado con gráficas y actualización automática por polling |
 
-La versión `0.1.0-alpha` identifica una primera etapa de construcción que todavía puede contener cambios de arquitectura, contratos de API, variables del dataset y funcionalidades incompletas.
+La documentación distingue entre funciones implementadas, evidencia de prueba y limitaciones técnicas reales del prototipo.
 
 ---
 
 ## ❗ Problemática
 
-En internet existen recomendaciones de salud generales que no necesariamente consideran el contexto, los hábitos, la edad o los síntomas de cada persona. Al mismo tiempo, muchas personas no mantienen un registro organizado de sus síntomas, antecedentes, hábitos o cambios en su bienestar.
+La información personal de salud suele quedar distribuida entre registros manuales, aplicaciones y dispositivos. Cuando los datos se revisan de forma aislada es difícil observar cambios, comparar periodos o relacionar hábitos con mediciones.
 
-La información suele permanecer dispersa o depender de la memoria del usuario, lo que dificulta reconocer tendencias, relacionar hábitos con síntomas y conservar datos útiles para futuras consultas profesionales.
-
-VitalMind AI busca atender esta situación mediante una plataforma que centralice los registros personales, facilite su consulta y permita visualizar patrones e indicadores de forma comprensible, sin presentar sus resultados como diagnósticos médicos.
+VitalMind AI centraliza esos registros y los presenta mediante historial, indicadores, gráficas y análisis orientativos, facilitando el seguimiento personal sin convertir la aplicación en una herramienta de diagnóstico médico.
 
 ---
 
 ## 🎯 Propósito y alcance
 
-VitalMind AI permitirá a los usuarios gestionar información personal de salud, registrar hábitos y síntomas, consultar indicadores, recibir recomendaciones orientativas mediante Inteligencia Artificial y dar seguimiento a su bienestar físico y emocional de manera segura, accesible y personalizada.
+VitalMind AI permite a usuarios generales registrar, recibir, almacenar, consultar y visualizar información personal de salud mediante una aplicación móvil conectada con un smartwatch Wear OS.
 
 ### Alcance del MVP
 
 - Registro e inicio de sesión.
-- Autenticación y control de acceso.
-- Gestión del perfil del usuario.
-- Registro de síntomas.
-- Gestión de historial médico básico.
-- Registro de hábitos saludables.
-- Seguimiento del bienestar físico y emocional.
-- Dashboard con indicadores y estadísticas.
-- Integración de modelos supervisados y no supervisados.
-- Consumo de inferencias mediante una API.
-- Actualización de información mediante Socket.IO.
-- Registro de inferencias en la base de datos.
-- Chatbot inteligente de apoyo.
-- Recomendaciones orientativas.
-- Pruebas del dataset, ETL, modelos, API e integración.
-- Documentación técnica y funcional.
+- Perfil general del usuario.
+- Registro de síntomas y mediciones disponibles.
+- Seguimiento de hábitos, actividad, sueño e hidratación.
+- Registro digital de medicamentos, dosis, horarios y confirmación manual.
+- Historial, indicadores, gráficas y dashboard.
+- Sincronización móvil-wearable mediante Bluetooth.
+- Inferencia supervisada de riesgo y bienestar.
+- Clustering y detección de anomalías con fines exploratorios.
+- Recomendaciones generales basadas en reglas.
+- Chatbot informativo con Mistral AI.
+- API documentada con Swagger/OpenAPI.
+- Pruebas de datos, backend, integración y modelos según evidencia disponible.
 
 ### Fuera del alcance
 
-- Emitir diagnósticos médicos definitivos.
-- Prescribir medicamentos o tratamientos.
-- Sustituir la consulta con profesionales de la salud.
-- Atender emergencias médicas.
-- Integrarse con expedientes clínicos oficiales durante el MVP.
-- Automatizar decisiones clínicas sin intervención humana.
-- Utilizar datos reales de pacientes sin autorización, protección y validación formal.
+- Emitir diagnósticos médicos.
+- Prescribir o modificar tratamientos.
+- Sustituir una valoración profesional.
+- Garantizar métricas que el smartwatch no soporte.
+- Exponer datos de una cuenta a otra.
+- Considerar las métricas de modelos sintéticos como validación clínica.
 
 ---
 
@@ -134,21 +121,20 @@ VitalMind AI permitirá a los usuarios gestionar información personal de salud,
 
 ### Objetivo general
 
-Desarrollar una plataforma web inteligente de salud integral que permita a los usuarios gestionar su historial médico, registrar hábitos y síntomas, recibir recomendaciones orientativas mediante Inteligencia Artificial y dar seguimiento a su bienestar físico y emocional de manera segura, accesible y personalizada.
+Desarrollar una solución digital integrada por una aplicación móvil y un smartwatch Wear OS que permita a usuarios generales recopilar, registrar, almacenar, consultar y analizar información relacionada con su salud y bienestar, incorporando sincronización Bluetooth, historial, visualizaciones y técnicas de Inteligencia Artificial con fines preventivos e informativos.
 
 ### Objetivos específicos
 
-- Diseñar una interfaz intuitiva en Figma y maquetarla en React.js para gestionar información médica y hábitos saludables.
-- Implementar módulos transaccionales con Node.js, Express.js y MongoDB para registrar síntomas, historial médico y hábitos.
-- Desarrollar un chatbot conversacional que proporcione orientación general de salud y bienestar mediante servicios de IA.
-- Aplicar CRISP-DM para comprender, preparar, modelar, evaluar y desplegar mecanismos de análisis de datos.
-- Simular un dataset coherente, reproducible y adecuado para entrenamiento, validación, prueba e inferencia.
-- Diseñar un Data Warehouse o Data Mart y desarrollar un proceso ETL reproducible.
-- Implementar y comparar mecanismos supervisados y no supervisados.
-- Exponer un modelo supervisado y uno no supervisado mediante endpoints inteligentes.
-- Visualizar inferencias, métricas y alertas en un dashboard con Socket.IO.
-- Realizar pruebas funcionales, de datos, modelos, API, integración, usabilidad y seguridad.
-- Proteger la comunicación mediante HTTPS con TLS y las credenciales mediante hashing seguro.
+- Desarrollar la aplicación móvil con Kotlin en Android Studio.
+- Integrar un smartwatch Wear OS mediante Bluetooth.
+- Registrar y consultar mediciones, hábitos, actividad, sueño y medicamentos.
+- Persistir la información en MySQL mediante una API segura.
+- Aplicar CRISP-DM al ciclo de datos y Machine Learning.
+- Implementar análisis supervisado y no supervisado.
+- Exponer modelos mediante FastAPI y consumirlos desde el backend.
+- Visualizar tendencias mediante historial, indicadores y dashboard.
+- Integrar un chatbot informativo dentro de límites no diagnósticos.
+- Documentar y probar los componentes con evidencia verificable.
 
 ---
 
@@ -156,17 +142,15 @@ Desarrollar una plataforma web inteligente de salud integral que permita a los u
 
 ### Usuarios principales
 
-- Personas que desean centralizar y organizar su información personal de salud.
-- Usuarios interesados en monitorear la relación entre síntomas, hábitos y bienestar emocional.
-- Personas que siguen esquemas de autocuidado preventivo y requieren un registro simplificado.
-- Usuarios que desean visualizar la evolución de indicadores personales mediante gráficas.
+- Personas que desean organizar y consultar su propia información de salud.
+- Usuarios interesados en monitorear hábitos, actividad, sueño, medicamentos y mediciones.
+- Personas que utilizan un smartwatch Wear OS compatible como complemento del seguimiento.
+- Usuarios que requieren una visualización sencilla de tendencias personales.
 
-### Usuarios secundarios
+### Contexto académico
 
-- Familiares o cuidadores que apoyan el seguimiento preventivo.
-- Profesionales de la salud que podrían consultar reportes como apoyo informativo secundario.
-- Instituciones académicas interesadas en prototipos funcionales de salud digital.
-- Docentes y evaluadores del proyecto integrador.
+- Equipo de desarrollo del proyecto.
+- Docentes y evaluadores del Proyecto Integrador.
 
 ---
 
@@ -174,55 +158,57 @@ Desarrollar una plataforma web inteligente de salud integral que permita a los u
 
 ### Análisis de datos: CRISP-DM
 
-El proyecto utiliza **CRISP-DM** para organizar el ciclo de análisis:
-
-1. **Comprensión del negocio:** definición de la problemática y necesidades de información.
-2. **Comprensión de los datos:** análisis de fuentes, entidades, atributos y calidad.
-3. **Preparación de los datos:** simulación, limpieza, transformación, ETL y división de conjuntos.
-4. **Modelado:** entrenamiento de modelos supervisados y no supervisados.
-5. **Evaluación:** comparación de métricas, estabilidad, utilidad e interpretabilidad.
-6. **Despliegue:** serialización, integración mediante API y consumo desde el prototipo web.
-
+1. **Comprensión del problema:** definición de necesidades y preguntas de análisis.
+2. **Comprensión de los datos:** revisión de fuentes, atributos, calidad y distribuciones.
+3. **Preparación:** simulación, limpieza, ETL y división temporal.
+4. **Modelado:** entrenamiento supervisado y no supervisado.
+5. **Evaluación:** comparación de métricas y limitaciones.
+6. **Despliegue:** serialización e integración mediante FastAPI.
 ### Desarrollo de software: Scrum
 
-El desarrollo se organiza mediante **Scrum**, con trabajo colaborativo por módulos y entregables incrementales.
+1. **Planificación:** organización de las actividades y definición de los objetivos de trabajo.
 
-- **Número y duración de sprints:** por definir.
-- **Gestión de actividades:** Jira.
-- **Comunicación:** Microsoft Teams y WhatsApp.
-- **Control de versiones:** Git y GitHub.
-- **Integración:** ramas por área, commits descriptivos y Pull Requests.
+2. **Backlog:** registro y priorización de funcionalidades, correcciones y tareas del proyecto.
+
+3. **Trabajo iterativo:** desarrollo de funcionalidades en periodos cortos, permitiendo integrar avances de forma progresiva.
+
+4. **Seguimiento:** revisión periódica del estado de las actividades, dependencias y avances del equipo.
+
+5. **Revisión:** comprobación de los entregables desarrollados y verificación de que cumplan con los requerimientos definidos.
+
+6. **Mejora continua:** identificación de problemas y ajustes en la organización, desarrollo, pruebas y documentación para las siguientes iteraciones.
+
+### Desarrollo de software
+
+El trabajo se organiza de forma incremental por componentes, responsables, dependencias y entregables, con control de versiones mediante Git y GitHub y seguimiento general de actividades del equipo.
 
 ---
 
 ## 🏗️ Arquitectura prevista
 
-La arquitectura se encuentra en desarrollo. El siguiente diagrama representa la integración prevista y deberá actualizarse cuando los contratos y rutas definitivas sean aprobados.
+La arquitectura separa interfaz, servicios, persistencia y análisis.
 
 ```mermaid
 flowchart LR
-    U[Usuario] -->|HTTPS / TLS| F[Frontend<br/>React.js]
-    F -->|REST / JSON + JWT| B[Backend<br/>Node.js + Express.js]
-    F <-->|Eventos en tiempo real| S[Socket.IO]
-    S <--> B
-    B <--> DB[(MongoDB)]
-    B -->|Solicitud de inferencia| ML[Servicio ML<br/>Python + FastAPI]
+    W[Smartwatch Wear OS] <-->|Bluetooth| A[Aplicación móvil/Web]
+    A -->|REST / JSON + JWT| B[Backend Node.js + Express]
+    B <--> DB[(MySQL)]
+    B -->|HTTP / JSON| ML[ML Service FastAPI]
     ML --> M[(Modelos serializados)]
-    ML --> DW[(Data Mart / Datos procesados)]
-    B --> INF[(Historial de inferencias)]
-    B -. Integración planeada .-> CHAT[Servicio de chatbot / IA]
+    ML --> CHAT[Mistral AI]
+    B --> D[Dashboard]
 ```
 
 ### Flujo previsto
 
-1. El usuario interactúa con la aplicación web desarrollada en React.js.
-2. El frontend consume los servicios del backend mediante HTTPS y JSON.
-3. El backend valida autenticación y autorización mediante JWT.
-4. MongoDB almacena usuarios, registros de salud, inferencias y resultados.
-5. El backend solicita predicciones o análisis al servicio de Machine Learning en FastAPI.
-6. El servicio de ML carga modelos serializados y devuelve resultados con contexto.
-7. Socket.IO actualiza gráficas, inferencias o alertas sin recargar la interfaz.
-8. El chatbot se integrará como servicio de orientación general y deberá mostrar límites de responsabilidad médica.
+1. El usuario registra información o el reloj aporta una métrica compatible.
+2. La aplicación sincroniza y envía datos al backend.
+3. El backend valida autenticación y persiste en MySQL.
+4. Para análisis, el backend construye el contrato requerido por FastAPI.
+5. FastAPI ejecuta modelos serializados y devuelve resultados orientativos.
+6. La aplicación y el dashboard muestran historial, indicadores y gráficas.
+
+La arquitectura completa se documenta en [`docs/architecture.md`](./docs/architecture.md).
 
 ---
 
@@ -230,141 +216,70 @@ flowchart LR
 
 ### Origen
 
-El proyecto utilizará **datos clínicos sintéticos**, generados mediante reglas de simulación y apoyo de herramientas de Inteligencia Artificial. Los registros no deberán corresponder a pacientes reales.
-
-Para cumplir con los criterios de reproducibilidad, la simulación deberá incluir:
-
-- Script generador.
-- Semilla documentada.
-- Rangos y distribuciones.
-- Relaciones entre variables.
-- Casos normales, extremos, faltantes y anómalos.
-- Reglas lógicas para las etiquetas supervisadas.
-- Validaciones de calidad.
-- Dataset original y dataset procesado.
+El componente analítico utiliza **datos sintéticos** generados mediante reglas reproducibles. No corresponden a personas reales.
 
 ### Formato actual
 
-- **Formato principal:** CSV.
-- **Número de registros:** en desarrollo.
-- **Persistencia de la aplicación:** MongoDB.
-- **Almacén analítico:** Data Warehouse o Data Mart en desarrollo.
+- **Dataset raw:** 5,000 registros, 34 columnas y 1,500 valores nulos controlados.
+- **Dataset processed:** 5,000 registros, 35 columnas y 0 valores nulos.
+- **Usuarios sintéticos:** 250.
+- **Periodo simulado:** 1 de abril al 29 de junio de 2026.
+- **Base operacional:** MySQL.
+- **División temporal:** train 3,418; validación 731; prueba 851.
 
-### Entidades previstas
+### Grupos de información
 
-| Entidad | Propósito |
-|---|---|
-| **Usuario** | Identificación técnica, autenticación y configuración de cuenta |
-| **Perfil de salud** | Datos generales y características necesarias para el análisis |
-| **Síntoma** | Registro de tipo, intensidad, frecuencia, duración y fecha |
-| **Hábito** | Registro de sueño, actividad, hidratación, alimentación u otras rutinas |
-| **Historial médico** | Antecedentes básicos declarados por el usuario |
-| **Registro de bienestar** | Indicadores físicos y emocionales por fecha |
-| **Medición** | Valores numéricos o categóricos utilizados en el dashboard |
-| **Recomendación** | Sugerencia orientativa asociada a un resultado |
-| **Inferencia** | Entrada, salida, versión de modelo, confianza y fecha |
-| **Conversación del chatbot** | Consultas y respuestas generales de apoyo |
-| **Notificación** | Recordatorios, avisos y alertas informativas |
+- perfil y fecha;
+- hábitos;
+- síntomas y mediciones;
+- estado emocional;
+- indicadores derivados;
+- etiquetas sintéticas de riesgo y anomalía.
 
-> [!NOTE]
-> Las entidades, atributos, tipos, unidades, rangos y reglas de validación definitivas se documentarán en `docs/data-dictionary.md`.
-
-### Protección de los datos simulados
-
-Aunque el dataset sea sintético, se aplicarán prácticas de minimización y anonimización:
-
-- No utilizar nombres, CURP, NSS, domicilios, teléfonos ni correos reales.
-- Utilizar identificadores artificiales.
-- Separar los datos de autenticación de los registros analíticos.
-- Evitar combinaciones que permitan asociar registros con personas reales.
-- Documentar la finalidad de cada variable.
-- Excluir atributos sin utilidad para el análisis.
-- No publicar secretos, credenciales ni cadenas de conexión.
+El diccionario completo se encuentra en [`docs/data-dictionary.md`](./docs/data-dictionary.md).
 
 ---
 
 ## 🤖 Inteligencia Artificial y Machine Learning
 
-Los mecanismos se encuentran en desarrollo. No se publicarán resultados ni métricas hasta completar el entrenamiento, la evaluación y las pruebas con conjuntos separados.
+VitalMind AI combina modelos supervisados y no supervisados entrenados con datos sintéticos.
 
-### Mecanismos previstos
+### Mecanismos implementados
 
-| Tipo | Problema propuesto | Algoritmos candidatos | Salida esperada | Estado |
-|---|---|---|---|---|
-| **Supervisado: clasificación** | Clasificar el riesgo de deterioro de hábitos o bienestar | Regresión logística, árbol de decisión, Random Forest | Clase de riesgo y probabilidad | En desarrollo |
-| **Supervisado: regresión** | Estimar un indicador o puntuación futura de síntomas | Regresión lineal, Random Forest Regressor, Gradient Boosting | Valor numérico estimado | En desarrollo |
-| **No supervisado: agrupamiento** | Segmentar perfiles según síntomas, hábitos y bienestar | K-Means, DBSCAN o clustering jerárquico | Cluster y perfil interpretado | Por definir y evaluar |
-| **No supervisado: reducción** | Visualizar perfiles complejos en menos dimensiones | PCA; otras técnicas sujetas a evaluación | Componentes y representación reducida | Planeado |
+| Enfoque | Función | Resultado |
+|---|---|---|
+| Supervisado | Clasificación de riesgo | `low`, `medium`, `high` y probabilidades |
+| Supervisado | Estimación de bienestar | `wellbeing_score` |
+| No supervisado | Agrupación de perfiles | Clúster y distancia al centroide |
+| No supervisado | Detección de anomalías | Indicador de atipicidad y puntuación |
+| Reglas | Recomendaciones | Sugerencias generales |
+| IA generativa | Chatbot | Explicación conversacional |
 
-### Variables candidatas
+### Resultados documentados
 
-Las variables finales dependerán del diccionario de datos y del EDA. Como punto de partida se consideran:
-
-- Edad simulada o grupo de edad.
-- Frecuencia e intensidad de síntomas.
-- Horas y calidad del sueño.
-- Actividad física.
-- Hidratación.
-- Regularidad de hábitos.
-- Indicadores de bienestar emocional.
-- Frecuencia de registros.
-- Antecedentes simulados relevantes.
-- Tendencias temporales derivadas.
-
-### Evaluación prevista
-
-| Mecanismo | Métricas |
+| Componente | Métricas principales |
 |---|---|
-| **Clasificación** | Accuracy, Precision, Recall, F1-score, matriz de confusión y ROC-AUC |
-| **Regresión** | MAE, MSE, RMSE y R² |
-| **Agrupamiento** | Silhouette Score, Davies-Bouldin, inercia e interpretación de clusters |
-| **Reducción de dimensionalidad** | Varianza explicada, componentes y conservación de información |
-| **Recomendación** | Precision@K y tasa de aceptación, cuando aplique |
-| **Usabilidad** | System Usability Scale (SUS), con referencia general de 68 puntos |
+| Clasificación | Accuracy 0.9048 · F1 macro 0.9037 · ROC-AUC macro 0.9808 |
+| Regresión | MAE 3.1230 · RMSE 3.8266 · R² 0.9584 |
+| Clustering | Silhouette 0.3615 · Davies-Bouldin 1.0408 |
+| Anomalías | F1 externo 0.1300; uso exploratorio |
 
-### Selección para despliegue
-
-La selección final se realizará después de comparar utilidad, calidad, estabilidad, velocidad, interpretabilidad, integración y riesgo. La API deberá desplegar:
-
-- Un modelo supervisado.
-- Un modelo no supervisado.
+Las métricas describen desempeño sobre datos sintéticos y no equivalen a precisión clínica.
 
 ---
 
 ## 📊 Dashboard y comunicación en tiempo real
 
-El dashboard se encuentra en desarrollo y mostrará estadísticas relacionadas con la información del paciente simulado o del usuario de la aplicación.
+El dashboard independiente de la API consulta datos persistidos y utiliza Chart.js. 
+Entre las series disponibles se encuentran actividad, sueño, agua, glucosa, presión arterial, dolor, estado de ánimo y distribuciones agregadas.
 
-### Información prevista
+### Actualización automática
 
-- Historial de síntomas.
-- Evolución de hábitos.
-- Indicadores de bienestar físico y emocional.
-- Nuevas clasificaciones o predicciones.
-- Asignación de clusters o perfiles.
-- Probabilidad o confianza del resultado, cuando aplique.
-- Estado del servicio de modelos.
-- Número e historial de inferencias.
-- Alertas informativas.
-- Tiempo de respuesta de la API.
+El dashboard ejecuta una carga inicial y repite sus consultas al instante, por lo que las gráficas se actualizan sin recargar manualmente la página.
 
-### Socket.IO
+El frontend web también contiene un cliente Socket.IO y lógica de conexión para notificaciones.
 
-Se utilizará Socket.IO para actualizar la interfaz sin recargar la página. Los eventos definitivos están en desarrollo. Como base se consideran:
-
-```text
-new_inference
-new_prediction
-new_cluster_assignment
-model_alert
-dataset_update
-processing_status
-api_error
-```
-
-Las inferencias se almacenarán en la base de datos para mantener trazabilidad, mostrar historial y permitir pruebas de integración.
-
-> Socket.IO permitirá actualizar información en tiempo real, pero no implica que los modelos se reentrenen automáticamente en tiempo real.
+Consulta [`docs/dashboard.md`](./docs/dashboard.md) para el detalle técnico.
 
 ---
 
@@ -372,300 +287,151 @@ Las inferencias se almacenarán en la base de datos para mantener trazabilidad, 
 
 | Área | Tecnologías |
 |---|---|
-| **Frontend** | ![React](https://img.shields.io/badge/React.js-20232A?style=flat-square&logo=react&logoColor=61DAFB) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black) |
-| **Backend** | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white) ![Express](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white) |
-| **Base de datos** | ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white) |
-| **IA y Machine Learning** | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white) |
-| **Tiempo real** | ![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=flat-square&logo=socketdotio&logoColor=white) |
-| **Diseño** | ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat-square&logo=figma&logoColor=white) |
-| **Gestión** | ![Jira](https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=jira&logoColor=white) Microsoft Teams y WhatsApp |
-| **Versionamiento** | ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white) |
-| **Seguridad** | HTTPS/TLS, bcrypt y JWT |
-| **Formato de datos** | CSV y JSON |
-
----
-
-## 📁 Estructura del repositorio
-
-La estructura se actualizará conforme las ramas de Backend, Frontend, QA, Machine Learning y documentación sean integradas.
-
-```text
-/
-├── Backend/
-├── Frontend/
-├── QA/
-├── ml-service/
-├── Logos/
-│   ├── LogoVitalMind.jpeg
-│   └── empresa.png
-├── docs/
-│   ├── context.md
-│   ├── methodology.md
-│   ├── proposals.md
-│   ├── data-sources.md
-│   ├── data-dictionary.md
-│   ├── simulation-rules.md
-│   ├── data-warehouse.md
-│   ├── etl-process.md
-│   ├── model-evaluation.md
-│   ├── api-contracts.md
-│   ├── testing.md
-│   ├── ethics.md
-│   └── ai-usage.md
-├── .env.example
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
-> [!WARNING]
-> No deben almacenarse archivos `.env`, contraseñas, tokens, claves de API, certificados privados ni cadenas de conexión reales en el repositorio.
+| **Aplicación móvil** | Kotlin, Android Studio, Jetpack Compose |
+| **Aplicación web** | Js, Reac |
+| **Wearable** | Wear OS, Google Play Services Wearable, Health Services Client, Bluetooth |
+| **Frontend web complementario** | React, TypeScript, Vite |
+| **Backend** | Node.js, Express.js |
+| **Base de datos** | MySQL, MySQL Workbench |
+| **IA y Machine Learning** | Python, FastAPI, scikit-learn, pandas, NumPy, Joblib |
+| **Chatbot** | Mistral AI (`mistral-small-latest`) |
+| **Dashboard** | HTML, JavaScript, Chart.js |
+| **Seguridad** | JWT, bcrypt, Helmet, CORS, HTTPS/TLS |
+| **Versionamiento** | Git y GitHub |
+| **Formatos** | CSV, JSON, SQL, Markdown |
 
 ---
 
 ## 🔌 API y endpoints
 
-Las rutas reales se encuentran en desarrollo y deberán documentarse cuando Backend y Machine Learning definan sus contratos.
+La API principal utiliza el prefijo `/api` y Swagger en `/api/docs`. El microservicio FastAPI publica sus propios contratos en `/docs` y `/redoc`.
 
-### Endpoints de la aplicación
-
-| Módulo | Ruta | Estado |
-|---|---|---|
-| Autenticación | Por definir | En desarrollo |
-| Usuarios | Por definir | En desarrollo |
-| Síntomas | Por definir | En desarrollo |
-| Hábitos | Por definir | En desarrollo |
-| Historial médico | Por definir | En desarrollo |
-| Inferencias | Por definir | En desarrollo |
-| Swagger/OpenAPI | Por definir | Pendiente |
-
-### Contratos inteligentes propuestos por la guía
+### API principal
 
 ```http
-POST /api/ml/supervised/predict
-POST /api/ml/unsupervised/analyze
-GET  /api/ml/models
-GET  /api/ml/models/{id}/metrics
-GET  /api/ml/inferences
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/health
+POST /api/ml/analyze
 GET  /api/ml/health
+GET  /api/ml/models/info
+GET  /api/dashboard/statistics
 ```
 
-Los nombres anteriores son una propuesta inicial. Los endpoints definitivos deberán incluir:
+También existen módulos para usuarios, síntomas, hábitos, medicamentos, notificaciones, historial, reportes y dashboard.
 
-- Propósito.
-- Método HTTP y ruta.
-- Parámetros.
-- Esquema de entrada.
-- Validaciones.
-- Modelo y versión utilizados.
-- Respuesta y nivel de confianza.
-- Manejo de errores.
-- Tiempo de respuesta.
-- Ejemplos de consumo.
+### ML Service
+
+```http
+GET  /health
+GET  /api/v1/models/info
+POST /api/v1/analyze
+POST /api/v1/wellbeing-cluster
+POST /api/v1/anomaly-detection
+POST /api/v1/chat
+POST /api/v1/chat/analyze
+```
+
+Los contratos completos están en [`docs/api-contracts.md`](./docs/api-contracts.md).
 
 ---
 
 ## ⚙️ Instalación y configuración
 
-Los comandos definitivos están pendientes de validación con las ramas técnicas. La siguiente secuencia representa el flujo esperado y deberá ajustarse a los scripts reales de cada `package.json` y `requirements.txt`.
+La guía completa se encuentra en [`docs/runbook.md`](./docs/runbook.md).
 
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/KouDionicio/9A-IDGS-ECBD-VitalMind-.git
-cd 9A-IDGS-ECBD-VitalMind-
-```
-
-### 2. Frontend — referencia provisional
+### API principal
 
 ```bash
-cd Frontend
+cd vitalmind-api
 npm install
 npm run dev
 ```
 
-### 3. Backend — referencia provisional
-
-```bash
-cd Backend
-npm install
-npm run dev
-```
-
-### 4. Servicio de Machine Learning — referencia provisional
+### ML Service
 
 ```bash
 cd ml-service
 python -m venv .venv
-```
-
-En Windows PowerShell:
-
-```powershell
-.\.venv\Scripts\Activate.ps1
+# activar el entorno
 pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-En Linux o macOS:
+### Aplicación móvil
 
-```bash
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+Abrir `Frontend/Movil_Wearable/Frontend_Movil_Wearable` en Android Studio y ejecutar el módulo correspondiente en un dispositivo o emulador Android/Wear OS.
 
-Ejecución provisional del servicio:
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### Versiones
-
-Las versiones mínimas de Node.js y Python se definirán después de revisar las dependencias reales del proyecto.
-
-### Variables de entorno previstas
-
-El archivo `.env.example` deberá contener únicamente nombres y ejemplos no sensibles:
-
-```env
-NODE_ENV=development
-PORT=
-MONGODB_URI=
-JWT_SECRET=
-JWT_EXPIRES_IN=
-BCRYPT_ROUNDS=
-ML_SERVICE_URL=
-FRONTEND_URL=
-CORS_ORIGIN=
-AI_API_KEY=
-```
-
-> [!NOTE]
-> `AI_API_KEY` debe permanecer vacía en `.env.example`. La clave real nunca debe subirse al repositorio.
-
-La decisión entre MongoDB local y MongoDB Atlas está pendiente.
+Los secretos deben configurarse localmente mediante archivos `.env` creados a partir de `.env.example`.
 
 ---
 
 ## ▶️ Ejecución
 
-Los puertos y scripts definitivos se encuentran en desarrollo.
-
-| Componente | Comando provisional | Puerto |
+| Componente | Inicio | Acceso habitual |
 |---|---|---|
-| Frontend | `npm run dev` | Por definir |
-| Backend | `npm run dev` | Por definir |
-| Servicio ML | `uvicorn app.main:app --reload` | Por definir |
-| Swagger | Por definir | Por definir |
+| API principal | `npm run dev` | `http://localhost:4000/api` |
+| Swagger Express | con la API | `http://localhost:4000/api/docs` |
+| Dashboard | con la API | `http://localhost:4000/dashboard` |
+| ML Service | `uvicorn app.main:app ...` | `http://localhost:8000` |
+| Swagger FastAPI | con ML Service | `http://localhost:8000/docs` |
+| Aplicación Android | Android Studio | dispositivo/emulador |
 
-Antes de ejecutar el sistema completo deberán estar activos:
-
-1. MongoDB.
-2. Backend.
-3. Servicio de Machine Learning.
-4. Frontend.
-5. Servicio externo del chatbot, cuando se implemente.
+Antes de ejecutar un flujo completo deben estar disponibles MySQL, la API principal y el ML Service.
 
 ---
 
 ## 🧪 Pruebas
 
-El plan de pruebas se encuentra en desarrollo. De acuerdo con el alcance del proyecto, se cubrirán los siguientes niveles:
+El proyecto conserva evidencia de pruebas de backend e integración en `reports/` y pruebas automatizadas del ML Service.
 
-| Área | Validaciones previstas |
-|---|---|
-| **Dataset** | Tipos, rangos, nulos, duplicados, distribución, balance e integridad |
-| **Simulación** | Reglas, coherencia, casos extremos, anomalías y reproducibilidad |
-| **ETL** | Extracción, transformación, carga, totales y manejo de errores |
-| **Modelos** | Métricas, generalización, sobreajuste, estabilidad y casos frontera |
-| **API** | Solicitudes válidas, campos faltantes, tipos incorrectos, rangos, errores y latencia |
-| **Frontend** | Navegación, formularios, accesibilidad, mensajes y visualización |
-| **Backend** | Autenticación, validaciones, permisos, persistencia y errores |
-| **Integración** | Frontend, Backend, MongoDB, FastAPI y Socket.IO |
-| **Seguridad** | Hashing de contraseñas, JWT, HTTPS/TLS, secretos y control de acceso |
-| **Usabilidad** | Claridad, facilidad de navegación y evaluación SUS |
+### Resultados respaldados por el repositorio
 
-Las herramientas y resultados definitivos serán agregados cuando QA complete el plan de pruebas y sus evidencias.
+- Conexión Backend-MySQL.
+- Registro y login.
+- Persistencia de usuarios.
+- Validación de datos.
+- Protección de endpoints.
+- Registro de síntomas y visualización posterior.
+- Integración Frontend → Backend → MySQL / ML Service → Frontend.
+- Chatbot e insights dentro del flujo probado.
 
-### Criterios generales de aceptación
+### Revisión técnica adicional
 
-- Los flujos principales funcionan sin errores críticos.
-- Las entradas inválidas producen respuestas controladas.
-- Los datos sensibles no se exponen en respuestas, logs o repositorio.
-- Las inferencias muestran contexto, modelo y nivel de confianza cuando aplique.
-- El chatbot muestra una advertencia médica.
-- Las correcciones son probadas nuevamente antes de integrar los cambios.
+- 68 archivos JavaScript validados con `node --check`: 0 fallos.
+- 44 archivos Python compilados: 0 fallos.
+- Inferencia supervisada directa: ejecutada correctamente.
+- Clustering directo: ejecutado correctamente.
+- Detección de anomalías directa: ejecutada correctamente.
+- `pytest -q` no completó la colección en el entorno de revisión porque faltaba la dependencia local `mistralai`; no se declara esa ejecución como aprobada.
+
+Consulta [`docs/testing.md`](./docs/testing.md) para la matriz completa.
 
 ---
 
 ## 🔐 Seguridad, privacidad y ética
 
-### Autenticación
+- Contraseñas protegidas mediante bcrypt.
+- Autenticación JWT y refresh tokens.
+- CORS configurable y Helmet en la API principal.
+- Secretos mediante variables de entorno.
+- Validación de entradas con `express-validator` y Pydantic.
+- Acceso restringido a información autorizada.
+- Datos sintéticos para entrenamiento.
+- Resultados preventivos e informativos, no diagnósticos.
+- HTTPS/TLS requerido en un despliegue real.
 
-- Las contraseñas se protegerán mediante **hashing con bcrypt**; no se almacenarán en texto plano.
-- La autenticación utilizará **JWT**.
-- Los tokens deberán transmitirse únicamente mediante HTTPS/TLS.
-- Los secretos y claves se administrarán mediante variables de entorno.
-- Los datos devueltos por la API deberán limitarse a lo necesario para cada funcionalidad.
-
-### Anonimización y minimización
-
-- El dataset será sintético y no representará a pacientes reales.
-- Se utilizarán identificadores artificiales.
-- No se incluirán identificadores directos reales.
-- Solo se conservarán variables justificadas para el análisis.
-- Los reportes y capturas deberán ocultar credenciales, tokens y datos sensibles.
-- La información de autenticación y los datos clínicos simulados deberán mantenerse separados.
-
-### Datos que no deben exponerse
-
-- Contraseñas y hashes.
-- Tokens JWT.
-- Claves de API.
-- Cadenas de conexión.
-- Identificadores personales reales.
-- Historial médico completo en vistas o respuestas no autorizadas.
-- Datos internos del modelo que no sean necesarios para explicar el resultado.
-
-### Uso responsable de resultados
-
-El sistema no deberá presentar predicciones o clusters como hechos clínicos definitivos. Los resultados deberán incluir contexto, limitaciones y, cuando corresponda, probabilidad o confianza.
-
-Un profesional de la salud deberá intervenir cuando exista una situación que requiera evaluación clínica, cuando los síntomas sean persistentes o preocupantes, cuando los valores se encuentren fuera de los rangos definidos por el proyecto o cuando el usuario considere que enfrenta una urgencia. VitalMind AI no deberá utilizarse para decidir tratamientos por cuenta propia.
-
-### Advertencia propuesta para la interfaz
-
-> **Esta plataforma brinda información orientativa y no sustituye una consulta médica. No modifiques tratamientos ni medicamentos con base únicamente en sus resultados. Ante síntomas preocupantes, persistentes o una posible urgencia, solicita atención de un profesional de la salud.**
+La política de uso responsable se desarrolla en [`docs/ethics.md`](./docs/ethics.md).
 
 ---
 
 ## 🧠 Uso responsable de IA generativa
 
-El equipo ha utilizado o planea utilizar ChatGPT, Gemini y servicios de IA en la nube como herramientas de apoyo.
+El proyecto documenta el uso de herramientas generativas como apoyo al desarrollo y utiliza **Mistral AI** como componente conversacional del producto.
 
-### Usos registrados
+Todo contenido o código apoyado por IA debe ser revisado por el equipo, contrastado con el proyecto real y probado cuando corresponda. No se utilizan herramientas generativas para inventar métricas, resultados ni evidencias.
 
-- Generación inicial y revisión de documentación.
-- Propuestas para la simulación del dataset.
-- Apoyo en el diseño del Data Warehouse.
-- Generación y revisión de ejemplos de código frontend y backend.
-- Propuestas de modelos y métricas.
-- Apoyo en pruebas y corrección de errores.
-- Revisión de estructura y redacción del README.
-
-### Validación
-
-Todo contenido generado con IA deberá:
-
-1. Ser comprendido por el equipo.
-2. Ser revisado por al menos un integrante responsable del módulo.
-3. Ser comparado con los requerimientos del proyecto.
-4. Ser probado cuando contenga código, datos o configuraciones.
-5. Ser corregido antes de integrarse.
-6. No utilizarse para inventar métricas, resultados o evidencias.
-7. Registrarse en `docs/ai-usage.md`.
-
-La aprobación del equipo no reemplaza las pruebas técnicas; los scripts, modelos, endpoints y resultados deberán validarse mediante ejecución y evidencias.
+Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 
 ---
 
@@ -673,86 +439,39 @@ La aprobación del equipo no reemplaza las pruebas técnicas; los scripts, model
 
 | Nombre | Matrícula | Rol |
 |---|---:|---|
-| **Yazmin Gutiérrez Hernández** | 230447 | Frontend y Experiencia de Usuario |
-| **Carlos Daniel García Pluma** | 230187 | Backend |
+| **Yazmin Gutierrez Hernandez** | 230447 | Frontend y experiencia de usuario |
+| **Carlos Daniel Garcia Pluma** | 230187 | Backend |
 | **Jennifer Bautista Barrios** | 230317 | Backend |
 | **Michelle Castro Otero** | 230881 | Inteligencia Artificial y Machine Learning |
 | **Obed Guzmán Flores** | 230142 | Documentación |
-| **Citlalli Pérez Dionicio** | 230237 | Control de Calidad (QA) e Integración |
+| **Citlalli Perez Dionicio** | 230237 | Control de Calidad (QA) e integración |
 
 ---
 
-## 📑 Documentación
-
-La documentación se mantiene en la carpeta `docs/` y se actualizará conforme avance el proyecto.
-
-| Documento | Ruta | Estado |
-|---|---|---|
-| Contexto | [`docs/context.md`](./docs/context.md) | Creado |
-| Metodología | `docs/methodology.md` | En desarrollo |
-| Propuestas supervisadas y no supervisadas | `docs/proposals.md` | En desarrollo |
-| Fuentes de datos | `docs/data-sources.md` | En desarrollo |
-| Diccionario de datos | `docs/data-dictionary.md` | Pendiente |
-| Reglas de simulación | `docs/simulation-rules.md` | Pendiente |
-| Data Warehouse | `docs/data-warehouse.md` | Pendiente |
-| Proceso ETL | `docs/etl-process.md` | Pendiente |
-| Evaluación de modelos | `docs/model-evaluation.md` | Pendiente |
-| Contratos de API | `docs/api-contracts.md` | Pendiente |
-| Pruebas | `docs/testing.md` | Pendiente |
-| Ética y privacidad | `docs/ethics.md` | Pendiente |
-| Uso de IA | `docs/ai-usage.md` | Pendiente |
-
----
 
 ## 📈 Resultados y limitaciones
 
 ### Resultados actuales
 
-El proyecto se encuentra en desarrollo. Por lo tanto:
+- Dataset sintético reproducible de 5,000 registros.
+- Dos mecanismos supervisados evaluados.
+- Clustering y detección de anomalías disponibles mediante FastAPI.
+- Backend con MySQL, JWT y Swagger.
+- Chatbot Mistral AI integrado a nivel de código y con evidencia de uso en pruebas de integración.
+- Dashboard con múltiples gráficas y actualización automática cada 30 segundos.
+- Aplicación móvil/web y módulo Wear OS en Kotlin.
 
-- No existen métricas finales aprobadas.
-- No se ha seleccionado todavía el modelo supervisado definitivo.
-- El modelo no supervisado se encuentra en definición.
-- Los endpoints y puertos definitivos no han sido publicados.
-- Las funcionalidades terminadas deberán confirmarse con cada responsable.
-- Los resultados se actualizarán después de las pruebas con los conjuntos de validación y prueba.
+### Limitaciones
 
-### Limitaciones actuales
+- Los modelos no tienen validación clínica.
+- El comportamiento con datos reales puede diferir del dataset sintético.
+- Las métricas disponibles desde Wear OS dependen del hardware y permisos.
+- El dashboard de la API utiliza polling; el servidor Socket.IO de extremo a extremo no forma parte del backend incluido en esta versión.
+- Los artefactos ML deben cargarse con versiones compatibles de scikit-learn.
 
-- El dataset será simulado.
-- La calidad del modelo dependerá de la coherencia de las reglas de simulación.
-- Los resultados no tendrán validez clínica.
-- El chatbot estará limitado a orientación general.
-- La arquitectura y los contratos pueden cambiar durante el MVP.
-- El número de registros y el balance de clases aún no están definidos.
-- No se contempla integración con expedientes médicos oficiales.
-- Las recomendaciones requerirán supervisión y límites claros.
-- La evaluación con usuarios reales queda fuera de esta etapa, salvo autorización y protocolo adecuado.
 
 ---
 
-## 🔗 Enlaces del proyecto
-
-| Recurso | Enlace |
-|---|---|
-| **Repositorio oficial** | [9A-IDGS-ECBD-VitalMind](https://github.com/KouDionicio/9A-IDGS-ECBD-VitalMind-) |
-| **Prototipo desplegado** | Pendiente |
-| **Figma** | Pendiente |
-| **Swagger/OpenAPI** | Pendiente |
-| **Tablero Jira** | Pendiente |
-| **Video demostrativo** | Pendiente |
-
----
-
-## 📄 Licencia
-
-La licencia todavía no ha sido aprobada por el equipo.
-
-Para un repositorio académico público se propone utilizar la **Licencia MIT**, debido a que permite usar, modificar y distribuir el software conservando el aviso de copyright y la licencia. Antes de declarar formalmente el proyecto bajo MIT deberá agregarse un archivo `LICENSE` en la raíz y contar con la aprobación del equipo.
-
-Mientras no exista el archivo `LICENSE`, el proyecto debe considerarse de **uso académico con licencia pendiente de definición**.
-
----
 
 ## 📚 Referencias
 
@@ -767,14 +486,15 @@ Mientras no exista el archivo `LICENSE`, el proyecto debe considerarse de **uso 
 
 ### 🧰 Tecnologías utilizadas
 
-#### 🎨 Frontend
+#### 🎨 Aplicación y frontend
 
 | Tecnología | Uso principal |
 |---|---|
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="28" alt="React"/> **React** | Desarrollo de interfaces y componentes reutilizables. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" width="28" alt="HTML5"/> **HTML5** | Estructura y organización del contenido web. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" width="28" alt="CSS3"/> **CSS3** | Diseño visual, estilos y adaptación responsiva. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" width="28" alt="JavaScript"/> **JavaScript** | Lógica e interacción de la aplicación en el navegador. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" width="28" alt="Kotlin"/> **Kotlin** | Desarrollo de la aplicación móvil y wearable. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/androidstudio/androidstudio-original.svg" width="28" alt="Android Studio"/> **Android Studio** | Entorno de desarrollo Android/Wear OS. |
+| **Wear OS** | Plataforma del smartwatch compatible. |
+| **Bluetooth** | Vinculación entre teléfono y smartwatch. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="28" alt="React"/> **React** | Interfaz web complementaria. |
 
 #### ⚙️ Backend y servicios
 
@@ -783,15 +503,14 @@ Mientras no exista el archivo `LICENSE`, el proyecto debe considerarse de **uso 
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" width="28" alt="Node.js"/> **Node.js** | Ejecución del servidor y lógica del Backend. |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" width="28" alt="Express.js"/> **Express.js** | Creación de rutas, controladores y servicios REST. |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" width="28" alt="FastAPI"/> **FastAPI** | Exposición de los modelos de Machine Learning mediante API. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/socketio/socketio-original.svg" width="28" alt="Socket.IO"/> **Socket.IO** | Comunicación en tiempo real entre Backend y Frontend. |
+| **Socket.IO Client** | Cliente configurado en el frontend web;  |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swagger/swagger-original.svg" width="28" alt="Swagger"/> **Swagger / OpenAPI** | Descripción y prueba de los endpoints de la API. |
 
 #### 🗄️ Bases de datos
 
 | Tecnología | Uso principal |
 |---|---|
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg" width="28" alt="MongoDB"/> **MongoDB** | Almacenamiento de información utilizada por la aplicación. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" width="28" alt="MySQL"/> **MySQL** | Gestión de la base operacional y propuesta del Data Mart. |
+| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" width="28" alt="MySQL"/> **MySQL** | Base operacional de la aplicación. |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" width="28" alt="MySQL Workbench"/> **MySQL Workbench** | Diseño, visualización y administración del modelo relacional. |
 
 #### 🤖 Datos e Inteligencia Artificial
@@ -819,7 +538,6 @@ Mientras no exista el archivo `LICENSE`, el proyecto debe considerarse de **uso 
 | Tecnología | Uso principal |
 |---|---|
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" width="28" alt="Figma"/> **Figma** | Diseño de interfaces y elaboración de prototipos. |
-| <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jira/jira-original.svg" width="28" alt="Jira"/> **Jira** | Gestión de épicas, historias, tareas y sprints. |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" width="28" alt="Git"/> **Git** | Control de versiones y seguimiento de cambios. |
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" width="28" alt="GitHub"/> **GitHub** | Administración del repositorio, ramas y Pull Requests. |
 | <img src="https://devicons.io/devicons/icons/microsoft-teams.svg" width="28" alt="Microsoft Teams"/> **Microsoft Teams** | Reuniones y comunicación formal del equipo. |

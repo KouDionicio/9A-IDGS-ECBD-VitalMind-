@@ -4,7 +4,7 @@
 
 Este documento identifica las fuentes de información utilizadas o contempladas por VitalMind AI, su función dentro del análisis y los principales resultados del análisis exploratorio de datos.
 
-El componente de Machine Learning se desarrolló principalmente con datos sintéticos. La base MySQL corresponde a la operación de la aplicación.
+El componente de Machine Learning se desarrolló principalmente con datos sintéticos. La base MySQL corresponde a la operación de la aplicación y el smartwatch Wear OS será una fuente de mediciones cuando se confirme el modelo y el mecanismo de acceso a los datos.
 
 ## 2. Fuentes identificadas
 
@@ -18,7 +18,7 @@ El componente de Machine Learning se desarrolló principalmente con datos sinté
 | MySQL operacional | Base relacional | MySQL | Disponible | Registros de la aplicación |
 | Aplicación Android | Captura de usuario | Kotlin / Android Studio | En desarrollo | Perfil, hábitos, síntomas, medicamentos y consulta |
 | Smartwatch | Wearable | Wear OS + Bluetooth | En desarrollo | Fuente física futura de mediciones compatibles |
-| API de salud del smartwatch | Fuente externa | Pendiente de confirmar | No definida | Acceso a sensores o métricas del reloj |
+| Wear OS / Health Services | Fuente del wearable | Código disponible | Métricas compatibles | Acceso a frecuencia cardiaca y actividad según permisos y sensores |
 
 
 ## 3. Archivos principales del dataset
@@ -173,6 +173,7 @@ flowchart LR
     M --> O[Modelos serializados]
     TE --> E[Evaluación final]
 ```
+
 
 
 ## 9. Calidad del archivo raw
@@ -343,7 +344,7 @@ Los CSV y MySQL tienen propósitos distintos:
 - el backend transforma registros operativos al contrato del ML Service;
 - el smartwatch Wear OS se comunica con la aplicación mediante Bluetooth;
 - todavía no se ha definido la API o SDK que expondrá las mediciones del reloj;
-
+- no existe evidencia de que los 5,000 registros sintéticos se hayan cargado a MySQL.
 
 ## 16. Privacidad
 
@@ -356,3 +357,22 @@ Los CSV no contienen nombres, correos, teléfonos ni identificadores reales. Aun
 - trazabilidad;
 - separación entre datos de prueba y datos reales.
 
+## 17. Limitaciones
+
+- Los datos son sintéticos.
+- La inferencia se representa mediante solicitudes JSON y reportes del microservicio; no se mantiene un CSV separado de inferencia.
+- El smartwatch aún no aporta datos al dataset utilizado para entrenamiento.
+- Saturación de oxígeno y pasos no forman parte del dataset actual.
+- La distribución puede cambiar con datos reales.
+
+## 18. Referencias internas
+
+- [`data-dictionary.md`](./data-dictionary.md)
+- [`simulation-rules.md`](./simulation-rules.md)
+- [`etl-process.md`](./etl-process.md)
+- [`model-evaluation.md`](./model-evaluation.md)
+- [`ethics.md`](./ethics.md)
+
+## 19. Conclusión
+
+Las fuentes disponibles cubren la simulación, preparación, EDA y evaluación del componente analítico. La separación entre dataset sintético, base operacional y futura fuente Wear OS evita presentar como integradas mediciones que todavía no forman parte del flujo real.

@@ -4,6 +4,7 @@
 
 Antes de elegir los mecanismos que se integrarán al prototipo se analizaron veinte posibilidades de extracción de conocimiento: diez supervisadas y diez no supervisadas. Cada propuesta se documenta con los campos mínimos solicitados por la guía oficial.
 
+Las ideas futuras no deben confundirse con componentes implementados. El proyecto ya cuenta con modelos supervisados, clustering, PCA y detección de anomalías, pero solamente el análisis supervisado dispone actualmente de un endpoint de inferencia integrado.
 
 ## 2. Criterios de viabilidad
 
@@ -194,9 +195,9 @@ Una propuesta se considera viable cuando:
 | Salida | Identificador de cluster y perfil estadístico. |
 | Algoritmo sugerido | K-Means; GMM y HDBSCAN como alternativas posibles. |
 | Evaluación | Silhouette, Davies-Bouldin, Calinski-Harabasz, inercia y estabilidad. |
-| Integración | Mecanismo seleccionado para un endpoint no supervisado futuro. |
+| Integración | Disponible mediante `POST /api/v1/wellbeing-cluster` en FastAPI. |
 | Riesgos | Convertir clusters en etiquetas personales o médicas. |
-| Estado | Implementada con K-Means (`k = 2`); endpoint pendiente. |
+| Estado | Implementada con K-Means (`k = 2`) y expuesta mediante `POST /api/v1/wellbeing-cluster`. |
 
 ### 4.2 Agrupación por patrones de síntomas y mediciones
 | Elemento | Descripción |
@@ -354,7 +355,53 @@ Una propuesta se considera viable cuando:
 | Reducción | PCA 2D | 65.58 % de varianza explicada en perfiles agregados |
 | Anomalías | Isolation Forest | Uso exploratorio; F1 externo = 0.1300 |
 
+## 6. Selección de dos mecanismos para despliegue
 
-## 10. Conclusión
+La guía solicita un mecanismo supervisado y uno no supervisado.
 
-Las veinte propuestas muestran opciones diferentes y separan con claridad clasificación, regresión, agrupamiento, reducción de dimensionalidad, anomalías y análisis de comportamiento. La selección de Regresión Logística y K-Means mantiene una combinación defendible para el Proyecto Integrador.
+### 6.1 Supervisado seleccionado
+
+**Clasificación preventiva de riesgo con Regresión Logística.**
+
+Razones:
+
+- mejor desempeño que Random Forest en la comparación disponible;
+- salida probabilística;
+- interpretación más sencilla;
+- pipeline serializado;
+- integración existente mediante `/api/v1/analyze`.
+
+### 6.2 No supervisado seleccionado
+
+**Segmentación de perfiles con K-Means.**
+
+Razones:
+
+- modelo serializado disponible;
+- comparación de `k = 2` a `k = 6`;
+- métricas internas documentadas;
+- perfiles agregados interpretables;
+- PCA disponible para visualización.
+
+Los mecanismos no supervisados seleccionados se exponen mediante `POST /api/v1/wellbeing-cluster` y `POST /api/v1/anomaly-detection`. Sus resultados se mantienen con carácter exploratorio.
+
+## 7. Integración con el producto
+
+El mecanismo supervisado se consume a través de FastAPI y el backend Node.js. La aplicación principal se desarrolla en Kotlin con Android Studio. El smartwatch utiliza Wear OS y se comunica con la aplicación mediante Bluetooth.
+
+
+## 8. Riesgos comunes
+
+- datos sintéticos;
+- sesgo introducido por reglas de simulación;
+- sobreinterpretación de probabilidades;
+- confusión entre cluster y categoría médica;
+- falsa equivalencia entre anomalía estadística y problema de salud;
+- uso de telemetría sin necesidad;
+- pérdida de privacidad en conversaciones;
+- nuevas distribuciones de datos cuando exista integración con un reloj real.
+
+
+## 9. Conclusión
+
+Las veinte propuestas muestran opciones diferentes y separan con claridad clasificación, regresión, agrupamiento, reducción de dimensionalidad, anomalías y análisis de comportamiento. 

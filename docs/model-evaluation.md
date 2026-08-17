@@ -12,9 +12,9 @@ Se utiliza una separación temporal:
 
 | Conjunto | Periodo | Registros |
 |---|---|---:|
-| Entrenamiento | 2026-07-26 a 2026-08-07 | 3,418 |
-| Validación | 2026-06-29 a 2026-08-08 | 731 |
-| Prueba | 2026-07-31 a 2026-09-12 | 851 |
+| Entrenamiento | 2026-04-01 a 2026-06-01 | 3,418 |
+| Validación | 2026-06-02 a 2026-06-14 | 731 |
+| Prueba | 2026-06-15 a 2026-06-29 | 851 |
 
 Las estadísticas de imputación se calculan únicamente con entrenamiento.
 
@@ -318,7 +318,7 @@ Criterios:
 Estado:
 
 ```text
-Seleccionado, pero sin endpoint no supervisado implementado
+Seleccionado y expuesto mediante `POST /api/v1/wellbeing-cluster`
 ```
 
 ## 9. Artefactos serializados
@@ -340,9 +340,20 @@ POST /api/v1/analyze
 
 La respuesta contiene clasificación de riesgo, bienestar, BMI, recomendaciones, versiones de modelo y reporte de faltantes.
 
+No se identificó un endpoint específico que cargue y ejecute `wellbeing_kmeans_pipeline.joblib`. Ese requisito debe implementarse antes de declarar completo el despliegue no supervisado.
 
+## 11. Estabilidad, velocidad e interpretabilidad
 
-## 11. Riesgos de interpretación
+Los reportes disponibles permiten evaluar calidad predictiva y separación de clusters. La documentación no declara como resultados medidos:
+
+- latencia comparativa de todos los candidatos;
+- estabilidad por múltiples semillas;
+- pruebas de carga;
+- calibración posterior a integración con datos reales.
+
+Por ello, esos criterios no deben marcarse como comprobados.
+
+## 12. Riesgos de interpretación
 
 - `risk_level` es una etiqueta sintética.
 - `wellbeing_score` deriva de una fórmula sintética.
@@ -352,7 +363,3 @@ La respuesta contiene clasificación de riesgo, bienestar, BMI, recomendaciones,
 - Isolation Forest no reproduce bien la etiqueta sintética de anomalía.
 - El desempeño puede cambiar con mediciones reales de Wear OS.
 
-
-## 12. Conclusión
-
-La evaluación disponible respalda la selección de Regresión Logística para el mecanismo supervisado y K-Means para el mecanismo no supervisado. Ridge Regression se conserva como componente adicional de estimación de bienestar. 

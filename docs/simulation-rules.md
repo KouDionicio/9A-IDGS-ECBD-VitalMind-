@@ -5,6 +5,7 @@
 Este documento describe la generación del dataset sintético utilizado en VitalMind AI. La simulación busca producir datos coherentes para practicar validación, ETL, EDA, entrenamiento, evaluación e inferencia.
 
 
+
 ## 2. Configuración general
 
 | Parámetro | Valor |
@@ -34,6 +35,8 @@ Se contemplan:
 - anomalías controladas;
 - ruido en objetivos;
 - casos cercanos a umbrales.
+
+
 
 ## 4. Perfiles
 
@@ -111,7 +114,7 @@ sleep_score =
 activity_score = min(exercise_minutes / 60, 1) × 100
 ```
 
-
+El generador contempla una penalización si el ejercicio supera 150 minutos, aunque el dataset entregado no alcanza ese caso.
 
 ### 8.3 Nutrición
 
@@ -313,15 +316,7 @@ Para reproducir el dataset se deben conservar:
 Cambiar cualquiera de estos elementos puede modificar el resultado.
 
 
-## 16. Limitaciones
 
-- perfiles artificiales;
-- relaciones definidas por reglas;
-- objetivos sintéticos;
-- ausencia de estacionalidad real;
-- ausencia de validación clínica;
+## 16. Conclusión
 
-
-## 17. Conclusión
-
-La simulación combina perfiles, variación, faltantes, anomalías, para producir un conjunto reproducible. Las reglas son suficientemente explícitas para defender el origen del dataset, pero no deben trasladarse a decisiones médicas.
+La simulación combina perfiles, variación, faltantes, anomalías y ruido de frontera para producir un conjunto reproducible. Las reglas son suficientemente explícitas para defender el origen del dataset, pero no deben trasladarse a decisiones médicas.

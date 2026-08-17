@@ -4,6 +4,7 @@
 
 VitalMind AI trabaja con información relacionada con salud, hábitos y bienestar. Este documento establece criterios para tratar esos datos y los resultados de Machine Learning de forma responsable dentro del proyecto académico.
 
+La aplicación es una herramienta de apoyo para seguimiento personal. No diagnostica, no prescribe medicamentos, no modifica tratamientos y no sustituye una valoración profesional.
 
 ## 2. Alcance
 
@@ -42,7 +43,6 @@ Los modelos actuales utilizan datos sintéticos de:
 - calidad del sueño.
 
 Cada variable se utiliza porque forma parte del problema analítico definido. Identificadores, variables exclusivas de simulación y puntajes que producirían fuga de información se excluyen del entrenamiento.
-
 
 ## 4. Principios
 
@@ -92,7 +92,7 @@ Controles mínimos:
 
 La plataforma confirmada es Wear OS y la comunicación con la aplicación Android es mediante Bluetooth.
 
-El modelo del smartwatch y la API o SDK de salud todavía no están definidos. Por ello:
+El modelo del smartwatch y la API o SDK de salud deben ser privados. Por ello:
 
 - no deben solicitarse permisos de sensores inexistentes;
 - no se debe afirmar que una métrica puede leerse hasta confirmar que el dispositivo la expone;
@@ -197,8 +197,16 @@ Debe:
 - no prescribir;
 - no enviar información personal innecesaria al proveedor.
 
+## 13. Dashboard y Socket.IO
 
-## 13. Preguntas obligatorias de la guía
+
+- solo deben emitirse datos necesarios;
+- la autenticación del canal debe revisarse;
+- la desconexión no debe exponer información;
+- los eventos no deben revelar datos de otras cuentas;
+- la actualización en tiempo real no debe confundirse con reentrenamiento del modelo.
+
+## 14. Preguntas obligatorias de la guía
 
 ### ¿Qué datos se utilizan?
 
@@ -228,7 +236,7 @@ Cuando se requiera interpretar un resultado de salud, validar una medición dudo
 
 Datos sintéticos, ausencia de validación clínica, objetivos construidos mediante reglas y falta de entrenamiento con mediciones reales de Wear OS.
 
-## 14. Anonimización y trazabilidad
+## 15. Anonimización y trazabilidad
 
 Los datasets usan identificadores sintéticos. En datos reales se deben reducir o seudonimizar identificadores cuando el análisis no necesite identidad.
 
@@ -243,7 +251,7 @@ model_versions
 
 para trazabilidad. Estos campos no se usan como predictores.
 
-## 15. Responsabilidades del equipo
+## 16. Responsabilidades del equipo
 
 El equipo debe:
 
@@ -257,6 +265,7 @@ El equipo debe:
 - validar cambios antes de presentarlos;
 - poder defender el funcionamiento del modelo y sus límites.
 
-## 16. Conclusión
+
+## 17. Conclusión
 
 El uso responsable depende tanto de la seguridad técnica como de la interpretación. Los datos y modelos pueden apoyar el seguimiento personal, pero no deben automatizar decisiones médicas ni presentar resultados sintéticos como evidencia clínica.

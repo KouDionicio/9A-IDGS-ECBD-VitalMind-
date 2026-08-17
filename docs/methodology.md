@@ -165,7 +165,6 @@ Scrum se utiliza como referencia de organización del trabajo. Las actividades s
 
 | Área | Herramienta o tecnología |
 |---|---|
-| Gestión | Jira |
 | Diseño | Figma |
 | Aplicación Android | Kotlin |
 | IDE | Android Studio |
@@ -243,13 +242,7 @@ Cuando cambia un requisito se debe:
 5. volver a ejecutar las pruebas relacionadas;
 6. mantener el estado real de la funcionalidad.
 
-## 12. Evidencias
 
-Una actividad solo debe marcarse como verificada cuando exista un archivo o resultado que la respalde. Las evidencias válidas pueden ser notebooks, datasets, reportes de métricas, modelos serializados, salidas de pruebas, documentación Swagger, capturas originales, video de demostración, registros de Jira e historial real de Git/GitHub.
-
-No deben crearse evidencias retrospectivas que parezcan originales.
-
-
-## 13. Conclusión
+## 12. Conclusión
 
 CRISP-DM es la metodología de análisis que da estructura al ciclo de datos, mientras que Scrum se utiliza para organizar el trabajo del equipo. La separación permite explicar con claridad qué parte corresponde a gestión y qué parte corresponde a extracción de conocimiento. La documentación registra tanto los componentes disponibles como los requisitos que todavía necesitan implementación o evidencia.

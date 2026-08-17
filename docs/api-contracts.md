@@ -1,38 +1,42 @@
 # Contratos de API — VitalMind AI
 
-## 1. Propósito
+## 1. Arquitectura de servicios
 
-Este documento describe los contratos observados entre la aplicación, el backend y el microservicio de Machine Learning, y los compara con los requisitos de endpoints inteligentes de la guía oficial.
+VitalMind AI utiliza dos niveles de servicio:
 
-Arquitectura de comunicación:
+- **API principal:** Node.js + Express, autenticación JWT, acceso a MySQL y módulos funcionales.
+- **ML Service:** FastAPI, carga de modelos serializados y endpoints de inferencia.
 
 ```text
-Smartwatch Wear OS
-    ↕ Bluetooth
-Aplicación Android en Kotlin
-    ↓ HTTP/JSON
-Backend Node.js / Express
-    ↓ SQL                 ↓ HTTP/JSON
-MySQL                 ML Service FastAPI
-                           ↓
-                    Modelos y chatbot
+Aplicación / Dashboard
+        ↓ HTTP JSON
+API principal (Express)
+   ↓ MySQL       ↓ HTTP
+Base de datos   ML Service (FastAPI)
+                    ↓
+          Modelos + recomendaciones + chatbot
 ```
 
-El smartwatch utiliza Wear OS y la aplicación se desarrolla en Kotlin con Android Studio. La comunicación reloj-aplicación se realiza mediante Bluetooth. 
+## 2. Direcciones locales
 
-## 2. Direcciones locales observadas
-
-| Servicio | Dirección |
+| Componente | Dirección habitual |
 |---|---|
-| Backend | `http://localhost:4000/api` |
-| Swagger backend | `http://localhost:4000/api/docs` |
+| API principal | `http://localhost:4000/api` |
+| Swagger API principal | `http://localhost:4000/api/docs` |
+| Dashboard de la API | `http://localhost:4000/dashboard` |
 | ML Service | `http://localhost:8000` |
-| OpenAPI FastAPI | `http://localhost:8000/docs` |
-
+| Swagger FastAPI | `http://localhost:8000/docs` |
+| ReDoc FastAPI | `http://localhost:8000/redoc` |
 
 ## 3. Autenticación
 
-El backend utiliza JWT y refresh tokens.
+La API principal utiliza access token y refresh token. Las rutas funcionales protegidas esperan:
+
+```http
+Authorization: Bearer <access_token>
+```
+
+Rutas de autenticación:
 
 ```http
 POST /api/auth/register
@@ -42,16 +46,19 @@ POST /api/auth/logout
 GET  /api/auth/me
 ```
 
-Rutas protegidas:
+La documentación funcional de VitalMind AI se centra en el usuario general y en el acceso a sus propios datos.
+
+## 4. API principal
+
+### 4.1 Salud del servicio
 
 ```http
-Authorization:<access_token>
+GET /api/health
 ```
 
+Devuelve disponibilidad de la API y marca temporal.
 
-## 4. Módulos del backend
-
-### 4.1 Medicamentos
+### 4.2 Medicamentos
 
 ```http
 GET    /api/medications
@@ -63,9 +70,7 @@ PATCH  /api/medications/:id/taken
 DELETE /api/medications/:id
 ```
 
-El manejo es digital. `PATCH /:id/taken` registra manualmente el estado de una toma.
-
-### 4.2 Hábitos
+### 4.3 Hábitos
 
 ```http
 GET    /api/habits
@@ -75,312 +80,215 @@ POST   /api/habits/increment
 DELETE /api/habits/:date
 ```
 
-Campos operacionales observados:
+### 4.4 Síntomas y mediciones
 
-```text
-water
-exercise
-sleep
-nutrition
-meditation
+```http
+GET    /api/symptoms
+GET    /api/symptoms/:id
+POST   /api/symptoms
+PUT    /api/symptoms/:id
+DELETE /api/symptoms/:id
 ```
 
-### 4.3 Síntomas y mediciones
+### 4.5 Notificaciones
 
-El esquema incluye:
-
-```text
-pain
-temperature
-systolic
-diastolic
-glucose
-weight
-heart_rate
-notes
+```http
+GET    /api/notifications
+GET    /api/notifications/unread-count
+POST   /api/notifications
+PATCH  /api/notifications/:id/read
+DELETE /api/notifications/:id
 ```
 
-Las migraciones agregan variables emocionales y fecha lógica necesarias para ML.
+### 4.6 Dashboard
 
-### 4.4 Notificaciones
+La API principal expone consultas protegidas para indicadores y series. Entre ellas:
 
-El backend incluye operaciones para avisos y conteo de no leídas.
+```http
+GET /api/dashboard/statistics
+GET /api/dashboard/mood-statistics
+GET /api/dashboard/pain-statistics
+GET /api/dashboard/glucose-history
+GET /api/dashboard/blood-pressure
+GET /api/dashboard/temperature-history
+GET /api/dashboard/water-consumption
+GET /api/dashboard/sleep-history
+GET /api/dashboard/physical-activity
+GET /api/dashboard/habits-weekly
+```
 
-
-## 5. Integración backend → ML
-
-El backend expone rutas de integración:
+### 4.7 Integración ML desde backend
 
 ```http
 POST /api/ml/analyze
 GET  /api/ml/health
 GET  /api/ml/models/info
-POST /api/ml/chat
-POST /api/ml/chat/analyze
 ```
 
-Estas rutas reúnen información operacional, transforman nombres de campos y consumen FastAPI.
+`POST /api/ml/analyze` reúne información del usuario en la base operacional y consume el análisis supervisado del ML Service.
 
-## 6. Endpoints del ML Service
+## 5. ML Service — FastAPI
 
-| Método | Endpoint | Función |
-|---|---|---|
-| GET | `/health` | Estado del servicio y carga de modelos |
-| GET | `/api/v1/models/info` | Información de modelos |
-| POST | `/api/v1/analyze` | Clasificación, regresión y recomendaciones |
-| POST | `/api/v1/chat` | Respuesta conversacional con contexto |
-| POST | `/api/v1/chat/analyze` | Análisis + chatbot |
+| Método | Endpoint | Función | Tipo |
+|---|---|---|---|
+| GET | `/health` | Estado del servicio y carga de artefactos | Sistema |
+| GET | `/api/v1/models/info` | Información de modelos supervisados | Sistema |
+| POST | `/api/v1/analyze` | Riesgo + bienestar + recomendaciones | Supervisado |
+| POST | `/api/v1/wellbeing-cluster` | Asignación de clúster de bienestar | No supervisado |
+| POST | `/api/v1/anomaly-detection` | Detección de observación atípica | No supervisado |
+| POST | `/api/v1/chat` | Respuesta conversacional con contexto | IA generativa |
+| POST | `/api/v1/chat/analyze` | Análisis + recomendaciones + chatbot | Combinado |
 
-## 7. Endpoint inteligente supervisado
+## 6. Análisis supervisado
 
-### 7.1 Propósito
+### `POST /api/v1/analyze`
 
-`POST /api/v1/analyze` ejecuta el mecanismo supervisado de clasificación de riesgo y, adicionalmente, el regresor de bienestar y recomendaciones.
-
-### 7.2 Método y ruta
-
-```http
-POST /api/v1/analyze
-```
-
-### 7.3 Modelo principal
-
-```text
-Regresión Logística
-versión documental: 1.0.0
-C = 10.0
-class_weight = balanced
-solver = lbfgs
-```
-
-El mismo flujo carga el regresor Ridge.
-
-### 7.4 Entrada
+Ejemplo de solicitud:
 
 ```json
 {
   "request_id": "REQ-ANALYSIS-001",
   "user_id": "USR_001",
-  "analysis_date": "2026-08-09",
+  "analysis_date": "2026-08-20",
   "features": {
-    "age": 25,
-    "height_cm": 165,
-    "weight_kg": 65,
-    "water_glasses": 5,
-    "exercise_minutes": 20,
-    "sleep_hours": 6.5,
+    "age": 30,
+    "height_cm": 170,
+    "weight_kg": 72,
+    "water_glasses": 6,
+    "exercise_minutes": 30,
+    "sleep_hours": 7,
     "healthy_meals_count": 2,
-    "meditation_minutes": 5,
+    "meditation_minutes": 8,
     "pain": 2,
     "temperature_c": 36.7,
     "systolic_mmhg": 120,
-    "diastolic_mmhg": 80,
+    "diastolic_mmhg": 78,
     "glucose_mg_dl": 95,
-    "heart_rate_bpm": 75,
-    "mood": "regular",
-    "stress_level": 6,
-    "energy_level": 5,
-    "sleep_quality": 5
+    "heart_rate_bpm": 74,
+    "mood": "bien",
+    "stress_level": 4,
+    "energy_level": 7,
+    "sleep_quality": 7
   }
 }
 ```
 
-### 7.5 Campos indispensables
+La respuesta incluye clasificación `low`, `medium` o `high`, confianza, probabilidades, `wellbeing_score`, BMI calculado, recomendaciones, versiones de modelo y aviso de limitación.
 
-```text
-age
-height_cm
-weight_kg
-mood
-stress_level
-energy_level
-sleep_quality
-```
+## 7. Clustering no supervisado
 
-Si falta alguno, FastAPI rechaza la solicitud con validación 422.
+### `POST /api/v1/wellbeing-cluster`
 
-### 7.6 Campos imputables
+Recibe un perfil agregado con 20 características, entre ellas edad, estatura, peso, BMI, promedios de hábitos, mediciones, estado emocional y número de registros.
 
-```text
-water_glasses
-exercise_minutes
-sleep_hours
-healthy_meals_count
-meditation_minutes
-pain
-temperature_c
-systolic_mmhg
-diastolic_mmhg
-glucose_mg_dl
-heart_rate_bpm
-```
-
-La imputación usa estadísticas aprendidas únicamente con entrenamiento.
-
-### 7.7 `mood`
-
-Valores aceptados:
-
-```text
-muy mal
-mal
-regular
-bien
-muy bien
-```
-
-### 7.8 Salida
-
-Estructura representativa:
+Ejemplo parcial:
 
 ```json
 {
-  "request_id": "REQ-ANALYSIS-001",
+  "request_id": "REQ-CL-001",
   "user_id": "USR_001",
-  "analysis_date": "2026-08-09",
-  "results": {
-    "risk_classification": {
-      "risk_level": "medium",
-      "confidence": 0.72,
-      "probabilities": {
-        "low": 0.18,
-        "medium": 0.72,
-        "high": 0.10
-      }
-    },
-    "wellbeing": {
-      "score": 56.69,
-      "level": "medium"
-    },
-    "calculated_bmi": 23.88,
-    "recommendations": []
+  "features": {
+    "age": 30,
+    "height_cm": 170,
+    "weight_kg": 72,
+    "bmi": 24.91,
+    "water_glasses_mean": 6,
+    "exercise_minutes_mean": 30,
+    "sleep_hours_mean": 7,
+    "healthy_meals_count_mean": 2.5,
+    "meditation_minutes_mean": 8,
+    "pain_mean": 2,
+    "temperature_c_mean": 36.7,
+    "systolic_mmhg_mean": 120,
+    "diastolic_mmhg_mean": 78,
+    "glucose_mg_dl_mean": 95,
+    "heart_rate_bpm_mean": 74,
+    "stress_level_mean": 4,
+    "energy_level_mean": 7,
+    "sleep_quality_mean": 7,
+    "mood_score_mean": 4,
+    "records_count": 20
+  }
+}
+```
+
+Respuesta:
+
+```json
+{
+  "request_id": "REQ-CL-001",
+  "user_id": "USR_001",
+  "result": {
+    "cluster_id": 1,
+    "profile": "hábitos relativamente equilibrados",
+    "distance_to_centroid": 4.2736
   },
-  "model_versions": {
-    "risk_classifier": "1.0.0",
-    "wellbeing_regressor": "1.0.0"
-  },
-  "missing_data_report": {
-    "required_missing": [],
-    "imputed_fields": [],
-    "warnings": []
-  },
+  "model_version": "1.0.0",
   "disclaimer": "Resultados preventivos generados con modelos entrenados sobre datos sintéticos. No representan un diagnóstico clínico."
 }
 ```
 
-### 7.9 Errores
+## 8. Detección no supervisada de anomalías
 
-| Código | Situación |
-|---:|---|
-| 200 | Solicitud procesada |
-| 400 | Error traducido por backend o solicitud no construible |
-| 401 | Autenticación inválida en rutas protegidas del backend |
-| 422 | Campo, tipo, categoría o rango inválido |
-| 503 | ML Service o proveedor conversacional no disponible |
-| 500 | Error interno |
+### `POST /api/v1/anomaly-detection`
 
+Recibe un registro con variables de perfil, hábitos, mediciones y estado emocional. Devuelve `is_anomaly`, la predicción cruda del modelo y sus puntuaciones.
 
-
-## 8. Variables del análisis supervisado
-
-| Variable | Tipo | Unidad / escala |
-|---|---|---|
-| `age` | Entero | años |
-| `height_cm` | Decimal | cm |
-| `weight_kg` | Decimal | kg |
-| `water_glasses` | Decimal | vasos |
-| `exercise_minutes` | Decimal | min |
-| `sleep_hours` | Decimal | h |
-| `healthy_meals_count` | Decimal | conteo |
-| `meditation_minutes` | Decimal | min |
-| `pain` | Decimal | 0-10 |
-| `temperature_c` | Decimal | °C |
-| `systolic_mmhg` | Decimal | mmHg |
-| `diastolic_mmhg` | Decimal | mmHg |
-| `glucose_mg_dl` | Decimal | mg/dL |
-| `heart_rate_bpm` | Decimal | bpm |
-| `mood` | Texto | catálogo |
-| `stress_level` | Decimal | 1-10 |
-| `energy_level` | Decimal | 1-10 |
-| `sleep_quality` | Decimal | 1-10 |
-
-`bmi` se calcula dentro del ML Service.
-
-## 9. Mapeo backend → ML
-
-| Backend / MySQL | ML Service |
-|---|---|
-| `habit_logs.water` | `water_glasses` |
-| `habit_logs.exercise` | `exercise_minutes` |
-| `habit_logs.sleep` | `sleep_hours` |
-| `habit_logs.nutrition` | `healthy_meals_count` |
-| `habit_logs.meditation` | `meditation_minutes` |
-| `symptom_logs.temperature` | `temperature_c` |
-| `symptom_logs.systolic` | `systolic_mmhg` |
-| `symptom_logs.diastolic` | `diastolic_mmhg` |
-| `symptom_logs.glucose` | `glucose_mg_dl` |
-| `symptom_logs.heart_rate` | `heart_rate_bpm` |
-| `symptom_logs.weight` | `weight_kg` |
-
-## 10. Chatbot
-
-### `POST /api/v1/chat`
-
-Recibe un mensaje y contexto previamente calculado.
+Ejemplo de respuesta:
 
 ```json
 {
-  "request_id": "REQ-CHAT-001",
+  "request_id": "REQ-AN-001",
   "user_id": "USR_001",
-  "analysis_date": "2026-08-09",
-  "message": "¿Qué puedo hacer para mejorar mi bienestar?",
-  "context": {
-    "risk_level": "medium",
-    "wellbeing_score": 68.4,
-    "wellbeing_level": "medium",
-    "bmi": 26.1,
-    "recommendations": []
-  }
+  "result": {
+    "is_anomaly": false,
+    "raw_prediction": 1,
+    "decision_score": 0.105904,
+    "anomaly_score": -0.105904,
+    "interpretation": "Registro dentro del patrón estadístico esperado."
+  },
+  "model_version": "1.0.0",
+  "disclaimer": "Resultados preventivos generados con modelos entrenados sobre datos sintéticos. No representan un diagnóstico clínico."
 }
 ```
 
-### `POST /api/v1/chat/analyze`
+## 9. Validación de entradas
 
-Ejecuta primero el análisis estructurado y después genera la respuesta conversacional.
+FastAPI utiliza modelos Pydantic con límites por campo y `extra="forbid"` en las solicitudes de clustering y anomalías. La API principal utiliza `express-validator` en módulos como autenticación, hábitos, síntomas y análisis ML.
 
-El chatbot no debe inventar mediciones ni emitir diagnóstico.
+## 10. Errores
 
+| Código | Uso |
+|---:|---|
+| 200 | Solicitud procesada |
+| 400 | Solicitud inválida gestionada por la API principal |
+| 401 | Autenticación ausente o inválida |
+| 403 | Operación no autorizada |
+| 404 | Recurso inexistente |
+| 422 | Validación de FastAPI/Pydantic |
+| 500 | Error interno controlado |
+| 503 | Servicio externo no disponible, cuando aplique |
 
-## 11. Dashboard y tiempo real
+## 11. Swagger y OpenAPI
 
-El dashboard entregado:
+- Express publica Swagger en `/api/docs`.
+- FastAPI publica `/docs`, `/redoc` y `/openapi.json`.
+- La colección `vitalmind-api/docs/VitalMind.postman_collection.json` complementa las pruebas manuales de la API principal.
 
-- consume la API;
-- usa Chart.js;
-- muestra indicadores y gráficas;
-- realiza polling cada 30 segundos.
+## 12. Tiempo real
 
+El frontend web contiene un cliente `socket.io-client` y escucha el evento `notification:new`. En la API principal incluida en esta versión no aparece la dependencia ni la creación de un servidor Socket.IO. El dashboard independiente servido en `/dashboard` actualiza sus datos mediante `fetch` y un intervalo de 30 segundos. Por tanto, la actualización automática está implementada mediante polling y la comunicación push por Socket.IO debe considerarse una capacidad no validada en esta versión del backend.
 
+## 13. Seguridad
 
+- JWT para autenticación.
+- bcrypt para hash de contraseñas.
+- Helmet y CORS configurable.
+- Variables de entorno para secretos.
+- Validación centralizada de entradas.
+- Manejo uniforme de errores.
+- HTTPS/TLS requerido fuera del entorno local.
 
-## 12. Seguridad
+## 14. Límites
 
-- credenciales en variables de entorno;
-- JWT en rutas protegidas;
-- validación de entrada;
-- CORS configurable;
-- Helmet;
-- errores centralizados;
-- sin secretos en respuestas;
-- HTTPS/TLS fuera del entorno local;
-- ML Service sin acceso directo a MySQL;
-- acceso de cada cuenta a sus propios datos.
-
-
-## 13. Documentos relacionados
-
-- [`context.md`](./context.md)
-- [`model-evaluation.md`](./model-evaluation.md)
-- [`testing.md`](./testing.md)
-- [`ethics.md`](./ethics.md)
-- [`ai-usage.md`](./ai-usage.md)
+Las salidas de los modelos se basan en datos sintéticos. `risk_level`, `wellbeing_score`, clústeres y anomalías son resultados técnicos del prototipo y no equivalen a diagnóstico, pronóstico clínico ni indicación terapéutica.

@@ -57,6 +57,7 @@ Los valores y rangos corresponden a datos sintéticos del proyecto. No represent
 | `glucose_mg_dl` | Entero discreto | mg/dL | Glucosa sintética | 50 a 147 | Generador / imputación | Numérico; faltante permitido en raw | Predictor |
 | `heart_rate_bpm` | Entero discreto | bpm | Frecuencia cardiaca sintética | 44 a 155 | Generador / imputación | Numérico; faltante permitido en raw | Predictor |
 
+El dataset no incluye saturación de oxígeno ni pasos. Esas variables pertenecen al alcance del producto cuando exista un smartwatch Wear OS y un mecanismo confirmado para obtenerlas.
 
 ## 7. Estado emocional y percepción
 
@@ -232,6 +233,7 @@ energy_level
 sleep_quality
 ```
 
+No se usan identificadores, fechas, `profile_type`, etiquetas auxiliares ni puntajes derivados como predictores.
 
 ## 16. Variables del modelo K-Means
 
@@ -274,3 +276,6 @@ records_count
 - Sin variables de fuga en el pipeline.
 - Estadísticas de imputación aprendidas solo con entrenamiento para evaluación final.
 
+## 18. Nota de uso
+
+Este diccionario documenta la estructura técnica del dataset. Las categorías, rangos y reglas fueron creados para simulación y no deben trasladarse a la aplicación como criterios clínicos sin validación externa.

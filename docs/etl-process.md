@@ -6,22 +6,25 @@ Este documento describe el proceso reproducible utilizado para extraer, validar,
 
 ## 2. Flujo ETL
 
-```mermaidCon base en todos los archivos, documentación y guía que ya analizaste del proyecto **VitalMind AI**, crea una presentación universitaria completa, profesional y visualmente atractiva para exponer el proyecto.
+```mermaid
+flowchart LR
+    A[Generación sintética] --> B[vitalmind_dataset_raw.csv]
+    B --> C[Validación]
+    C --> D[Limpieza y tipos]
+    D --> E[Imputación general]
+    E --> F[Derivados]
+    F --> G[vitalmind_dataset_processed.csv]
 
-
-El proyecto consiste en una aplicación de monitoreo de salud conectada con smartwatch, dirigida a usuarios generales. Permite recopilar, registrar, consultar y analizar datos como frecuencia cardiaca, presión arterial cuando exista una fuente compatible, oxigenación, actividad, sueño, hábitos y medicamentos. La aplicación no realiza diagnósticos médicos; los resultados de IA son preventivos e informativos.
-
-Información técnica confirmada:
-
-* Smartwatch con **Wear OS**.
-* Aplicación desarrollada con **Kotlin**.
-* Desarrollo realizado en **Android Studio**.
-* Sincronización entre smartwatch y aplicación mediante **Bluetooth**.
-* Backend y microservicio de Inteligencia Artificial desarrollados con **FastAPI**.
-* Base de datos utilizada por el proyecto según la documentación analizada.
-* Chatbot integrado con **Mistral AI**, modelo `mistral-small-latest`.
-* Los modelos fueron entrenados y evaluados con datos sintéticos.
-
+    B --> H[Separación temporal]
+    H --> I[Train]
+    H --> J[Validation]
+    H --> K[Test]
+    I --> L[Estadísticas de imputación]
+    L --> M[Transformación coherente]
+    M --> N[Entrenamiento]
+    J --> N
+    N --> O[Modelos serializados]
+    K --> P[Evaluación final]
 ```
 
 ## 3. Scripts identificados
@@ -70,6 +73,7 @@ Características:
 | Problemas previstos | Nulos controlados y anomalías controladas |
 | Datos personales reales | No |
 
+No se edita manualmente el archivo raw para hacerlo coincidir con los modelos.
 
 ## 5. Transformación general
 
@@ -155,7 +159,7 @@ Resultado:
 - 0 nulos;
 - 0 duplicados.
 
-
+Esta carga es a un archivo analítico procesado. No se afirma que el dataset completo se cargue a MySQL ni al Data Mart propuesto.
 
 ## 7. Bitácora de transformaciones
 
@@ -183,6 +187,7 @@ Resultado:
 | `record_id` únicos | 5,000 | 5,000 |
 | Anomalías sintéticas marcadas | 150 | 150 |
 
+No se eliminan filas para resolver los faltantes.
 
 ## 9. Preparación temporal para modelado
 
@@ -279,6 +284,7 @@ data/modeling/validation_model.csv
 data/modeling/test_model.csv
 ```
 
+Para inferencia, el proyecto utiliza solicitudes JSON controladas y ejemplos conservados en `reports/inference/`. La arquitectura no requiere un CSV adicional para ejecutar el microservicio.
 
 ## 14. Carga de modelos
 
@@ -306,8 +312,20 @@ symptom_logs.systolic   -> systolic_mmhg
 symptom_logs.heart_rate -> heart_rate_bpm
 ```
 
+## 16. Relación con Wear OS
 
-## 16. Validaciones
+La aplicación se desarrolla en Kotlin y el smartwatch usa Wear OS con sincronización Bluetooth. El ETL actual no recibe datos del reloj. Cuando se confirme la API o SDK de salud, será necesario documentar:
+
+- formato de origen;
+- unidades;
+- frecuencia de muestreo;
+- zona horaria;
+- duplicados;
+- calidad;
+- procedencia;
+- reglas de agregación.
+
+## 17. Validaciones
 
 - integridad de columnas;
 - tipos;
@@ -321,6 +339,23 @@ symptom_logs.heart_rate -> heart_rate_bpm
 - transformaciones reproducibles;
 - mismo pipeline en entrenamiento e inferencia.
 
-## 17. Conclusión
+## 18. Limitaciones
 
-El proceso conserva los datos originales, documenta las transformaciones y separa la preparación general de la preparación utilizada para modelado. La división temporal previa a la imputación reduce fuga de información y permite reproducir la evaluación. Los elementos pendientes de la guía son la carga del Data Mart y un conjunto formal de inferencia.
+- Datos sintéticos.
+- No existe carga confirmada al Data Mart dimensional.
+- No existe un archivo formal de inferencia separado.
+- No se incorporan datos Wear OS al pipeline actual.
+- Un entorno de producción requerirá monitoreo de deriva y calidad.
+
+## 19. Referencias internas
+
+- [`data-sources.md`](./data-sources.md)
+- [`data-dictionary.md`](./data-dictionary.md)
+- [`simulation-rules.md`](./simulation-rules.md)
+- [`data-warehouse.md`](./data-warehouse.md)
+- [`model-evaluation.md`](./model-evaluation.md)
+- [`testing.md`](./testing.md)
+
+## 20. Conclusión
+
+El proceso conserva los datos originales, documenta las transformaciones y separa la preparación general de la preparación utilizada para modelado. La división temporal previa a la imputación reduce fuga de información y permite reproducir la evaluación. El entrenamiento utiliza conjuntos temporales separados y la inferencia opera mediante contratos JSON; el Data Mart queda documentado como capa analítica de referencia independiente de la base operacional.
