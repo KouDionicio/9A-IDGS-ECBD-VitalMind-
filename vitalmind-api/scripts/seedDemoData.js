@@ -3,7 +3,7 @@
  * Inserta registros REALES (no mocks del frontend) directo en MySQL para
  * que el dashboard tenga algo que graficar. Usa el primer usuario que
  * encuentre en la tabla `users` (o el que se pase por argumento --userId).
- *
+ * 
  * Uso:
  *   node scripts/seedDemoData.js
  *   node scripts/seedDemoData.js --userId=3

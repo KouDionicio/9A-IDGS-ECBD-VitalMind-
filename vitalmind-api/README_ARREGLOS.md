@@ -11,7 +11,6 @@ de tu lado (que no puedo hacer yo porque corren en tu máquina/tu MySQL).
 npm install
 pip install pymysql
 ```
-
 ### 2) Configura tu .env
 Copia `.env.example` a `.env` y pon tu password real de MySQL. Asegúrate de
 que `PORT` no choque con otro proceso que ya esté corriendo (ej. si tienes

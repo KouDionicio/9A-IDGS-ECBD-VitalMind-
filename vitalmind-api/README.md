@@ -1,5 +1,4 @@
 # VitalMind API
-
 API REST profesional para **VitalMind IA**, construida sobre el esquema MySQL existente (`vitalmind`), sin modificar su estructura.
 
 ## Estado del desarrollo
