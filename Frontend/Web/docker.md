@@ -90,3 +90,5 @@ Actualmente, el frontend cuenta con una versión dockerizada para ejecución med
 ## Objetivo
 
 El frontend permite proporcionar una interfaz centralizada para las funcionalidades de **VitalMind**, facilitando la interacción del usuario con la plataforma y con los servicios backend que forman parte del sistema.
+
+// COMiit 
