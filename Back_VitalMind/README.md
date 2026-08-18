@@ -19,7 +19,6 @@ API para VitalMind construida con Express y MySQL. Todos los datos persistentes 
 npm install
 npm run dev
 ```
-
 ## Endpoints
 
 - `GET /api/health`
