@@ -28,7 +28,7 @@
 
 ### Evidencia
 
-![Backend conectado a MySQL](evidence/02-backend-mysql.png)
+![Backend conectado a MySQL](./evidence/02-backend-mysql.png)
 
 ---
 
@@ -40,7 +40,7 @@
 
 ### Evidencia
 
-![Estructura users](evidence/03-users-schema.png)
+![Estructura users](./evidences/03-users-schema.png)
 
 ---
 
