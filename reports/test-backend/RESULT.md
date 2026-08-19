@@ -52,7 +52,7 @@
 
 ### Evidencia
 
-![Error de validación](evidence/04-validation-error.png)
+![Error de validación](./evidences/04-validation-error.png)
 
 ---
 
