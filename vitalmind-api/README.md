@@ -1,4 +1,5 @@
 # VitalMind API
+
 API REST profesional para **VitalMind IA**, construida sobre el esquema MySQL existente (`vitalmind`), sin modificar su estructura.
 
 ## Estado del desarrollo
@@ -16,7 +17,7 @@ API REST profesional para **VitalMind IA**, construida sobre el esquema MySQL ex
 - [x] Fase 10 — Reportes (PDF / Excel / CSV)
 - [x] Fase 11 — Documentación (Swagger, README, colección de Postman)
 - [x] Catálogo de los 20 mecanismos de ML (documentación + heurística de prioridad de síntomas)
-- [] Fase 12 — Dashboard frontend con gráficas dinámicas (Chart.js/Recharts) — siguiente entrega
+- [ ] Fase 12 — Dashboard frontend con gráficas dinámicas (Chart.js/Recharts) — siguiente entrega
 
 ## Requisitos
 

@@ -104,8 +104,56 @@ async function bloodPressureHistory({ userId, days = 30 } = {}) {
 async function temperatureHistory({ userId, days = 30 } = {}) {
   return symptomLogRepository.temperatureHistory({ userId, days });
 }
+async function execute(input) {
+  const pain = Number(input.pain || 0);
+  const temperature = Number(input.temperature || 36.5);
+  const heartRate = Number(input.heartRate || 72);
 
+  const painNorm = Math.min(pain / 10, 1);
+
+  const tempExcess = Math.max(
+    0,
+    (temperature - 37.5) / 3
+  );
+
+  const hrExcess = Math.max(
+    0,
+    (heartRate - 100) / 60
+  );
+
+  const score = Math.min(
+    1,
+    0.5 * painNorm +
+    0.3 * Math.min(tempExcess, 1) +
+    0.2 * Math.min(hrExcess, 1)
+  );
+
+  let priority = 'baja';
+
+  if (score >= 0.67) {
+    priority = 'alta';
+  } else if (score >= 0.34) {
+    priority = 'media';
+  }
+
+  return {
+    mechanism: 'symptom-priority',
+    type: 'supervised',
+
+    input: {
+      pain,
+      temperature,
+      heartRate,
+    },
+
+    result: {
+      score: Number(score.toFixed(2)),
+      priority,
+    },
+  };
+}
 module.exports = {
   list, getById, create, update, remove,
   moodStatistics, painStatistics, glucoseHistory, bloodPressureHistory, temperatureHistory,
+  execute
 };

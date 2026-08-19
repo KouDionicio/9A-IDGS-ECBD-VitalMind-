@@ -23,5 +23,72 @@ const modelsInfo = asyncHandler(async (req, res) => {
   const info = await mlIntegrationService.modelsInfo();
   res.json({ success: true, data: info });
 });
+async function chat(req, res, next) {
+  try {
+    const authenticatedUserId =
+      req.user.id;
 
-module.exports = { analyze, health, modelsInfo };
+    const requestedUserId =
+      req.body.userId;
+
+    const userId =
+      req.user.role === 'admin' ||
+      req.user.role === 'caregiver'
+        ? requestedUserId ||
+          authenticatedUserId
+        : authenticatedUserId;
+
+    const result =
+      await mlIntegrationService.chat({
+        userId,
+        analysisDate:
+          req.body.analysisDate,
+        message:
+          req.body.message,
+        context:
+          req.body.context,
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+async function chatAnalyze(req, res, next) {
+  try {
+    const authenticatedUserId =
+      req.user.id;
+
+    const requestedUserId =
+      req.body.userId;
+
+    const userId =
+      req.user.role === 'admin' ||
+      req.user.role === 'caregiver'
+        ? requestedUserId ||
+          authenticatedUserId
+        : authenticatedUserId;
+
+    const result =
+      await mlIntegrationService.chatAnalyze({
+        userId,
+        analysisDate:
+          req.body.analysisDate,
+        message:
+          req.body.message,
+      });
+
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+module.exports = {chat, chatAnalyze, analyze, health, modelsInfo };

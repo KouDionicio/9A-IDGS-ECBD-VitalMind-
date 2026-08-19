@@ -20,7 +20,11 @@ const getById = asyncHandler(async (req, res) => {
 });
 
 const create = asyncHandler(async (req, res) => {
-  const payload = { ...req.body, userId: req.body.userId || req.user.id };
+  const payload = {
+    ...req.body,
+    timeLabel: req.body.timeLabel || req.body.time_label || req.body.time,
+    userId: req.body.userId || req.user.id,
+  };
   const med = await medicationService.create(req.user.id, payload);
   res.status(201).json({ success: true, message: 'Medicamento creado', data: med });
 });

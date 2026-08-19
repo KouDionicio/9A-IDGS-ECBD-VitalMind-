@@ -20,13 +20,13 @@ const router = Router();
  *             type: object
  *             required: [fullName, email, password]
  *             properties:
- *               fullName: { type: string, example: "Jennifer Bautista" }
- *               email: { type: string, example: "jennifer@vitalmind.com" }
- *               password: { type: string, example: "Vitalmind2026" }
- *               age: { type: integer, example: 22 }
- *               role: { type: string, enum: [admin, patient, caregiver], example: "patient" }
+ *               fullName: { type: string, example: "María López García" }
+ *               email: { type: string, example: "maria.lopez@vitalmind.local" }
+ *               password: { type: string, example: "Salud2026!" }
+ *               age: { type: integer, example: 34 }
  *     responses:
  *       201: { description: Usuario registrado, incluye accessToken y refreshToken }
+ *     security: []
  */
 router.post('/register', registerRules, validateRequest, authController.register);
 
@@ -44,10 +44,11 @@ router.post('/register', registerRules, validateRequest, authController.register
  *             type: object
  *             required: [email, password]
  *             properties:
- *               email: { type: string, example: "jennifer@vitalmind.com" }
- *               password: { type: string, example: "Vitalmind2026" }
+ *               email: { type: string, example: "admin@vitalmind.com" }
+ *               password: { type: string, example: "Admin123!" }
  *     responses:
  *       200: { description: Login exitoso, incluye accessToken y refreshToken }
+ *     security: []
  */
 router.post('/login', loginRules, validateRequest, authController.login);
 
@@ -66,6 +67,7 @@ router.post('/login', loginRules, validateRequest, authController.login);
  *             required: [refreshToken]
  *             properties:
  *               refreshToken: { type: string }
+ *     security: []
  */
 router.post('/refresh', refreshRules, validateRequest, authController.refresh);
 
@@ -82,6 +84,7 @@ router.post('/refresh', refreshRules, validateRequest, authController.refresh);
  *             type: object
  *             properties:
  *               refreshToken: { type: string }
+ *     security: []
  */
 router.post('/logout', authController.logout);
 

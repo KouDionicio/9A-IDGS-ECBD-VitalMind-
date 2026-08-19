@@ -26,5 +26,14 @@ router.post('/analyze', analyzeRules, validateRequest, mlController.analyze);
 
 router.get('/health', mlController.health);
 router.get('/models/info', mlController.modelsInfo);
+router.post(
+  '/chat',
+  mlController.chat
+);
+
+router.post(
+  '/chat/analyze',
+  mlController.chatAnalyze
+);
 
 module.exports = router;

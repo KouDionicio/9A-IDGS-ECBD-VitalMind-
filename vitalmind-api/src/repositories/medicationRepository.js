@@ -52,7 +52,8 @@ async function remove(id) {
 async function markTaken(medicationId, userId, taken = true) {
   await pool.query('UPDATE medications SET taken = :taken WHERE id = :id', { id: medicationId, taken: taken ? 1 : 0 });
   const [result] = await pool.query(
-    `INSERT INTO medication_logs (medication_id, user_id, taken, taken_at) VALUES (:medicationId, :userId, :taken, NOW())`,
+    `INSERT INTO medication_logs (medication_id, user_id, taken, taken_date, taken_time)
+     VALUES (:medicationId, :userId, :taken, CURDATE(), CURTIME())`,
     { medicationId, userId, taken: taken ? 1 : 0 }
   );
   return result.insertId;
@@ -65,7 +66,8 @@ async function getLogs({ medicationId, userId, limit = 50, offset = 0 } = {}) {
   if (userId) { conditions.push('user_id = :userId'); params.userId = userId; }
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
   const [rows] = await pool.query(
-    `SELECT * FROM medication_logs ${where} ORDER BY taken_at DESC LIMIT :limit OFFSET :offset`,
+    `SELECT * FROM medication_logs ${where}
+     ORDER BY taken_date DESC, taken_time DESC LIMIT :limit OFFSET :offset`,
     params
   );
   return rows;
@@ -78,17 +80,17 @@ async function countByType() {
 
 async function countTakenToday() {
   const [rows] = await pool.query(
-    `SELECT COUNT(*) as total FROM medication_logs WHERE DATE(taken_at) = CURDATE() AND taken = 1`
+    `SELECT COUNT(*) as total FROM medication_logs WHERE taken_date = CURDATE() AND taken = 1`
   );
   return rows[0].total;
 }
 
 async function takenByDay({ days = 14 } = {}) {
   const [rows] = await pool.query(
-    `SELECT DATE(taken_at) as day, COUNT(*) as total, GROUP_CONCAT(id) as log_ids
+    `SELECT taken_date as day, COUNT(*) as total, GROUP_CONCAT(id) as log_ids
      FROM medication_logs
-     WHERE taken = 1 AND taken_at >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
-     GROUP BY DATE(taken_at) ORDER BY day ASC`,
+     WHERE taken = 1 AND taken_date >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
+     GROUP BY taken_date ORDER BY day ASC`,
     { days }
   );
   return rows;

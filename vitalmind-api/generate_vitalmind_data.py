@@ -41,7 +41,7 @@ import pymysql
 DB_HOST = "127.0.0.1"
 DB_PORT = 3306
 DB_USER = "root"
-DB_PASSWORD = "Vitalmind2026"       # <-- pon aqui tu password real de MySQL
+DB_PASSWORD = "1234"       # <-- pon aqui tu password real de MySQL
 DB_NAME = "vitalmind"
 
 NUM_USERS = 5000                    # cuantos usuarios nuevos generar

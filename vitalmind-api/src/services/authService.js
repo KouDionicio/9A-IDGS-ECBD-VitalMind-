@@ -36,7 +36,7 @@ async function issueTokenPair(user) {
   return { accessToken, refreshToken };
 }
 
-async function register({ fullName, email, password, age, role }) {
+async function register({ fullName, email, password, age }) {
   const exists = await userRepository.existsByEmail(email);
   if (exists) {
     throw ApiError.conflict('Ya existe una cuenta registrada con ese correo');
@@ -48,7 +48,7 @@ async function register({ fullName, email, password, age, role }) {
     email,
     passwordHash,
     age,
-    role: role || 'patient',
+    role: 'patient',
   });
 
   await auditLogRepository.log({

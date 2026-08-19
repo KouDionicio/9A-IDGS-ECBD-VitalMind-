@@ -15,9 +15,6 @@ const registerRules = [
   body('age')
     .optional()
     .isInt({ min: 0, max: 120 }).withMessage('Edad inválida'),
-  body('role')
-    .optional()
-    .isIn(['admin', 'patient', 'caregiver']).withMessage('Rol inválido'),
 ];
 
 const loginRules = [

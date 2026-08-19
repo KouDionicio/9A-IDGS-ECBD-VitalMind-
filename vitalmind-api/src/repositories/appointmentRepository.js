@@ -53,19 +53,207 @@ async function remove(id) {
 
 async function countUpcoming() {
   const [rows] = await pool.query(
-    `SELECT COUNT(*) as total FROM appointments WHERE status = 'proxima' AND appointment_date >= CURDATE()`
+    `
+    SELECT COUNT(*) AS total
+    FROM appointments
+    WHERE status = 'proxima'
+      AND TIMESTAMP(appointment_date, appointment_time) >= NOW()
+    `
   );
+
   return rows[0].total;
 }
 
-async function countByStatus() {
-  const [rows] = await pool.query('SELECT status, COUNT(*) as total FROM appointments GROUP BY status');
+async function countByStatus({ fromDate, toDate, specialty, userId } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (fromDate) {
+    conditions.push('appointment_date >= :fromDate');
+    params.fromDate = fromDate;
+  }
+
+  if (toDate) {
+    conditions.push('appointment_date <= :toDate');
+    params.toDate = toDate;
+  }
+
+  if (specialty) {
+    conditions.push('specialty = :specialty');
+    params.specialty = specialty;
+  }
+
+  if (userId) {
+    conditions.push('user_id = :userId');
+    params.userId = userId;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
+    SELECT status, COUNT(*) AS total
+    FROM appointments
+    ${where}
+    GROUP BY status
+    ORDER BY total DESC
+    `,
+    params
+  );
+
   return rows;
 }
 
-async function countBySpecialty() {
-  const [rows] = await pool.query('SELECT specialty, COUNT(*) as total FROM appointments GROUP BY specialty ORDER BY total DESC');
+
+async function countBySpecialty({ status, fromDate, toDate, userId } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  if (fromDate) {
+    conditions.push('appointment_date >= :fromDate');
+    params.fromDate = fromDate;
+  }
+
+  if (toDate) {
+    conditions.push('appointment_date <= :toDate');
+    params.toDate = toDate;
+  }
+
+  if (userId) {
+    conditions.push('user_id = :userId');
+    params.userId = userId;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
+    SELECT specialty, COUNT(*) AS total
+    FROM appointments
+    ${where}
+    GROUP BY specialty
+    ORDER BY total DESC
+    `,
+    params
+  );
+
   return rows;
 }
 
-module.exports = { findAll, findById, create, update, remove, countUpcoming, countByStatus, countBySpecialty };
+
+async function countByDoctor({ status, specialty, fromDate, toDate, userId } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  if (specialty) {
+    conditions.push('specialty = :specialty');
+    params.specialty = specialty;
+  }
+
+  if (fromDate) {
+    conditions.push('appointment_date >= :fromDate');
+    params.fromDate = fromDate;
+  }
+
+  if (toDate) {
+    conditions.push('appointment_date <= :toDate');
+    params.toDate = toDate;
+  }
+
+  if (userId) {
+    conditions.push('user_id = :userId');
+    params.userId = userId;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
+    SELECT doctor, COUNT(*) AS total
+    FROM appointments
+    ${where}
+    GROUP BY doctor
+    ORDER BY total DESC
+    `,
+    params
+  );
+
+  return rows;
+}
+
+
+async function countByPlace({ status, specialty, fromDate, toDate, userId } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  if (specialty) {
+    conditions.push('specialty = :specialty');
+    params.specialty = specialty;
+  }
+
+  if (fromDate) {
+    conditions.push('appointment_date >= :fromDate');
+    params.fromDate = fromDate;
+  }
+
+  if (toDate) {
+    conditions.push('appointment_date <= :toDate');
+    params.toDate = toDate;
+  }
+
+  if (userId) {
+    conditions.push('user_id = :userId');
+    params.userId = userId;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
+    SELECT place, COUNT(*) AS total
+    FROM appointments
+    ${where}
+    GROUP BY place
+    ORDER BY total DESC
+    `,
+    params
+  );
+
+  return rows;
+}
+
+module.exports = {
+  findAll,
+  findById,
+  create,
+  update,
+  remove,
+  countUpcoming,
+  countByStatus,
+  countBySpecialty,
+  countByDoctor,
+  countByPlace,
+};

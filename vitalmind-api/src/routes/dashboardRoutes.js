@@ -14,6 +14,8 @@ router.get('/medications-by-type', dashboardController.medicationsByType);
 router.get('/medications-taken-by-day', dashboardController.medicationsTakenByDay);
 router.get('/appointments-by-specialty', dashboardController.appointmentsBySpecialty);
 router.get('/appointments-status', dashboardController.appointmentsStatus);
+router.get('/appointments-by-doctor', dashboardController.appointmentsByDoctor);
+router.get('/appointments-by-place', dashboardController.appointmentsByPlace);
 router.get('/mood-statistics', dashboardController.moodStatistics);
 router.get('/pain-statistics', dashboardController.painStatistics);
 router.get('/glucose-history', dashboardController.glucoseHistory);

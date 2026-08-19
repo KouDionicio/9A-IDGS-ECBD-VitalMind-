@@ -129,22 +129,97 @@ async function remove(id) {
   return result.affectedRows > 0;
 }
 
-async function countByRole() {
+async function countByRole({ status, gender } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  if (gender) {
+    conditions.push('gender = :gender');
+    params.gender = gender;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
   const [rows] = await pool.query(
-    'SELECT role, COUNT(*) as total FROM users GROUP BY role'
+    `
+    SELECT role, COUNT(*) AS total
+    FROM users
+    ${where}
+    GROUP BY role
+    ORDER BY total DESC
+    `,
+    params
   );
+
   return rows;
 }
 
-async function countByStatus() {
+
+async function countByStatus({ role, gender } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (role) {
+    conditions.push('role = :role');
+    params.role = role;
+  }
+
+  if (gender) {
+    conditions.push('gender = :gender');
+    params.gender = gender;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
   const [rows] = await pool.query(
-    'SELECT status, COUNT(*) as total FROM users GROUP BY status'
+    `
+    SELECT status, COUNT(*) AS total
+    FROM users
+    ${where}
+    GROUP BY status
+    ORDER BY total DESC
+    `,
+    params
   );
+
   return rows;
 }
 
-async function countByAgeGroup() {
-  const [rows] = await pool.query(`
+
+async function countByAgeGroup({ role, status, gender } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (role) {
+    conditions.push('role = :role');
+    params.role = role;
+  }
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  if (gender) {
+    conditions.push('gender = :gender');
+    params.gender = gender;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
     SELECT
       CASE
         WHEN age BETWEEN 0 AND 17 THEN '0-17'
@@ -156,19 +231,50 @@ async function countByAgeGroup() {
         WHEN age >= 65 THEN '65+'
         ELSE 'Sin dato'
       END AS ageGroup,
-      COUNT(*) as total
+      COUNT(*) AS total
     FROM users
+    ${where}
     GROUP BY ageGroup
     ORDER BY MIN(age)
-  `);
+    `,
+    params
+  );
+
   return rows;
 }
 
-async function countByGender() {
-  const [rows] = await pool.query(`
-    SELECT COALESCE(gender, 'Sin dato') as gender, COUNT(*) as total
-    FROM users GROUP BY gender
-  `);
+
+async function countByGender({ role, status } = {}) {
+  const conditions = [];
+  const params = {};
+
+  if (role) {
+    conditions.push('role = :role');
+    params.role = role;
+  }
+
+  if (status) {
+    conditions.push('status = :status');
+    params.status = status;
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const [rows] = await pool.query(
+    `
+    SELECT
+      COALESCE(gender, 'Sin dato') AS gender,
+      COUNT(*) AS total
+    FROM users
+    ${where}
+    GROUP BY gender
+    ORDER BY total DESC
+    `,
+    params
+  );
+
   return rows;
 }
 
