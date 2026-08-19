@@ -3,6 +3,7 @@
 API para VitalMind construida con Express y MySQL. Todos los datos persistentes se guardan en MySQL: usuarios, medicamentos, citas, notificaciones y auditoria.
 
 ## Stack
+
 - Node.js + Express
 - MySQL 8
 - JWT + bcrypt
@@ -18,6 +19,7 @@ API para VitalMind construida con Express y MySQL. Todos los datos persistentes 
 npm install
 npm run dev
 ```
+
 ## Endpoints
 
 - `GET /api/health`

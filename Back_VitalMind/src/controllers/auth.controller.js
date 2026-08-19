@@ -11,6 +11,7 @@ const registerSchema = z.object({
   password: z.string().min(6),
   age: z.coerce.number().int().nonnegative().optional(),
   role: z.enum(["admin", "patient", "caregiver"]).optional(),
+  gender: z.enum(["Masculino", "Femenino"]).optional(),
 });
 
 const loginSchema = z.object({
@@ -37,35 +38,37 @@ export async function register(req, res, next) {
       `
       INSERT INTO users 
       (
-      full_name,
-      email,
-      password_hash,
-      age,
-      joined_label,
-      last_active_label,
-      last_active_at,
-      status,
-      registros,
-      consultas,
-      color,
-      role
+        full_name,
+        email,
+        password_hash,
+        age,
+        gender,
+        joined_label,
+        last_active_label,
+        last_active_at,
+        status,
+        registros,
+        consultas,
+        color,
+        role
       )
-      VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?)
       `,
       [
-      body.name,
-      body.email,
-      passwordHash,
-      body.age || 0,
-      new Date().toLocaleDateString("es-ES"),
-      "Hace unos segundos",
-      "active",
-      0,
-      0,
-      "#0F766E",
-      body.role || "patient"
+        body.name,
+        body.email,
+        passwordHash,
+        body.age || 0,
+        body.gender || null,
+        new Date().toLocaleDateString("es-ES"),
+        "Hace unos segundos",
+        "active",
+        0,
+        0,
+        "#0F766E",
+        body.role || "patient"
       ]
-      );
+    );
 
     const user = { id: Number(result.insertId), full_name: body.name, email: body.email, role: body.role || "patient" };
     await logAudit(null, "auth.register", "users", String(user.id), { email: user.email });

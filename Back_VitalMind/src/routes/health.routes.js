@@ -1,8 +1,15 @@
 import { Router } from "express";
-import { getDatabaseStatus } from "../config/databases.js";
+import { checkDatabaseHealth } from "../config/databases.js";
 
 export const healthRouter = Router();
 
-healthRouter.get("/", (_req, res) => {
-  res.json({ ok: true, service: "vitalmind-api", status: getDatabaseStatus(), timestamp: new Date().toISOString() });
+healthRouter.get("/", async (_req, res) => {
+  const mysql = await checkDatabaseHealth();
+
+  res.status(mysql.connected ? 200 : 503).json({
+    ok: mysql.connected,
+    service: "vitalmind-api",
+    status: { mysql },
+    timestamp: new Date().toISOString(),
+  });
 });
