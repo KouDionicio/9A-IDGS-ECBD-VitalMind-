@@ -116,6 +116,81 @@ async function physicalActivity({ days = 7 } = {}) {
   const rows = await habitLogRepository.weeklyAverages({ days });
   return rows.map((r) => ({ date: r.log_date, exercise: Number(r.exercise) }));
 }
+async function usersByRole({ role, status } = {}) {
+  return userRepository.countByRole({ role, status });
+}
+
+async function usersByStatus({ role } = {}) {
+  return userRepository.countByStatus({ role });
+}
+
+async function usersByAge({ role, status } = {}) {
+  return userRepository.countByAgeGroup({ role, status });
+}
+
+async function usersByGender({ role, status } = {}) {
+  return userRepository.countByGender({ role, status });
+}
+
+async function appointmentsBySpecialty({
+  status,
+  fromDate,
+  toDate,
+  userId,
+} = {}) {
+  return appointmentRepository.countBySpecialty({
+    status,
+    fromDate,
+    toDate,
+    userId,
+  });
+}
+
+async function appointmentsStatus({
+  fromDate,
+  toDate,
+  specialty,
+  userId,
+} = {}) {
+  return appointmentRepository.countByStatus({
+    fromDate,
+    toDate,
+    specialty,
+    userId,
+  });
+}
+
+async function appointmentsByDoctor({
+  status,
+  specialty,
+  fromDate,
+  toDate,
+  userId,
+} = {}) {
+  return appointmentRepository.countByDoctor({
+    status,
+    specialty,
+    fromDate,
+    toDate,
+    userId,
+  });
+}
+
+async function appointmentsByPlace({
+  status,
+  specialty,
+  fromDate,
+  toDate,
+  userId,
+} = {}) {
+  return appointmentRepository.countByPlace({
+    status,
+    specialty,
+    fromDate,
+    toDate,
+    userId,
+  });
+}
 
 module.exports = {
   statistics,
@@ -136,4 +211,6 @@ module.exports = {
   waterConsumption,
   sleepHistory,
   physicalActivity,
+  appointmentsByDoctor,
+  appointmentsByPlace,
 };

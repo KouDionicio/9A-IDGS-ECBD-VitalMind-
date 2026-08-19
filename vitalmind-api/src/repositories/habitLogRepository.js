@@ -8,11 +8,25 @@ async function findLatestByUser(userId) {
   return rows[0] || null;
 }
 
-async function findByUserAndDate(userId, logDate) {
+async function findByUserAndDate(
+  userId,
+  logDate
+) {
   const [rows] = await pool.query(
-    'SELECT * FROM habit_logs WHERE user_id = :userId AND log_date = :logDate LIMIT 1',
-    { userId, logDate }
+    `
+    SELECT *
+    FROM habit_logs
+    WHERE user_id = :userId
+      AND log_date = :logDate
+    ORDER BY id DESC
+    LIMIT 1
+    `,
+    {
+      userId,
+      logDate,
+    }
   );
+
   return rows[0] || null;
 }
 
@@ -90,16 +104,69 @@ async function countTotal() {
 
 async function weeklyAverages({ days = 7 } = {}) {
   const [rows] = await pool.query(
-    `SELECT log_date, AVG(water) as water, AVG(exercise) as exercise, AVG(sleep) as sleep,
-            AVG(nutrition) as nutrition, AVG(meditation) as meditation, GROUP_CONCAT(id) as log_ids
-     FROM habit_logs
-     WHERE log_date >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
-     GROUP BY log_date ORDER BY log_date ASC`,
+    `
+    SELECT
+      log_date,
+
+      AVG(CASE
+        WHEN habit_key = 'water' THEN value
+      END) AS water,
+
+      AVG(CASE
+        WHEN habit_key = 'exercise' THEN value
+      END) AS exercise,
+
+      AVG(CASE
+        WHEN habit_key = 'sleep' THEN value
+      END) AS sleep,
+
+      AVG(CASE
+        WHEN habit_key = 'nutrition' THEN value
+      END) AS nutrition,
+
+      AVG(CASE
+        WHEN habit_key = 'meditation' THEN value
+      END) AS meditation,
+
+      GROUP_CONCAT(id) AS log_ids
+
+    FROM habit_logs
+
+    WHERE log_date >= DATE_SUB(CURDATE(), INTERVAL :days DAY)
+
+    GROUP BY log_date
+    ORDER BY log_date ASC
+    `,
     { days }
   );
+
   return rows;
 }
 
+async function findClosestByUserAndDate(
+  userId,
+  logDate
+) {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM habit_logs
+    WHERE user_id = :userId
+    ORDER BY
+      ABS(DATEDIFF(log_date, :logDate)) ASC,
+      log_date DESC,
+      id DESC
+    LIMIT 1
+    `,
+    {
+      userId,
+      logDate,
+    }
+  );
+
+  return rows[0] || null;
+}
+
 module.exports = {
-  findByUserAndDate, findRange, upsert, increment, remove, countTotal, weeklyAverages, findLatestByUser,
+  findByUserAndDate, findRange, upsert, increment, remove, countTotal, weeklyAverages, findLatestByUser, findClosestByUserAndDate,
 };

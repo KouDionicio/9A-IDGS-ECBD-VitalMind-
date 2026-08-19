@@ -55,7 +55,7 @@ import pymysql
 DB_HOST = "127.0.0.1"
 DB_PORT = 3306
 DB_USER = "root"
-DB_PASSWORD = "Vitalmind2026"     # <-- tu password real de MySQL
+DB_PASSWORD = "1234"     # <-- tu password real de MySQL
 DB_NAME = "vitalmind"
 
 DEMO_PASSWORD_HASH = "$2b$10$Ir5/p5hYcGOjN9UwgwZft.COOZOymQxFOjkUiyquha/f9okPlzhum"  # "Demo123!"

@@ -7,19 +7,46 @@ const statistics = asyncHandler(async (req, res) => {
 });
 
 const usersByRole = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.usersByRole() });
+  const { status, gender } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.usersByRole({ status, gender }),
+  });
 });
 
 const usersByStatus = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.usersByStatus() });
+  const { role, gender } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.usersByStatus({ role, gender }),
+  });
 });
 
 const usersByAge = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.usersByAge() });
+  const { role, status, gender } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.usersByAge({
+      role,
+      status,
+      gender,
+    }),
+  });
 });
 
 const usersByGender = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.usersByGender() });
+  const { role, status } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.usersByGender({
+      role,
+      status,
+    }),
+  });
 });
 
 const medicationsByType = asyncHandler(async (req, res) => {
@@ -32,11 +59,61 @@ const medicationsTakenByDay = asyncHandler(async (req, res) => {
 });
 
 const appointmentsBySpecialty = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.appointmentsBySpecialty() });
+  const { status, fromDate, toDate, userId } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.appointmentsBySpecialty({
+      status,
+      fromDate,
+      toDate,
+      userId,
+    }),
+  });
 });
 
 const appointmentsStatus = asyncHandler(async (req, res) => {
-  res.json({ success: true, data: await dashboardService.appointmentsStatus() });
+  const { fromDate, toDate, specialty, userId } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.appointmentsStatus({
+      fromDate,
+      toDate,
+      specialty,
+      userId,
+    }),
+  });
+});
+
+const appointmentsByDoctor = asyncHandler(async (req, res) => {
+  const { status, specialty, fromDate, toDate, userId } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.appointmentsByDoctor({
+      status,
+      specialty,
+      fromDate,
+      toDate,
+      userId,
+    }),
+  });
+});
+
+const appointmentsByPlace = asyncHandler(async (req, res) => {
+  const { status, specialty, fromDate, toDate, userId } = req.query;
+
+  res.json({
+    success: true,
+    data: await dashboardService.appointmentsByPlace({
+      status,
+      specialty,
+      fromDate,
+      toDate,
+      userId,
+    }),
+  });
 });
 
 const moodStatistics = asyncHandler(async (req, res) => {
@@ -88,19 +165,26 @@ const habitWeeklyAverages = asyncHandler(async (req, res) => {
 
 module.exports = {
   statistics,
+
   usersByRole,
   usersByStatus,
   usersByAge,
   usersByGender,
+
   medicationsByType,
   medicationsTakenByDay,
+
   appointmentsBySpecialty,
   appointmentsStatus,
+  appointmentsByDoctor,
+  appointmentsByPlace,
+
   moodStatistics,
   painStatistics,
   glucoseHistory,
   bloodPressure,
   temperatureHistory,
+
   waterConsumption,
   sleepHistory,
   physicalActivity,

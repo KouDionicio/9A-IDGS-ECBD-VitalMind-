@@ -1,5 +1,6 @@
 const mysql = require('mysql2/promise');
 const { db } = require('./env');
+const axios = require("axios");
 
 /**
  * Pool único de conexiones. Se reutiliza en todos los repositories.

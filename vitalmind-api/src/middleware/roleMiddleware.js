@@ -13,7 +13,7 @@ function authorize(...allowedRoles) {
     if (!allowedRoles.includes(req.user.role)) {
       return next(
         ApiError.forbidden(
-          `El rol "${req.user.role}" no tiene permisos para esta acción`
+          'Esta acción requiere iniciar sesión con una cuenta de administrador'
         )
       );
     }

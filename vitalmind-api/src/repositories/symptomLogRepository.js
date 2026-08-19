@@ -53,11 +53,22 @@ async function update(id, fields) {
   return findById(id);
 }
 
-async function findLatestByUser(userId) {
+async function findLatestByUser(
+  userId
+) {
   const [rows] = await pool.query(
-    'SELECT * FROM symptom_logs WHERE user_id = :userId ORDER BY created_at DESC LIMIT 1',
-    { userId }
+    `
+    SELECT *
+    FROM symptom_logs
+    WHERE user_id = :userId
+    ORDER BY log_date DESC, id DESC
+    LIMIT 1
+    `,
+    {
+      userId,
+    }
   );
+
   return rows[0] || null;
 }
 
@@ -128,7 +139,57 @@ async function temperatureHistory({ userId, days = 30 } = {}) {
   return rows;
 }
 
+async function findByUserAndDate(
+  userId,
+  logDate
+) {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM symptom_logs
+    WHERE user_id = :userId
+      AND log_date = :logDate
+    ORDER BY id DESC
+    LIMIT 1
+    `,
+    {
+      userId,
+      logDate,
+    }
+  );
+
+  return rows[0] || null;
+}
+
+
+async function findClosestByUserAndDate(
+  userId,
+  logDate
+) {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM symptom_logs
+    WHERE user_id = :userId
+    ORDER BY
+      ABS(DATEDIFF(log_date, :logDate)) ASC,
+      log_date DESC,
+      id DESC
+    LIMIT 1
+    `,
+    {
+      userId,
+      logDate,
+    }
+  );
+
+  return rows[0] || null;
+}
+
+
+
 module.exports = {
-  findAll, findById, create, update, remove, countTotal, findLatestByUser,
+  findAll, findById, create, update, remove, countTotal, findLatestByUser, findByUserAndDate, findClosestByUserAndDate,
   moodStatistics, painStatistics, glucoseHistory, bloodPressureHistory, temperatureHistory,
 };
+
