@@ -113,7 +113,7 @@
 
 ### Evidencia
 
-![Endpoint protegido](evidence/10-protected-endpoint.png)
+![Endpoint protegido](./evidences/11-recommendations-unauthorized.png)
 
 ---
 
@@ -139,3 +139,7 @@ Las pruebas realizadas sobre el Backend de VitalMind fueron satisfactorias.
 Se verificó el funcionamiento del servicio, su comunicación con MySQL, la validación de datos, el registro y autenticación de usuarios, la persistencia de información y el comportamiento de los endpoints evaluados.
 
 Las pruebas negativas también permitieron comprobar que el Backend responde de manera controlada ante solicitudes inválidas y credenciales incorrectas.
+
+### Evidencia
+
+![Resultados Finales](./evidences/13-backend-final-status.png)
