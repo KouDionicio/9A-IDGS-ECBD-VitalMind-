@@ -80,19 +80,8 @@
 
 ---
 
-## Caso 7: Recommendations
 
-**Resultado:** OK
-
-**Detalle:** El endpoint `GET /api/recommendations` respondió correctamente con `HTTP 200 OK`.
-
-### Evidencia
-
-![Recommendations](evidence/07-recommendations.png)
-
----
-
-## Caso 8: Login correcto
+## Caso 7: Login correcto
 
 **Resultado:** OK
 
