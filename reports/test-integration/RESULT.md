@@ -19,6 +19,12 @@
 
 No se detectaron errores durante la prueba.
 
+### Evidencia
+
+![Login administrador](evidence/01-login-admin.png)
+
+![Login usuario](evidence/02-login-user.png)
+
 ---
 
 ## Caso 2: Registro de síntomas
@@ -30,6 +36,10 @@ No se detectaron errores durante la prueba.
 El registro se guardó correctamente y los datos aparecieron posteriormente en la sección de Resumen/Historial de síntomas.
 
 No se detectaron errores durante la prueba.
+
+### Evidencia
+
+![Registro de síntomas](evidence/03-registro-sintomas.png)
 
 ---
 
@@ -45,6 +55,12 @@ También se verificó la sección de Evolución y la visualización de la inform
 
 No se detectaron errores durante la prueba.
 
+### Evidencia
+
+![Resumen de síntomas](evidence/04-resumen.png)
+
+![Insights generados por IA](evidence/05-insights-ia.png)
+
 ---
 
 ## Caso 4: Chatbot (IA)
@@ -56,6 +72,10 @@ No se detectaron errores durante la prueba.
 Se verificó la comunicación entre el Frontend, Backend y el servicio de IA durante la interacción con el chatbot.
 
 No se detectaron errores que impidieran el funcionamiento del chatbot.
+
+### Evidencia
+
+![Chatbot funcionando](evidence/06-chatbot.png)
 
 ---
 
