@@ -28,7 +28,7 @@
 
 ### Evidencia
 
-![Backend conectado a MySQL](./evidence/02-backend-mysql.png)
+![Backend conectado a MySQL](./evidences/02-backend-mysql.png)
 
 ---
 
@@ -76,7 +76,7 @@
 
 ### Evidencia
 
-![Persistencia](./evidence/06-user-persisted.png)
+![Persistencia](./evidences/06-user-persisted.png)
 
 ---
 
@@ -89,7 +89,7 @@
 
 ### Evidencia
 
-![Login correcto](./evidence/08-login-success.png)
+![Login correcto](./evidences/07-login-success.png)
 
 ---
 
@@ -101,7 +101,7 @@
 
 ### Evidencia
 
-![Login inválido](./evidence/09-login-invalid.png)
+![Login inválido](./evidences/08-login-invalid.png)
 
 ---
 
