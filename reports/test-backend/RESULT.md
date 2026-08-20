@@ -64,7 +64,7 @@
 
 ### Evidencia
 
-![Registro](evidence/05-register-success.png)
+![Registro](./evidences/05-register-success.png)
 
 ---
 
@@ -76,7 +76,7 @@
 
 ### Evidencia
 
-![Persistencia](evidence/06-user-persisted.png)
+![Persistencia](./evidence/06-user-persisted.png)
 
 ---
 
