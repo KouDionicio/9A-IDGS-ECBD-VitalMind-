@@ -155,13 +155,17 @@ La prueba aislada no reprodujo el error `500 Internal Server Error` identificado
 
 ## Caso 12: Registro con correo duplicado
 
-**Resultado:** _[pendiente]_
+**Resultado:** OK
 
-**Detalle:** Se probará registrar un usuario con un correo que ya existe en la base de datos, verificando que el Backend responda `409 Conflict` en vez de un error genérico.
+**Detalle:** Se intentó registrar un nuevo usuario utilizando un correo electrónico que ya se encontraba registrado en la base de datos.
+
+El Backend detectó correctamente la duplicidad y rechazó la solicitud mediante una respuesta **409 Conflict**, mostrando el mensaje `"Ya existe una cuenta con ese email"`.
+
+Esto confirma que el Backend maneja de forma controlada los registros duplicados y evita la creación de cuentas con correos electrónicos existentes.
 
 ### Evidencia
 
-_[pendiente]_
+![Correo duplicado - 409 Conflict](./evidences/12-duplicate-email.png)
 
 ---
 
