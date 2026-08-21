@@ -186,6 +186,10 @@ El Backend rechazó correctamente la solicitud mediante una respuesta `401 Unaut
 
 Esto confirma que el middleware de autenticación valida correctamente los tokens recibidos y evita el acceso a recursos protegidos cuando la credencial no es válida.
 
+### Evidencia
+
+![Token inválido - 401 Unauthorized](./evidences/13-invalid-token-401.png)
+
 ---
 
 ## Caso 14: Consulta de registros de síntomas
@@ -198,12 +202,19 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 ![Consulta de síntomas](./evidences/14-symptoms-list-200.png)
 
-### Evidencia
-
-![Token inválido - 401 Unauthorized](./evidences/13-invalid-token-401.png)
-
 ---
 
+## Caso 15: Protección de registros de síntomas
+
+**Resultado:** OK
+
+**Detalle:** Se verificó que el endpoint `GET /api/symptom-logs` rechazara solicitudes sin autenticación JWT. El Backend respondió `401 Unauthorized`.
+
+### Evidencia
+
+![Síntomas sin autenticación](./evidences/15-symptoms-unauthorized.png)
+
+---
 ## Resumen general
 
 | Caso | Resultado |
