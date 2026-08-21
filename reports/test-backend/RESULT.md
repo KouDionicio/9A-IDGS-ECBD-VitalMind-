@@ -137,15 +137,19 @@ El Backend sí detectó que el campo `name` era requerido y no estaba presente, 
 ![Validación de síntomas](./evidences/10-symptom-validation-error.png)
 ---
 
-## Caso 11: Medicamentos (verificación de bug conocido)
+## Caso 11: Consulta de medicamentos
 
-**Resultado:** _[pendiente]_
+**Resultado:** OK
 
-**Detalle:** Se probará `GET /api/medications` de forma aislada, para confirmar de manera independiente el error 500 detectado durante las pruebas de integración (rama `test/integration`).
+**Detalle:** Se probó de forma aislada el endpoint `GET /api/medications` utilizando autenticación JWT. La solicitud sin autenticación fue correctamente rechazada con `401 Unauthorized`, mientras que la solicitud autenticada respondió correctamente con `200 OK`.
+
+La prueba aislada no reprodujo el error `500 Internal Server Error` identificado previamente durante las pruebas de integración.
 
 ### Evidencia
 
-_[pendiente]_
+![Medicamentos sin autenticación](./evidences/11-medications-unauthorized.png)
+
+![Consulta de medicamentos exitosa](./evidences/11-medications-success.png)
 
 ---
 
