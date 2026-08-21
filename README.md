@@ -45,8 +45,9 @@
 19. [Organigrama](#-organigrama)
 20. [Equipo de trabajo](#-equipo-de-trabajo)
 21. [Resultados y limitaciones](#-resultados-y-limitaciones)
-22. [Tecnologías utilizadas](#️-tecnologías-utilizadas)
-23. [Referencias](#-referencias)
+22. [Presentación de VitalMind IA](docs/VitalMind_IA_Presentacion.pdf)
+23. [Tecnologías utilizadas](#️-tecnologías-utilizadas)
+24. [Referencias](#-referencias)
 
 ---
 
@@ -467,6 +468,16 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 - El comportamiento con datos reales puede diferir del dataset sintético.
 - Las métricas disponibles desde Wear OS dependen del hardware y permisos.
 - Los artefactos ML deben cargarse con versiones compatibles de scikit-learn.
+
+
+---
+
+
+### Presentación de VitalMind IA
+
+Consulta la presentación general del proyecto, que incluye su objetivo, funcionamiento, tecnologías utilizadas, modelos de inteligencia artificial y resultados obtenidos.
+
+📄 [Abrir presentación de VitalMind IA en PDF](docs/VitalMind_IA_Presentacion.pdf)
 
 
 ---
