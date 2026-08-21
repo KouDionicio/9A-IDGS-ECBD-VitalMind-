@@ -183,7 +183,7 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 ### Evidencia
 
-![Token inválido - 401 Unauthorized](./evidences/13-invalid-token-401.png)
+![Token inválido - 401 Unauthorized](../test-backend/evidences/13-invalid-token-401.png)
 
 ---
 
@@ -200,13 +200,21 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 | 7. Login correcto | OK |
 | 8. Login inválido | OK |
 | 9. Protección de endpoints | OK |
-| 10. Registro de síntomas | Pendiente |
-| 11. Medicamentos (bug) | Pendiente |
-| 12. Correo duplicado | Pendiente |
-| 13. Token inválido | Pendiente |
+| 10. Registro de síntomas | OK |
+| 11. Consulta de medicamentos | OK |
+| 12. Correo duplicado | OK |
+| 13. Token inválido | OK |
 
 ### Resultado final
 
-_[se completa al finalizar todos los casos]_
+Las pruebas realizadas sobre el Backend de VitalMind fueron satisfactorias en los casos funcionales evaluados.
 
-Hasta ahora, las pruebas confirman que el Backend se comunica correctamente con MySQL, y que el registro, login y protección de endpoints funcionan como se espera. Se detectó un bug real en el manejo de errores de validación (Caso 4: responde 500 en vez de 400), documentado en `fix/api-errors` para su corrección.
+Se verificó el funcionamiento del entorno, la comunicación entre el Backend y MySQL, la estructura de usuarios, el registro y autenticación de usuarios, la persistencia de información, el registro de síntomas, la consulta de medicamentos y la protección de endpoints mediante autenticación JWT.
+
+También se realizaron pruebas negativas para validar el comportamiento del Backend ante datos incorrectos, credenciales inválidas, correos duplicados, ausencia de autenticación y tokens inválidos.
+
+Durante las pruebas se detectó un bug en el manejo de errores de validación (Caso 4), donde una solicitud con datos incorrectos genera `500 Internal Server Error` en lugar de `400 Bad Request`. Esta incidencia fue documentada y trasladada a la rama `fix/api-errors` para su corrección.
+
+Asimismo, el error `500 Internal Server Error` identificado previamente en la consulta de medicamentos durante las pruebas de integración no se reprodujo durante la prueba aislada del Backend. La solicitud autenticada al endpoint `GET /api/medications` respondió correctamente con `200 OK`.
+
+En general, las pruebas permitieron confirmar que el Backend funciona correctamente en los escenarios evaluados y que cuenta con mecanismos de autenticación, validación y manejo controlado de solicitudes inválidas.
