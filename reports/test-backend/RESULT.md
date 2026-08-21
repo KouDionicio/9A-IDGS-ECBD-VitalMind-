@@ -243,6 +243,22 @@ Esto confirma que la API diferencia correctamente entre un recurso existente y u
 ![Síntoma no encontrado](./evidences/17-symptom-not-found.png)
 
 ---
+
+## Caso 18: Verificación de operaciones CRUD de síntomas
+
+**Resultado:** PARCIAL
+
+**Detalle:** Se revisaron las rutas disponibles para la gestión de registros de síntomas. Se confirmó la implementación de las operaciones de creación (`POST`), consulta general (`GET`), consulta por ID (`GET /:id`) y consulta de datos para gráfica (`GET /chart`).
+
+No se encontraron endpoints `PUT` ni `DELETE`, por lo que las operaciones de actualización y eliminación no se encuentran implementadas actualmente.
+
+**Observación:** La funcionalidad de síntomas actualmente permite crear y consultar registros, pero no cuenta con operaciones de actualización o eliminación. Por este motivo, el CRUD no se encuentra completo.
+
+### Evidencia
+
+![Rutas de síntomas](./evidences/18-symptom-crud-routes.png)
+
+---
 ## Resumen general
 
 | Caso | Resultado |
