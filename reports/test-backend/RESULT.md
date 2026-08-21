@@ -12,7 +12,7 @@
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que los contenedores necesarios para la ejecución del sistema se encontraran activos.
+**Detalle:** Se verificó que los contenedores necesarios para la ejecución del sistema se encontraran activos (ml-service, frontend, backend, mysql).
 
 ### Evidencia
 
@@ -22,9 +22,11 @@
 
 ## Caso 2: Conexión Backend - MySQL
 
-**Resultado:** OK
+**Resultado:** OK (con observación)
 
-**Detalle:** Se verificó que el Backend iniciara correctamente y estableciera conexión con MySQL.
+**Detalle:** Se verificó que el Backend iniciara correctamente y estableciera conexión con MySQL (`MySQL: connected`).
+
+**Observación:** En los logs revisados también se detectó que el proceso del backend se detuvo y se reinició de forma automática (`npm error command failed`, `signal SIGTERM`) durante la sesión de pruebas. Además, se observaron en el mismo log peticiones reales con código `401` en `/api/auth/login` y `500` en `/api/auth/register`, coincidiendo con los bugs documentados en los Casos 4 y 9 de este mismo reporte.
 
 ### Evidencia
 
@@ -44,11 +46,15 @@
 
 ---
 
-## Caso 4: Validación de datos
+## Caso 4: Validación de datos (BUG detectado)
 
-**Resultado:** OK
+**Resultado:** FALLÓ (parcialmente)
 
-**Detalle:** Se envió una solicitud con una estructura incorrecta para comprobar que el Backend detectara campos requeridos.
+**Detalle:** Se envió una solicitud de registro con un campo mal nombrado (`full_name` en vez de `name`) para comprobar que el Backend detectara campos requeridos faltantes.
+
+El Backend sí detectó que el campo `name` era requerido y no estaba presente, pero respondió con código **500 Internal Server Error** en lugar de **400 Bad Request**. Un error de validación de datos del cliente debería manejarse como una petición mal formada (400), no como un error interno del servidor (500).
+
+**Impacto:** Documentado y trasladado a `fix/api-errors` para su corrección.
 
 ### Evidencia
 
@@ -60,7 +66,7 @@
 
 **Resultado:** OK
 
-**Detalle:** Se realizó correctamente el registro de un usuario mediante `POST /api/auth/register`.
+**Detalle:** Se realizó correctamente el registro de un usuario mediante `POST /api/auth/register`, con todos los campos requeridos completos.
 
 ### Evidencia
 
@@ -72,14 +78,13 @@
 
 **Resultado:** OK
 
-**Detalle:** Se verificó directamente en MySQL que el usuario registrado por medio del Backend fuera almacenado correctamente.
+**Detalle:** Se verificó directamente en MySQL que el usuario registrado por medio del Backend fuera almacenado correctamente con todos sus campos.
 
 ### Evidencia
 
 ![Persistencia](./evidences/06-user-persisted.png)
 
 ---
-
 
 ## Caso 7: Login correcto
 
@@ -93,11 +98,11 @@
 
 ---
 
-## Caso 9: Login con credenciales inválidas
+## Caso 8: Login con credenciales inválidas
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que el Backend rechazara credenciales incorrectas mediante una respuesta de error controlada.
+**Detalle:** Se verificó que el Backend rechazara credenciales incorrectas mediante una respuesta de error controlada (`401 Unauthorized`, `"Credenciales inválidas"`).
 
 ### Evidencia
 
@@ -105,11 +110,11 @@
 
 ---
 
-## Caso 10: Protección de endpoints
+## Caso 9: Protección de endpoints
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que un endpoint protegido rechazara solicitudes sin autenticación válida.
+**Detalle:** Se verificó que el endpoint `/api/recommendations` rechazara solicitudes sin token de autenticación, respondiendo `401 Unauthorized` con el mensaje `"Token requerido"`.
 
 ### Evidencia
 
@@ -117,29 +122,77 @@
 
 ---
 
+## Caso 10: Registro de síntomas
+
+**Resultado:** OK
+
+**Detalle:** Se probó de forma aislada el endpoint `POST /api/symptom-logs` utilizando autenticación JWT. Se realizó un registro con datos válidos y posteriormente se consultó el listado para verificar su persistencia. También se realizó una prueba negativa utilizando valores fuera de los rangos permitidos para comprobar el manejo de validaciones.
+
+### Evidencia
+
+![Registro de síntoma](./evidences/10-symptom-create-success.png)
+
+![Persistencia del síntoma](./evidences/10-symptom-list-persisted.png)
+
+![Validación de síntomas](./evidences/10-symptom-validation-error.png)
+---
+
+## Caso 11: Medicamentos (verificación de bug conocido)
+
+**Resultado:** _[pendiente]_
+
+**Detalle:** Se probará `GET /api/medications` de forma aislada, para confirmar de manera independiente el error 500 detectado durante las pruebas de integración (rama `test/integration`).
+
+### Evidencia
+
+_[pendiente]_
+
+---
+
+## Caso 12: Registro con correo duplicado
+
+**Resultado:** _[pendiente]_
+
+**Detalle:** Se probará registrar un usuario con un correo que ya existe en la base de datos, verificando que el Backend responda `409 Conflict` en vez de un error genérico.
+
+### Evidencia
+
+_[pendiente]_
+
+---
+
+## Caso 13: Token inválido o malformado
+
+**Resultado:** _[pendiente]_
+
+**Detalle:** Se probará el acceso a un endpoint protegido enviando un token corrupto/malformado (distinto de no enviar token), verificando que el Backend responda `401` de forma controlada.
+
+### Evidencia
+
+_[pendiente]_
+
+---
+
 ## Resumen general
 
 | Caso | Resultado |
 |---|---|
-| Estado del entorno | OK |
-| Conexión Backend - MySQL | OK |
-| Estructura de usuarios | OK |
-| Validación de datos | OK |
-| Registro de usuario | OK |
-| Persistencia en MySQL | OK |
-| Recommendations | OK |
-| Login correcto | OK |
-| Login inválido | OK |
-| Protección de endpoints | OK |
+| 1. Estado del entorno | OK |
+| 2. Conexión Backend - MySQL | OK (con observación) |
+| 3. Estructura de usuarios | OK |
+| 4. Validación de datos | FALLÓ (bug 500 en vez de 400) |
+| 5. Registro de usuario | OK |
+| 6. Persistencia en MySQL | OK |
+| 7. Login correcto | OK |
+| 8. Login inválido | OK |
+| 9. Protección de endpoints | OK |
+| 10. Registro de síntomas | Pendiente |
+| 11. Medicamentos (bug) | Pendiente |
+| 12. Correo duplicado | Pendiente |
+| 13. Token inválido | Pendiente |
 
 ### Resultado final
 
-Las pruebas realizadas sobre el Backend de VitalMind fueron satisfactorias.
+_[se completa al finalizar todos los casos]_
 
-Se verificó el funcionamiento del servicio, su comunicación con MySQL, la validación de datos, el registro y autenticación de usuarios, la persistencia de información y el comportamiento de los endpoints evaluados.
-
-Las pruebas negativas también permitieron comprobar que el Backend responde de manera controlada ante solicitudes inválidas y credenciales incorrectas.
-
-### Evidencia
-
-![Resultados Finales](./evidences/13-backend-final-status.png)
+Hasta ahora, las pruebas confirman que el Backend se comunica correctamente con MySQL, y que el registro, login y protección de endpoints funcionan como se espera. Se detectó un bug real en el manejo de errores de validación (Caso 4: responde 500 en vez de 400), documentado en `fix/api-errors` para su corrección.
