@@ -259,6 +259,20 @@ No se encontraron endpoints `PUT` ni `DELETE`, por lo que las operaciones de act
 ![Rutas de síntomas](./evidences/18-symptom-crud-routes.png)
 
 ---
+
+## Caso 19: Protección de credenciales en registro
+
+**Resultado:** OK
+
+**Detalle:** Se verificó que la respuesta de `POST /api/auth/register` no expusiera información sensible relacionada con las credenciales del usuario.
+
+La respuesta incluyó únicamente información necesaria del usuario (`id`, `full_name`, `email` y `role`) junto con el token de autenticación. No se encontró ningún campo `password` ni `password_hash` en la respuesta JSON.
+
+### Evidencia
+
+![Credenciales no expuestas en registro](./evidences/19-register-password-not-exposed.png)
+
+---
 ## Resumen general
 
 | Caso | Resultado |
