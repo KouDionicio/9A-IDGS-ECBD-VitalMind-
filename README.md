@@ -15,10 +15,11 @@
 <h3 align="center">Logos del proyecto</h3>
 
 <p align="center">
-  <img src="./Logos/Aplicacion_logo.jpeg" alt="Logo de VitalMind AI" width="320">
+  <img src="./assets/LogoVitalMind.jpeg" alt="Logo de VitalMind AI" width="320">
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="./Logos/Empresa_logo.png" alt="Logo de la empresa" width="320">
+  <img src="./assets/Empresa_logo.png" alt="Logo de la empresa" width="320">
 </p>
+
 ---
 
 ## 📚 Tabla de contenido
@@ -30,24 +31,22 @@
 5. [Objetivos](#-objetivos)
 6. [Público objetivo](#-público-objetivo)
 7. [Metodología](#-metodología)
-8. [Arquitectura prevista](#-arquitectura-prevista)
-9. [Datos del proyecto](#-datos-del-proyecto)
-10. [Inteligencia Artificial y Machine Learning](#-inteligencia-artificial-y-machine-learning)
-11. [Dashboard y comunicación en tiempo real](#-dashboard-y-comunicación-en-tiempo-real)
-12. [Tecnologías utilizadas](#-tecnologías-utilizadas)
-13. [Estructura del repositorio](#-estructura-del-repositorio)
-14. [API y endpoints](#-api-y-endpoints)
-15. [Instalación y configuración](#-instalación-y-configuración)
-16. [Ejecución](#-ejecución)
-17. [Pruebas](#-pruebas)
-18. [Seguridad, privacidad y ética](#-seguridad-privacidad-y-ética)
-19. [Uso responsable de IA generativa](#-uso-responsable-de-ia-generativa)
+8. [Diagrama de Gantt](#-diagrama-de-gantt)
+9. [Arquitectura prevista](#️-arquitectura-prevista)
+10. [Datos del proyecto](#️-datos-del-proyecto)
+11. [Inteligencia Artificial y Machine Learning](#-inteligencia-artificial-y-machine-learning)
+12. [Dashboard y comunicación en tiempo real](#-dashboard-y-comunicación-en-tiempo-real)
+13. [API y endpoints](#-api-y-endpoints)
+14. [Instalación y configuración](#️-instalación-y-configuración)
+15. [Ejecución](#️-ejecución)
+16. [Pruebas](#-pruebas)
+17. [Seguridad, privacidad y ética](#-seguridad-privacidad-y-ética)
+18. [Uso responsable de IA generativa](#-uso-responsable-de-ia-generativa)
+19. [Organigrama](#-organigrama)
 20. [Equipo de trabajo](#-equipo-de-trabajo)
-21. [Documentación](#-documentación)
-22. [Resultados y limitaciones](#-resultados-y-limitaciones)
-23. [Enlaces del proyecto](#-enlaces-del-proyecto)
-24. [Licencia](#-licencia)
-25. [Referencias](#-referencias)
+21. [Resultados y limitaciones](#-resultados-y-limitaciones)
+22. [Tecnologías utilizadas](#️-tecnologías-utilizadas)
+23. [Referencias](#-referencias)
 
 ---
 
@@ -182,6 +181,17 @@ Desarrollar una solución digital integrada por una aplicación móvil y un smar
 
 El trabajo se organiza de forma incremental por componentes, responsables, dependencias y entregables, con control de versiones mediante Git y GitHub y seguimiento general de actividades del equipo.
 
+
+---
+
+## 📊 Diagrama de Gantt
+
+<p align="center">
+  <img src="./assets/Diagrama_Gantt_VitalMindAI.png" alt="Diagrama de Gantt del proyecto VitalMind AI" width="900">
+</p>
+
+
+
 ---
 
 ## 🏗️ Arquitectura prevista
@@ -283,24 +293,6 @@ Consulta [`docs/dashboard.md`](./docs/dashboard.md) para el detalle técnico.
 
 ---
 
-## 🛠️ Tecnologías utilizadas
-
-| Área | Tecnologías |
-|---|---|
-| **Aplicación móvil** | Kotlin, Android Studio, Jetpack Compose |
-| **Aplicación web** | Js, Reac |
-| **Wearable** | Wear OS, Google Play Services Wearable, Health Services Client, Bluetooth |
-| **Frontend web complementario** | React, TypeScript, Vite |
-| **Backend** | Node.js, Express.js |
-| **Base de datos** | MySQL, MySQL Workbench |
-| **IA y Machine Learning** | Python, FastAPI, scikit-learn, pandas, NumPy, Joblib |
-| **Chatbot** | Mistral AI (`mistral-small-latest`) |
-| **Dashboard** | HTML, JavaScript, Chart.js |
-| **Seguridad** | JWT, bcrypt, Helmet, CORS, HTTPS/TLS |
-| **Versionamiento** | Git y GitHub |
-| **Formatos** | CSV, JSON, SQL, Markdown |
-
----
 
 ## 🔌 API y endpoints
 
@@ -338,7 +330,6 @@ Los contratos completos están en [`docs/api-contracts.md`](./docs/api-contracts
 
 ## ⚙️ Instalación y configuración
 
-La guía completa se encuentra en [`docs/runbook.md`](./docs/runbook.md).
 
 ### API principal
 
@@ -435,6 +426,14 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 
 ---
 
+## 🧑‍💻 Organigrama
+
+<p align="center">
+  <img src="./assets/Organigrama_Equipo.png" alt="Organigrama del equipo VitalMind AI" width="700">
+</p>
+
+---
+
 ## 👨‍💻 Equipo de trabajo
 
 | Nombre | Matrícula | Rol |
@@ -471,18 +470,6 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 
 
 ---
-
-
-## 📚 Referencias
-
-### Metodología, ética y seguridad
-
-- [IBM — CRISP-DM](https://www.ibm.com/docs/es/spss-modeler/saas?topic=dm-crisp-help-overview)
-- [World Health Organization — Ethics and governance of artificial intelligence for health](https://www.who.int/publications/i/item/9789240029200)
-- [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
-- [RFC 7519 — JSON Web Token](https://www.rfc-editor.org/info/rfc7519/)
-- [RFC 8725 — JSON Web Token Best Current Practices](https://www.rfc-editor.org/info/rfc8725/)
-- [GitHub Docs — Licensing a repository](https://docs.github.com/articles/licensing-a-repository)
 
 ### 🧰 Tecnologías utilizadas
 
@@ -543,6 +530,19 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 | <img src="https://devicons.io/devicons/icons/microsoft-teams.svg" width="28" alt="Microsoft Teams"/> **Microsoft Teams** | Reuniones y comunicación formal del equipo. |
 | <img src="https://cdn.simpleicons.org/whatsapp/25D366" width="28" alt="WhatsApp"/> **WhatsApp** | Comunicación rápida y coordinación interna. |
 ---
+
+## 📚 Referencias
+
+### Metodología, ética y seguridad
+
+- [IBM — CRISP-DM](https://www.ibm.com/docs/es/spss-modeler/saas?topic=dm-crisp-help-overview)
+- [World Health Organization — Ethics and governance of artificial intelligence for health](https://www.who.int/publications/i/item/9789240029200)
+- [OWASP — Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
+- [RFC 7519 — JSON Web Token](https://www.rfc-editor.org/info/rfc7519/)
+- [RFC 8725 — JSON Web Token Best Current Practices](https://www.rfc-editor.org/info/rfc8725/)
+- [GitHub Docs — Licensing a repository](https://docs.github.com/articles/licensing-a-repository)
+
+
 
 <div align="center">
 
