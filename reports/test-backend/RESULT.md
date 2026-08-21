@@ -173,13 +173,17 @@ Esto confirma que el Backend maneja de forma controlada los registros duplicados
 
 ## Caso 13: Token inválido o malformado
 
-**Resultado:** _[pendiente]_
+**Resultado:** OK
 
-**Detalle:** Se probará el acceso a un endpoint protegido enviando un token corrupto/malformado (distinto de no enviar token), verificando que el Backend responda `401` de forma controlada.
+**Detalle:** Se realizó una solicitud a un endpoint protegido utilizando un token JWT inválido/malformado.
+
+El Backend rechazó correctamente la solicitud mediante una respuesta `401 Unauthorized` y devolvió el mensaje `"Token inválido o expirado"`.
+
+Esto confirma que el middleware de autenticación valida correctamente los tokens recibidos y evita el acceso a recursos protegidos cuando la credencial no es válida.
 
 ### Evidencia
 
-_[pendiente]_
+![Token inválido - 401 Unauthorized](./evidences/13-invalid-token-401.png)
 
 ---
 
