@@ -208,11 +208,25 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que el endpoint `GET /api/symptom-logs` rechazara solicitudes sin autenticación JWT. El Backend respondió `401 Unauthorized`.
+**Detalle:** Se verificó que el endpoint `GET /api/symptom-logs` rechazara solicitudes sin autenticación JWT. El Backend respondió correctamente con `401 Unauthorized`.
 
 ### Evidencia
 
 ![Síntomas sin autenticación](./evidences/15-symptoms-unauthorized.png)
+
+---
+
+## Caso 16: Consulta de síntoma por ID
+
+**Resultado:** OK
+
+**Detalle:** Se verificó de forma aislada el endpoint `GET /api/symptom-logs/:id` utilizando autenticación JWT. Se consultó el registro con ID `17` y el Backend respondió `200 OK`, devolviendo correctamente la información almacenada del registro.
+
+### Evidencia
+
+![Consulta de síntoma por ID](./evidences/16-weak-password-validation.png)
+
+![Consulta de síntoma por ID](./evidences/16-symptom-by-id-success.png)
 
 ---
 ## Resumen general
