@@ -273,6 +273,20 @@ La respuesta incluyó únicamente información necesaria del usuario (`id`, `ful
 ![Credenciales no expuestas en registro](./evidences/19-register-password-not-exposed.png)
 
 ---
+
+## Caso 20: Protección de credenciales en login
+
+**Resultado:** OK
+
+**Detalle:** Se verificó que la respuesta de `POST /api/auth/login` no expusiera información sensible relacionada con las credenciales del usuario.
+
+La respuesta incluyó el token JWT y los datos básicos del usuario (`id`, `name`, `email` y `role`). No se encontró ningún campo `password` ni `password_hash` en la respuesta JSON.
+
+### Evidencia
+
+![Credenciales no expuestas en login](./evidences/20-login-password-not-exposed.png)
+
+---
 ## Resumen general
 
 | Caso | Resultado |
