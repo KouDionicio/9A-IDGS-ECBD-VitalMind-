@@ -26,7 +26,7 @@
 
 **Detalle:** Se verificó que el Backend iniciara correctamente y estableciera conexión con MySQL (`MySQL: connected`).
 
-**Observación:** En los logs revisados también se detectó que el proceso del backend se detuvo y se reinició de forma automática (`npm error command failed`, `signal SIGTERM`) durante la sesión de pruebas. Además, se observaron en el mismo log peticiones reales con código `401` en `/api/auth/login` y `500` en `/api/auth/register`, coincidiendo con los bugs documentados en los Casos 4 y 9 de este mismo reporte.
+**Observación:** En los logs revisados también se detectó que el proceso del backend se detuvo y se reinició de forma automática (`npm error command failed`, `signal SIGTERM`) durante la sesión de pruebas. Además, se observaron en el mismo log peticiones reales con código `401` en `/api/auth/login` y `500` en `/api/auth/register`, coincidiendo con los bugs documentados en este reporte.
 
 ### Evidencia
 
@@ -46,13 +46,13 @@
 
 ---
 
-## Caso 4: Validación de datos (BUG detectado)
+## Caso 4: Validación de datos - campo faltante (BUG detectado)
 
 **Resultado:** FALLÓ (parcialmente)
 
 **Detalle:** Se envió una solicitud de registro con un campo mal nombrado (`full_name` en vez de `name`) para comprobar que el Backend detectara campos requeridos faltantes.
 
-El Backend sí detectó que el campo `name` era requerido y no estaba presente, pero respondió con código **500 Internal Server Error** en lugar de **400 Bad Request**. Un error de validación de datos del cliente debería manejarse como una petición mal formada (400), no como un error interno del servidor (500).
+El Backend sí detectó que el campo `name` era requerido y no estaba presente, pero respondió con código **500 Internal Server Error** en lugar de **400 Bad Request**.
 
 **Impacto:** Documentado y trasladado a `fix/api-errors` para su corrección.
 
@@ -122,15 +122,15 @@ El Backend sí detectó que el campo `name` era requerido y no estaba presente, 
 
 ---
 
-## Caso 10: Registro de síntomas (BUG adicional detectado)
+## Caso 10: Registro de síntomas - datos fuera de rango (BUG adicional detectado)
 
 **Resultado:** OK (con bug detectado en prueba negativa)
 
 **Detalle:** Se probó de forma aislada el endpoint `POST /api/symptom-logs` utilizando autenticación JWT. Se realizó un registro con datos válidos y posteriormente se consultó el listado para verificar su persistencia correcta.
 
-También se realizó una prueba negativa enviando valores fuera de los rangos permitidos (ej. `systolic: 500`, `heartRate: 500`). El backend **no validó los datos antes de enviarlos a la base de datos**: respondió con `500 Internal Server Error` y expuso el mensaje interno de MySQL (`"Data truncated for column 'mood' at row 1"`), en vez de rechazar la solicitud con `400 Bad Request` de forma controlada.
+También se realizó una prueba negativa enviando valores fuera de los rangos permitidos (ej. `systolic: 500`, `heartRate: 500`). El backend respondió con `500 Internal Server Error` y expuso el mensaje interno de MySQL (`"Data truncated for column 'mood' at row 1"`), en vez de rechazar la solicitud con `400 Bad Request`.
 
-**Impacto:** Igual que en el Caso 4, esto expone detalles internos del motor de base de datos al cliente y evidencia falta de validación previa. Documentado y trasladado a `fix/api-errors`.
+**Impacto:** Documentado y trasladado a `fix/api-errors`.
 
 ### Evidencia
 
@@ -146,9 +146,7 @@ También se realizó una prueba negativa enviando valores fuera de los rangos pe
 
 **Resultado:** OK
 
-**Detalle:** Se probó de forma aislada el endpoint `GET /api/medications` utilizando autenticación JWT.
-
-La solicitud realizada sin autenticación fue correctamente rechazada con `401 Unauthorized`, mientras que la solicitud autenticada respondió correctamente con `200 OK`.
+**Detalle:** Se probó de forma aislada el endpoint `GET /api/medications` utilizando autenticación JWT. La solicitud sin autenticación fue rechazada con `401 Unauthorized`, mientras que la solicitud autenticada respondió correctamente con `200 OK`.
 
 Durante esta prueba aislada no se reprodujo el error `500 Internal Server Error` identificado previamente durante las pruebas de integración.
 
@@ -164,11 +162,7 @@ Durante esta prueba aislada no se reprodujo el error `500 Internal Server Error`
 
 **Resultado:** OK
 
-**Detalle:** Se intentó registrar un nuevo usuario utilizando un correo electrónico que ya se encontraba registrado en la base de datos.
-
-El Backend detectó correctamente la duplicidad y rechazó la solicitud mediante una respuesta **409 Conflict**, mostrando el mensaje `"Ya existe una cuenta con ese email"`.
-
-Esto confirma que el Backend maneja de forma controlada los registros duplicados y evita la creación de cuentas con correos electrónicos existentes.
+**Detalle:** Se intentó registrar un nuevo usuario utilizando un correo electrónico que ya se encontraba registrado. El Backend rechazó la solicitud con `409 Conflict`, mostrando el mensaje `"Ya existe una cuenta con ese email"`.
 
 ### Evidencia
 
@@ -180,11 +174,7 @@ Esto confirma que el Backend maneja de forma controlada los registros duplicados
 
 **Resultado:** OK
 
-**Detalle:** Se realizó una solicitud a un endpoint protegido utilizando un token JWT inválido/malformado.
-
-El Backend rechazó correctamente la solicitud mediante una respuesta `401 Unauthorized` y devolvió el mensaje `"Token inválido o expirado"`.
-
-Esto confirma que el middleware de autenticación valida correctamente los tokens recibidos y evita el acceso a recursos protegidos cuando la credencial no es válida.
+**Detalle:** Se realizó una solicitud a un endpoint protegido utilizando un token JWT inválido/malformado. El Backend respondió `401 Unauthorized` con el mensaje `"Token inválido o expirado"`.
 
 ### Evidencia
 
@@ -208,7 +198,7 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que el endpoint `GET /api/symptom-logs` rechazara solicitudes sin autenticación JWT. El Backend respondió correctamente con `401 Unauthorized`.
+**Detalle:** Se verificó que el endpoint `GET /api/symptom-logs` rechazara solicitudes sin autenticación JWT, respondiendo `401 Unauthorized` con el mensaje `"Token requerido"`.
 
 ### Evidencia
 
@@ -216,7 +206,23 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 ---
 
-## Caso 16: Consulta de síntoma por ID
+## Caso 16: Validación de contraseña débil (BUG adicional detectado)
+
+**Resultado:** FALLÓ (parcialmente)
+
+**Detalle:** Se intentó registrar un usuario con una contraseña débil (`"123"`, menor a 6 caracteres) para comprobar que el Backend rechazara contraseñas inseguras.
+
+El Backend sí detectó correctamente que la contraseña no cumplía el mínimo de 6 caracteres (`"String must contain at least 6 character(s)"`), pero respondió con **500 Internal Server Error** en lugar de **400 Bad Request**.
+
+**Impacto:** Esta es la tercera ocurrencia del mismo patrón de bug (ver Casos 4 y 10), lo que confirma que se trata de un problema sistémico: los errores de validación (probablemente generados por una librería como Zod) no están siendo capturados por un manejador de errores global, y se propagan como errores internos del servidor. Documentado y trasladado a `fix/api-errors`.
+
+### Evidencia
+
+![Validación de contraseña débil - bug 500](./evidences/16-weak-password-validation.png)
+
+---
+
+## Caso 17: Consulta de síntoma por ID
 
 **Resultado:** OK
 
@@ -224,19 +230,15 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 
 ### Evidencia
 
-![Consulta de síntoma por ID](./evidences/16-weak-password-validation.png)
-
 ![Consulta de síntoma por ID](./evidences/16-symptom-by-id-success.png)
 
 ---
 
-## Caso 17: Consulta de síntoma inexistente
+## Caso 18: Consulta de síntoma inexistente
 
 **Resultado:** OK
 
-**Detalle:** Se verificó el comportamiento del endpoint `GET /api/symptom-logs/:id` al solicitar un registro que no existe. El Backend respondió correctamente con `404 Not Found` y el mensaje `"Registro no encontrado"`.
-
-Esto confirma que la API diferencia correctamente entre un recurso existente y uno inexistente, evitando responder con un error interno `500`.
+**Detalle:** Se verificó el comportamiento del endpoint `GET /api/symptom-logs/:id` al solicitar un registro que no existe (ID `999999`). El Backend respondió correctamente con `404 Not Found` y el mensaje `"Registro no encontrado"`, sin exponer un error interno `500`.
 
 ### Evidencia
 
@@ -244,15 +246,13 @@ Esto confirma que la API diferencia correctamente entre un recurso existente y u
 
 ---
 
-## Caso 18: Verificación de operaciones CRUD de síntomas
+## Caso 19: Verificación de operaciones CRUD de síntomas
 
 **Resultado:** PARCIAL
 
-**Detalle:** Se revisaron las rutas disponibles para la gestión de registros de síntomas. Se confirmó la implementación de las operaciones de creación (`POST`), consulta general (`GET`), consulta por ID (`GET /:id`) y consulta de datos para gráfica (`GET /chart`).
+**Detalle:** Se revisaron las rutas disponibles para la gestión de registros de síntomas directamente en el código fuente del contenedor. Se confirmó la implementación de las operaciones de creación (`POST /`), consulta general (`GET /`), consulta por ID (`GET /:id`) y consulta de datos para gráfica (`GET /chart`).
 
-No se encontraron endpoints `PUT` ni `DELETE`, por lo que las operaciones de actualización y eliminación no se encuentran implementadas actualmente.
-
-**Observación:** La funcionalidad de síntomas actualmente permite crear y consultar registros, pero no cuenta con operaciones de actualización o eliminación. Por este motivo, el CRUD no se encuentra completo.
+No se encontraron endpoints `PUT` ni `DELETE`, por lo que las operaciones de actualización y eliminación de registros de síntomas no están implementadas actualmente.
 
 ### Evidencia
 
@@ -260,13 +260,13 @@ No se encontraron endpoints `PUT` ni `DELETE`, por lo que las operaciones de act
 
 ---
 
-## Caso 19: Protección de credenciales en registro
+## Caso 20: Protección de credenciales en registro
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que la respuesta de `POST /api/auth/register` no expusiera información sensible relacionada con las credenciales del usuario.
+**Detalle:** Se verificó que la respuesta de `POST /api/auth/register` no expusiera información sensible relacionada con las credenciales del usuario. La respuesta incluyó únicamente `id`, `full_name`, `email` y `role` junto con el token de autenticación. No se encontró ningún campo `password` ni `password_hash`.
 
-La respuesta incluyó únicamente información necesaria del usuario (`id`, `full_name`, `email` y `role`) junto con el token de autenticación. No se encontró ningún campo `password` ni `password_hash` en la respuesta JSON.
+**Observación:** El campo de nombre en esta respuesta se llama `full_name`, mientras que en la respuesta de login (Caso 21) el mismo dato se llama `name`. Es una inconsistencia menor de nomenclatura entre ambos endpoints, no un problema de seguridad.
 
 ### Evidencia
 
@@ -274,19 +274,18 @@ La respuesta incluyó únicamente información necesaria del usuario (`id`, `ful
 
 ---
 
-## Caso 20: Protección de credenciales en login
+## Caso 21: Protección de credenciales en login
 
 **Resultado:** OK
 
-**Detalle:** Se verificó que la respuesta de `POST /api/auth/login` no expusiera información sensible relacionada con las credenciales del usuario.
-
-La respuesta incluyó el token JWT y los datos básicos del usuario (`id`, `name`, `email` y `role`). No se encontró ningún campo `password` ni `password_hash` en la respuesta JSON.
+**Detalle:** Se verificó que la respuesta de `POST /api/auth/login` no expusiera información sensible relacionada con las credenciales del usuario. La respuesta incluyó el token JWT y los datos básicos del usuario (`id`, `name`, `email` y `role`). No se encontró ningún campo `password` ni `password_hash`.
 
 ### Evidencia
 
 ![Credenciales no expuestas en login](./evidences/20-login-password-not-exposed.png)
 
 ---
+
 ## Resumen general
 
 | Caso | Resultado |
@@ -294,40 +293,35 @@ La respuesta incluyó el token JWT y los datos básicos del usuario (`id`, `name
 | 1. Estado del entorno | OK |
 | 2. Conexión Backend - MySQL | OK (con observación) |
 | 3. Estructura de usuarios | OK |
-| 4. Validación de datos | FALLÓ (bug 500 en vez de 400) |
+| 4. Validación de datos (campo faltante) | FALLÓ (bug 500 en vez de 400) |
 | 5. Registro de usuario | OK |
 | 6. Persistencia en MySQL | OK |
 | 7. Login correcto | OK |
 | 8. Login inválido | OK |
 | 9. Protección de endpoints | OK |
-| 10. Registro de síntomas | OK |
+| 10. Registro de síntomas (rango inválido) | FALLÓ (bug 500 en vez de 400) |
 | 11. Consulta de medicamentos | OK |
 | 12. Correo duplicado | OK |
 | 13. Token inválido | OK |
-| 14. Operaciones de síntomas | OK (parcial) |
-| 15. Protección de síntomas | OK |
+| 14. Consulta de registros de síntomas | OK |
+| 15. Protección de registros de síntomas | OK |
 | 16. Contraseña débil | FALLÓ (bug 500 en vez de 400) |
+| 17. Consulta de síntoma por ID | OK |
+| 18. Síntoma inexistente | OK |
+| 19. CRUD de síntomas | PARCIAL (sin PUT/DELETE) |
+| 20. Credenciales no expuestas (registro) | OK |
+| 21. Credenciales no expuestas (login) | OK |
 
 ### Resultado final
 
-Las pruebas realizadas sobre el Backend de VitalMind fueron satisfactorias en los casos funcionales evaluados.
+Las pruebas realizadas sobre el Backend de VitalMind fueron satisfactorias en la mayoría de los escenarios funcionales evaluados: comunicación con MySQL, registro y autenticación de usuarios, persistencia de información, consulta de síntomas y medicamentos, protección de endpoints mediante JWT, manejo de correos duplicados y no exposición de credenciales en las respuestas.
 
-Se verificó el funcionamiento del entorno, la comunicación entre el Backend y MySQL, la estructura de usuarios, el registro y autenticación de usuarios, la persistencia de información, el registro de síntomas, la consulta de medicamentos y la protección de endpoints mediante autenticación JWT.
+Se detectaron **tres ocurrencias del mismo patrón de bug** en el manejo de errores de validación: al registrar un usuario con un campo faltante (Caso 4), al registrar un síntoma con valores fuera de rango (Caso 10), y al registrar una contraseña débil (Caso 16). En los tres casos, el Backend detecta correctamente el dato inválido, pero responde `500 Internal Server Error` en lugar de `400 Bad Request`, y en el Caso 10 llega a exponer el mensaje interno de MySQL. Esto indica un problema sistémico: probablemente falta un manejador de errores global que capture las excepciones de validación (posiblemente de Zod) y las convierta en respuestas `400` controladas. Las tres incidencias fueron documentadas y trasladadas a la rama `fix/api-errors`.
 
-También se realizaron pruebas negativas para validar el comportamiento del Backend ante datos incorrectos, credenciales inválidas, correos duplicados, ausencia de autenticación y tokens inválidos.
+Se revisaron también las operaciones CRUD del módulo de síntomas (Caso 19), confirmando que solo están implementadas las operaciones de creación y consulta; actualización y eliminación no existen actualmente.
 
-Durante las pruebas se detectaron dos ocurrencias del mismo tipo de bug en el manejo de
-errores de validación: en el registro de usuario (Caso 4) y en el registro de síntomas
-(Caso 10), donde una solicitud con datos incorrectos genera `500 Internal Server Error`
-en lugar de `400 Bad Request`, exponiendo en el segundo caso el mensaje interno de MySQL.
-Esto sugiere que la falta de validación previa a nivel de aplicación es un patrón
-recurrente en el Backend, no un caso aislado. Ambas incidencias fueron documentadas y
-trasladadas a la rama `fix/api-errors` para su corrección.
-
-Asimismo, el error `500 Internal Server Error` identificado previamente en la consulta de medicamentos durante las pruebas de integración no se reprodujo durante la prueba aislada del Backend. La solicitud autenticada al endpoint `GET /api/medications` respondió correctamente con `200 OK`.
+Como observación menor, se detectó una inconsistencia de nomenclatura entre los endpoints de registro y login: el primero devuelve el nombre del usuario como `full_name` y el segundo como `name` (Caso 20).
 
 ### Evidencia final del entorno
 
 ![Estado final de contenedores](./evidences/13-backend-final-status.png)
-
-En general, las pruebas permitieron confirmar que el Backend funciona correctamente en los escenarios evaluados y que cuenta con mecanismos de autenticación, validación y manejo controlado de solicitudes inválidas.
