@@ -122,11 +122,15 @@ El Backend sí detectó que el campo `name` era requerido y no estaba presente, 
 
 ---
 
-## Caso 10: Registro de síntomas
+## Caso 10: Registro de síntomas (BUG adicional detectado)
 
-**Resultado:** OK
+**Resultado:** OK (con bug detectado en prueba negativa)
 
-**Detalle:** Se probó de forma aislada el endpoint `POST /api/symptom-logs` utilizando autenticación JWT. Se realizó un registro con datos válidos y posteriormente se consultó el listado para verificar su persistencia. También se realizó una prueba negativa utilizando valores fuera de los rangos permitidos para comprobar el manejo de validaciones.
+**Detalle:** Se probó de forma aislada el endpoint `POST /api/symptom-logs` utilizando autenticación JWT. Se realizó un registro con datos válidos y posteriormente se consultó el listado para verificar su persistencia correcta.
+
+También se realizó una prueba negativa enviando valores fuera de los rangos permitidos (ej. `systolic: 500`, `heartRate: 500`). El backend **no validó los datos antes de enviarlos a la base de datos**: respondió con `500 Internal Server Error` y expuso el mensaje interno de MySQL (`"Data truncated for column 'mood' at row 1"`), en vez de rechazar la solicitud con `400 Bad Request` de forma controlada.
+
+**Impacto:** Igual que en el Caso 4, esto expone detalles internos del motor de base de datos al cliente y evidencia falta de validación previa. Documentado y trasladado a `fix/api-errors`.
 
 ### Evidencia
 
@@ -134,7 +138,8 @@ El Backend sí detectó que el campo `name` era requerido y no estaba presente, 
 
 ![Persistencia del síntoma](./evidences/10-symptom-list-persisted.png)
 
-![Validación de síntomas](./evidences/10-symptom-validation-error.png)
+![Validación de síntomas - bug 500](./evidences/10-symptom-validation-error.png)
+
 ---
 
 ## Caso 11: Consulta de medicamentos
@@ -181,9 +186,21 @@ El Backend rechazó correctamente la solicitud mediante una respuesta `401 Unaut
 
 Esto confirma que el middleware de autenticación valida correctamente los tokens recibidos y evita el acceso a recursos protegidos cuando la credencial no es válida.
 
+---
+
+## Caso 14: Consulta de registros de síntomas
+
+**Resultado:** OK
+
+**Detalle:** Se verificó de forma aislada el endpoint `GET /api/symptom-logs` utilizando autenticación JWT. El Backend respondió `200 OK` y devolvió correctamente los registros asociados al usuario autenticado.
+
 ### Evidencia
 
-![Token inválido - 401 Unauthorized](../test-backend/evidences/13-invalid-token-401.png)
+![Consulta de síntomas](./evidences/14-symptoms-list-200.png)
+
+### Evidencia
+
+![Token inválido - 401 Unauthorized](./evidences/13-invalid-token-401.png)
 
 ---
 
@@ -204,6 +221,9 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 | 11. Consulta de medicamentos | OK |
 | 12. Correo duplicado | OK |
 | 13. Token inválido | OK |
+| 14. Operaciones de síntomas | OK (parcial) |
+| 15. Protección de síntomas | OK |
+| 16. Contraseña débil | FALLÓ (bug 500 en vez de 400) |
 
 ### Resultado final
 
@@ -213,8 +233,18 @@ Se verificó el funcionamiento del entorno, la comunicación entre el Backend y 
 
 También se realizaron pruebas negativas para validar el comportamiento del Backend ante datos incorrectos, credenciales inválidas, correos duplicados, ausencia de autenticación y tokens inválidos.
 
-Durante las pruebas se detectó un bug en el manejo de errores de validación (Caso 4), donde una solicitud con datos incorrectos genera `500 Internal Server Error` en lugar de `400 Bad Request`. Esta incidencia fue documentada y trasladada a la rama `fix/api-errors` para su corrección.
+Durante las pruebas se detectaron dos ocurrencias del mismo tipo de bug en el manejo de
+errores de validación: en el registro de usuario (Caso 4) y en el registro de síntomas
+(Caso 10), donde una solicitud con datos incorrectos genera `500 Internal Server Error`
+en lugar de `400 Bad Request`, exponiendo en el segundo caso el mensaje interno de MySQL.
+Esto sugiere que la falta de validación previa a nivel de aplicación es un patrón
+recurrente en el Backend, no un caso aislado. Ambas incidencias fueron documentadas y
+trasladadas a la rama `fix/api-errors` para su corrección.
 
 Asimismo, el error `500 Internal Server Error` identificado previamente en la consulta de medicamentos durante las pruebas de integración no se reprodujo durante la prueba aislada del Backend. La solicitud autenticada al endpoint `GET /api/medications` respondió correctamente con `200 OK`.
+
+### Evidencia final del entorno
+
+![Estado final de contenedores](./evidences/13-backend-final-status.png)
 
 En general, las pruebas permitieron confirmar que el Backend funciona correctamente en los escenarios evaluados y que cuenta con mecanismos de autenticación, validación y manejo controlado de solicitudes inválidas.
