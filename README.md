@@ -330,6 +330,7 @@ Los contratos completos están en [`docs/api-contracts.md`](./docs/api-contracts
 
 ## ⚙️ Instalación y configuración
 
+La guía completa se encuentra en [`docs/runbook.md`](./docs/runbook.md).
 
 ### API principal
 
@@ -457,7 +458,7 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 - Clustering y detección de anomalías disponibles mediante FastAPI.
 - Backend con MySQL, JWT y Swagger.
 - Chatbot Mistral AI integrado a nivel de código y con evidencia de uso en pruebas de integración.
-- Dashboard con múltiples gráficas y actualización automática cada 30 segundos.
+- Dashboard con múltiples gráficas y actualización automática.
 - Aplicación móvil/web y módulo Wear OS en Kotlin.
 
 ### Limitaciones
@@ -465,7 +466,6 @@ Detalles en [`docs/ai-usage.md`](./docs/ai-usage.md).
 - Los modelos no tienen validación clínica.
 - El comportamiento con datos reales puede diferir del dataset sintético.
 - Las métricas disponibles desde Wear OS dependen del hardware y permisos.
-- El dashboard de la API utiliza polling; el servidor Socket.IO de extremo a extremo no forma parte del backend incluido en esta versión.
 - Los artefactos ML deben cargarse con versiones compatibles de scikit-learn.
 
 
