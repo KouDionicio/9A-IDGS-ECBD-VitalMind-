@@ -141,9 +141,11 @@ El Backend sí detectó que el campo `name` era requerido y no estaba presente, 
 
 **Resultado:** OK
 
-**Detalle:** Se probó de forma aislada el endpoint `GET /api/medications` utilizando autenticación JWT. La solicitud sin autenticación fue correctamente rechazada con `401 Unauthorized`, mientras que la solicitud autenticada respondió correctamente con `200 OK`.
+**Detalle:** Se probó de forma aislada el endpoint `GET /api/medications` utilizando autenticación JWT.
 
-La prueba aislada no reprodujo el error `500 Internal Server Error` identificado previamente durante las pruebas de integración.
+La solicitud realizada sin autenticación fue correctamente rechazada con `401 Unauthorized`, mientras que la solicitud autenticada respondió correctamente con `200 OK`.
+
+Durante esta prueba aislada no se reprodujo el error `500 Internal Server Error` identificado previamente durante las pruebas de integración.
 
 ### Evidencia
 
