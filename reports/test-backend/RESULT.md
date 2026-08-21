@@ -229,6 +229,20 @@ Esto confirma que el middleware de autenticación valida correctamente los token
 ![Consulta de síntoma por ID](./evidences/16-symptom-by-id-success.png)
 
 ---
+
+## Caso 17: Consulta de síntoma inexistente
+
+**Resultado:** OK
+
+**Detalle:** Se verificó el comportamiento del endpoint `GET /api/symptom-logs/:id` al solicitar un registro que no existe. El Backend respondió correctamente con `404 Not Found` y el mensaje `"Registro no encontrado"`.
+
+Esto confirma que la API diferencia correctamente entre un recurso existente y uno inexistente, evitando responder con un error interno `500`.
+
+### Evidencia
+
+![Síntoma no encontrado](./evidences/17-symptom-not-found.png)
+
+---
 ## Resumen general
 
 | Caso | Resultado |
