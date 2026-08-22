@@ -47,7 +47,9 @@
 21. [Resultados y limitaciones](#-resultados-y-limitaciones)
 22. [Presentación de VitalMind IA](docs/VitalMind_IA_Presentacion.pdf)
 23. [Tecnologías utilizadas](#️-tecnologías-utilizadas)
-24. [Referencias](#-referencias)
+24. [Repositorios y accesos](#-repositorios-y-accesos)
+25. [Acceso rápido a archivos y carpetas](docs/quick-access.md)
+26. [Referencias](#-referencias)
 
 ---
 
@@ -531,6 +533,8 @@ Consulta la presentación general del proyecto, que incluye su objetivo, funcion
 | <img src="https://cdn.simpleicons.org/jsonwebtokens/000000" width="28" alt="JWT"/> **JWT** | Autenticación de usuarios y control de sesiones. |
 | <img src="https://cdn.simpleicons.org/letsencrypt/003A70" width="28" alt="HTTPS y TLS"/> **HTTPS / TLS** | Protección de la información transmitida entre servicios. |
 
+---
+
 #### 🧩 Diseño, gestión y colaboración
 
 | Tecnología | Uso principal |
@@ -540,6 +544,21 @@ Consulta la presentación general del proyecto, que incluye su objetivo, funcion
 | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" width="28" alt="GitHub"/> **GitHub** | Administración del repositorio, ramas y Pull Requests. |
 | <img src="https://devicons.io/devicons/icons/microsoft-teams.svg" width="28" alt="Microsoft Teams"/> **Microsoft Teams** | Reuniones y comunicación formal del equipo. |
 | <img src="https://cdn.simpleicons.org/whatsapp/25D366" width="28" alt="WhatsApp"/> **WhatsApp** | Comunicación rápida y coordinación interna. |
+---
+## Repositorios y accesos
+
+| Recurso | Enlace | Descripción |
+|---|---|---|
+| Repositorio móvil y Wear OS | [VitalMind Mobile Wear](https://github.com/Ktmich2095/VitalMind-Mobile-Wear) | Aplicación móvil y smartwatch desarrollados con Kotlin y Wear OS. |
+| Repositorio web, backend y base de datos | [VitalMind Vercel](https://github.com/yaz-gutzz/VitalMind_Vercel) | Frontend web, backend y recursos relacionados con la base de datos. |
+| Aplicación web | [Abrir VitalMind Web](https://vital-mind-vercel-3p4r.vercel.app/auth) | Plataforma web desplegada. |
+| API en producción | [Abrir API VitalMind](https://vitalmind-ia.up.railway.app/) | API desplegada en Railway. |
+---
+
+### Acceso rápido a archivos y carpetas
+
+> ¿Necesitas ubicar rápidamente una carpeta, módulo o documento del proyecto?  
+> Consulta la guía de [Acceso rápido a archivos y carpetas](docs/quick-access.md), donde encontrarás enlaces directos a los componentes principales de VitalMind IA.
 ---
 
 ## 📚 Referencias
@@ -553,7 +572,7 @@ Consulta la presentación general del proyecto, que incluye su objetivo, funcion
 - [RFC 8725 — JSON Web Token Best Current Practices](https://www.rfc-editor.org/info/rfc8725/)
 - [GitHub Docs — Licensing a repository](https://docs.github.com/articles/licensing-a-repository)
 
-
+---
 
 <div align="center">
 
