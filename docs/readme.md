@@ -1,10 +1,21 @@
 # Acceso rápido a archivos y carpetas
 
-Este documento funciona como un **mapa de navegación de VitalMind AI**. Reúne las carpetas principales, las subcarpetas más importantes y los documentos clave del proyecto para facilitar su consulta desde GitHub.
+Este documento es una guía de acceso rápido a la estructura, documentos y componentes principales de **VitalMind AI**. Su propósito es facilitar la consulta del proyecto desde GitHub mediante enlaces directos a las carpetas, módulos y archivos más relevantes.
 
-> Los enlaces están definidos desde `docs/acceso-rapido.md`. No se incluyen dependencias, archivos generados ni recursos internos de compilación para mantener una navegación breve y útil.
+A continuación se muestran algunas vistas principales de la interfaz de VitalMind AI:
+
+| Dashboard principal | Análisis de bienestar con IA |
+|---|---|
+| ![Dashboard principal de VitalMind AI](../Evidencias/Frontend/Evidencias_Usuario/02-dashboard-principal.png) | ![Análisis de bienestar con IA](../Evidencias/Frontend/Evidencias_Usuario/03-dashboard-bienestar-ia.png) |
+| Vista general donde el usuario consulta información relevante sobre su monitoreo de salud. | Módulo que presenta el análisis de bienestar generado a partir de los datos registrados. |
+
+| Chatbot VitalMind |
+|---|
+| ![Chatbot VitalMind](../Evidencias/Frontend/Evidencias_Usuario/17-chatbot-vitalmind.png) |
+| Asistente conversacional integrado para orientar al usuario dentro de la aplicación. |
+
+
 ---
-
 ## Repositorios y aplicaciones desplegadas
 
 VitalMind IA está organizado en los siguientes repositorios y servicios:
@@ -31,47 +42,6 @@ VitalMind IA está organizado en los siguientes repositorios y servicios:
 | Reportes | Resultados de correcciones y pruebas | [Abrir `reports/`](../reports/) |
 | API integrada | Backend, base de datos y dashboard en tiempo real | [Abrir `vitalmind-api/`](../vitalmind-api/) |
 
-## Estructura general
-
-```text
-9A-IDGS-ECBD-VitalMind-/
-├── assets/
-├── Back_VitalMind/
-│   ├── src/
-│   └── tests/
-├── Data Base/
-│   ├── Backups/
-│   ├── Diagram/
-│   └── Scripts/
-│       ├── Procedures/
-│       └── tables/
-├── docs/
-├── Evidencias/
-│   ├── API/
-│   ├── Dashboard/
-│   └── Frontend/
-├── Frontend/
-│   ├── Movil_Wearable/
-│   └── Web/
-├── ml-service/
-│   ├── app/
-│   ├── data/
-│   ├── docs/
-│   ├── reports/
-│   ├── scripts/
-│   └── tests/
-├── reports/
-│   ├── fix_api-errors/
-│   ├── test-backend/
-│   └── test-integration/
-└── vitalmind-api/
-    ├── dashboard/
-    ├── database/
-    ├── docs/
-    ├── migrations/
-    ├── scripts/
-    └── src/
-```
 
 ## Backend principal
 

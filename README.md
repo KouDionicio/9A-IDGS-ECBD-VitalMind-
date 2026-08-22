@@ -48,7 +48,7 @@
 22. [Presentación de VitalMind IA](docs/VitalMind_IA_Presentacion.pdf)
 23. [Tecnologías utilizadas](#️-tecnologías-utilizadas)
 24. [Repositorios y accesos](#-repositorios-y-accesos)
-25. [Acceso rápido a archivos y carpetas](docs/quick-access.md)
+25. [Acceso rápido a archivos y carpetas](#-Acceso-rápido-a-archivos-y-carpetas)
 26. [Referencias](#-referencias)
 
 ---
@@ -555,10 +555,10 @@ Consulta la presentación general del proyecto, que incluye su objetivo, funcion
 | API en producción | [Abrir API VitalMind](https://vitalmind-ia.up.railway.app/) | API desplegada en Railway. |
 ---
 
-### Acceso rápido a archivos y carpetas
+## Acceso rápido a archivos y carpetas
 
 > ¿Necesitas ubicar rápidamente una carpeta, módulo o documento del proyecto?  
-> Consulta la guía de [Acceso rápido a archivos y carpetas](docs/quick-access.md), donde encontrarás enlaces directos a los componentes principales de VitalMind IA.
+> Consulta la guía de [Acceso rápido a archivos y carpetas](docs/readme.md), donde encontrarás enlaces directos a los componentes principales de VitalMind IA.
 ---
 
 ## 📚 Referencias
