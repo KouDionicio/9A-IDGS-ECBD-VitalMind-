@@ -18,7 +18,7 @@ export function AuthScreen() {
 
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [registerForm, setRegisterForm] = useState({
-    name: "", email: "", age: "", gender: "", weight: "", height: "", password: "", confirmPassword: "",
+    name: "", email: "", age: "", sex: "", weight: "", height: "", password: "", confirmPassword: "",
   });
 
   const handleLogin = async () => {
@@ -37,15 +37,7 @@ export function AuthScreen() {
   };
 
   const handleRegister = async () => {
-    if (
-      !registerForm.name ||
-      !registerForm.email ||
-      !registerForm.password ||
-      !registerForm.gender
-    ) {
-      toast.error("Completa los campos obligatorios");
-      return;
-    }
+    if (!registerForm.name || !registerForm.email || !registerForm.password) { toast.error("Completa los campos obligatorios"); return; }
     if (registerForm.password !== registerForm.confirmPassword) { toast.error("Las contraseñas no coinciden"); return; }
     try {
       const result = await apiRequest<{ token: string; user: { name: string; role: string } }>("/auth/register", {
@@ -55,7 +47,6 @@ export function AuthScreen() {
           email: registerForm.email,
           password: registerForm.password,
           age: Number(registerForm.age) || 0,
-          gender: registerForm.gender,
         }),
       });
       setSession(result.token, result.user.name, result.user.role);
@@ -194,23 +185,13 @@ export function AuthScreen() {
                 onChange={(e) => setRegisterForm({ ...registerForm, age: e.target.value })}
                 className={dark ? "bg-slate-900 border border-slate-700 rounded-2xl px-4 py-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-[#0F766E] text-sm shadow-sm" : "bg-white border border-[#E2E8F0] rounded-2xl px-4 py-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0F766E] text-sm shadow-sm"} />
               <div className="relative">
-                <select
-                  value={registerForm.gender}
-                  onChange={(e) =>
-                    setRegisterForm({
-                      ...registerForm,
-                      gender: e.target.value,
-                    })
-                  }
-                  className={
-                    dark
-                      ? "w-full bg-slate-900 border border-slate-700 rounded-2xl px-4 py-4 text-slate-100 focus:outline-none focus:border-[#0F766E] text-sm appearance-none shadow-sm"
-                      : "w-full bg-white border border-[#E2E8F0] rounded-2xl px-4 py-4 text-slate-800 focus:outline-none focus:border-[#0F766E] text-sm appearance-none shadow-sm"
-                  }
-                >
+                <select value={registerForm.sex}
+                  onChange={(e) => setRegisterForm({ ...registerForm, sex: e.target.value })}
+                  className={dark ? "w-full bg-slate-900 border border-slate-700 rounded-2xl px-4 py-4 text-slate-100 focus:outline-none focus:border-[#0F766E] text-sm appearance-none shadow-sm" : "w-full bg-white border border-[#E2E8F0] rounded-2xl px-4 py-4 text-slate-800 focus:outline-none focus:border-[#0F766E] text-sm appearance-none shadow-sm"}>
                   <option value="">Sexo</option>
-                  <option value="Masculino">Masculino</option>
-                  <option value="Femenino">Femenino</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="O">Otro</option>
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
